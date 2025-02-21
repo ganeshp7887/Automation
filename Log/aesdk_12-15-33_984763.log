@@ -1,0 +1,281 @@
+2025-02-19 10:36:18,859 INFO     [.]  Utils                                         [INIT]  Inside getClientSpecficVersion 
+2025-02-19 10:36:18,874 ERROR    [.]  Utils                                         [INIT] Error while getting the aesdk versionIndex 2 out of bounds for length 1
+2025-02-19 10:36:18,874 INFO     [SDKWRAPPER.21.0.6.9]  InitServerAdapter           POS_LISTENING_PORT IN  WRAP_COMM_TYPE 615583
+2025-02-19 10:36:18,921 INFO     [SDKWRAPPER.21.0.6.9]  AesdkEnterpriseService      initJar method called to start server listening port
+2025-02-19 10:36:18,921 INFO     [SDKWRAPPER.21.0.6.9]  AesdkEnterpriseService      Connections accepting on PORT = 15583
+2025-02-19 10:36:18,921 INFO     [SDKWRAPPER.21.0.6.9]  AesdkEnterpriseService      Accepting SSL Socket Connections at host on port: 15583
+2025-02-19 10:36:18,937 INFO     [SDKWRAPPER.21.0.6.9]  AesdkServiceThread          --------------In AESDKServiceThread thread Start---------------
+2025-02-19 10:36:18,937 INFO     [SDKWRAPPER.21.0.6.9]  AesdkServiceThread          AESDKServiceThread thread waiting for request..
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Inside aesdk-config.properties file.
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Logger mask Name property not found
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Logger Replace Name property not found
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Logger replacebale name : AURUS
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Reading logger_file_path property.
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Contain a directory path :: D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003/
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Configured logger path at system level as :: logFilePath = D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003/AesdkLogs
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Reading database_file_path property.
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Configured database file path at system level as :: D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003/
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Reading logging_level property.
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] Configured logger level at system level as :: logging_level = null
+2025-02-19 10:36:19,156 INFO     [AURUS.25.02.106.001]  HelperUtility               [INIT] logFilePath PATH used : D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003/
+2025-02-19 10:36:19,171 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Alert : POS Startup/Reboot Identified
+2025-02-19 10:36:19,171 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] POS REQUEST : {"InitAesdkRequest":{"CCTID":"01","ADSDKSpecVer":"6.12","POSID":"01","StoreId":"","APPID":"04","MerchantIdentifier":"","PEDMaps":{"PEDMap":[{"POSID":"01","LANENO":"01"},{"POSID":"02","LANENO":"02"},{"POSID":"03","LANENO":"03"},{"POSID":"04","LANENO":"04"},{"POSID":"05","LANENO":"05"}]},"TerminalId":"","ConfigFilePath":"D:\\Ganesh\\CircleK\\AESDK\\UAT\\AESDK v24.01.000.003"}}
+2025-02-19 10:36:19,171 INFO     LogAnalysisLogger                                  [INIT] Alert : 1. POS Startup/Reboot Identified
+2025-02-19 10:36:19,171 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] FilePath NOT NULL D://Ganesh//CircleK//AESDK//UAT//AESDK v24.01.000.003
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] Inside getMacAddressHostName propertyId : 1
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] Inet HostAddress : 10.190.10.187
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] Is Ipv6 Address : false
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Reading System Properties
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.specification.version : 17
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.cpu.isalist : amd64
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.jnu.encoding : Cp1252
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.class.path : AESDKWrapper_002.jar
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vm.vendor : OpenLogic
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.arch.data.model : 64
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] user.variant : 
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vendor.url : https://openlogic.com/
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] user.timezone : Asia/Calcutta
+2025-02-19 10:36:19,187 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vm.specification.version : 17
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] os.name : Windows 8.1
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.java.launcher : SUN_STANDARD
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] user.country : IN
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.boot.library.path : C:\Program Files\OpenLogic\jdk-17.0.13.11-hotspot\bin
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.java.command : AESDKWrapper_002.jar
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] jdk.debug : release
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.cpu.endian : little
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] user.home : C:\Users\ganeshp
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] user.language : en
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.stderr.encoding : cp437
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.specification.vendor : Oracle Corporation
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.version.date : 2024-10-15
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.home : C:\Program Files\OpenLogic\jdk-17.0.13.11-hotspot
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] file.separator : \
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vm.compressedOopsMode : 32-bit
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] line.separator : 
+
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.stdout.encoding : cp437
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vm.specification.vendor : Oracle Corporation
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.specification.name : Java Platform API Specification
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] logging_level : Info
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] database_file_path : D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003/
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] ADSDKVersion : [AURUS.25.02.106.001]
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] user.script : 
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.management.compiler : HotSpot 64-Bit Tiered Compilers
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.runtime.version : 17.0.13+11-adhoc..jdk17u
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] user.name : ganeshp
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] path.separator : ;
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] os.version : 6.3
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.runtime.name : OpenJDK Runtime Environment
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] file.encoding : Cp1252
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vm.name : OpenJDK 64-Bit Server VM
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vendor.version : OpenLogic-OpenJDK
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] http.maxConnections : 200
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vendor.url.bug : https://techsupport.roguewave.com/
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.io.tmpdir : C:\Users\ganeshp\AppData\Local\Temp\
+2025-02-19 10:36:19,202 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.version : 17.0.13
+2025-02-19 10:36:19,218 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] user.dir : D:\Ganesh\CircleK\AESDK\UAT\AESDK v24.01.000.003
+2025-02-19 10:36:19,218 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] os.arch : amd64
+2025-02-19 10:36:19,218 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vm.specification.name : Java Virtual Machine Specification
+2025-02-19 10:36:19,218 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.os.patch.level : 
+2025-02-19 10:36:19,234 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] native.encoding : Cp1252
+2025-02-19 10:36:19,234 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.library.path : C:\Program Files\OpenLogic\jdk-17.0.13.11-hotspot\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\OpenLogic\jdk-17.0.13.11-hotspot\bin;C:\Program Files (x86)\Java\jdk1.8.0_45\bin;C:\Users\ganeshp\AppData\Local\Programs\Python\Python310\;C:\Users\ganeshp\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\ganeshp\AppData\Local\Programs\Python\Python310\;.
+2025-02-19 10:36:19,234 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vm.info : mixed mode, sharing
+2025-02-19 10:36:19,234 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vendor : OpenLogic
+2025-02-19 10:36:19,249 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.net.http.errorstream.enableBuffering : true
+2025-02-19 10:36:19,249 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.vm.version : 17.0.13+11-adhoc..jdk17u
+2025-02-19 10:36:19,249 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.specification.maintenance.version : 1
+2025-02-19 10:36:19,265 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] logFilePath : D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003/
+2025-02-19 10:36:19,265 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] sun.io.unicode.encoding : UnicodeLittle
+2025-02-19 10:36:19,265 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] java.class.version : 61.0
+2025-02-19 10:36:19,265 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Config File Path : D://Ganesh//CircleK//AESDK//UAT//AESDK v24.01.000.003/
+2025-02-19 10:36:19,265 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] ADSDK application Version : 25.02.106.001
+2025-02-19 10:36:19,265 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] ADSDK Spec Version : 6.12
+2025-02-19 10:36:19,265 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] ADSDK Spec Version : 6.12
+2025-02-19 10:36:19,265 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] 5 - PedMap present :: [{"POSID":"01","LANENO":"01"},{"POSID":"02","LANENO":"02"},{"POSID":"03","LANENO":"03"},{"POSID":"04","LANENO":"04"},{"POSID":"05","LANENO":"05"}]
+2025-02-19 10:36:19,281 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Rule Set on : true
+2025-02-19 10:36:19,281 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Registry Name : gpatil-win8
+2025-02-19 10:36:19,281 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] System Hostname : GPATIL-WIN8
+2025-02-19 10:36:19,281 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] PED Manager Enterprise Type : E
+2025-02-19 10:36:19,281 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Enterprise Adapter mode found 
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] IS WebService : false
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] AESDK File Download : N
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] OS INSTALL AFTER ADA : Y
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] System Java Version Greater Than 11 : true System Java version : 17.0.13
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Primary URL : uat42.auruspay.com
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Offline Support enabled : 0
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Port Close Value : 1000
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] HardWare Usb Port : "usbVcom\VID_0B00&PID_0056"
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] HardWare Enabled flag : 0
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Secondary URL : uat42.auruspay.com
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Flow Type Format : P
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] OTC Processor Default Count: 75
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] EPP Product Default Buffer Size : 8092
+2025-02-19 10:36:19,296 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Offline Mod Value : 8
+2025-02-19 10:36:19,312 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Offline initial Delay Value : 2
+2025-02-19 10:36:19,312 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Log Upload mod Value : 60
+2025-02-19 10:36:19,312 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Log Upload Initial delay : 1
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Database Flag : Y
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Database File Path : D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003/
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Corporate Id : 36525
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Is Upload Flag : 1
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Is SNFUpload Flag : 1
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Api Version : 2.25
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] MASK Card Format : XX4
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Registration Flag : N
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Current Primary URL : uat42.auruspay.com
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Current Secondary URL : uat42.auruspay.com
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Skip_Registration : Y
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] load_bin  : 1
+2025-02-19 10:36:19,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Test Enviroment : 0
+2025-02-19 10:36:19,343 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Request Input Output Format : JSON
+2025-02-19 10:36:19,343 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Host Waiting Time : 23000
+2025-02-19 10:36:19,343 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Retry Waiting Time : 3000
+2025-02-19 10:36:19,343 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Logger location : null
+2025-02-19 10:36:19,343 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Default CCT Logger location : D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003/
+2025-02-19 10:36:19,343 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] PED Base Port : 8029
+2025-02-19 10:36:19,343 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] PAX PED Base Port : 8029
+2025-02-19 10:36:19,343 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Test Time-Out Value : 1
+2025-02-19 10:36:19,343 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Host Connection TimeOut Default Value : 2000
+2025-02-19 10:36:19,359 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] File Buffer Size : 10000
+2025-02-19 10:36:19,359 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] PED Autopolling Flag : Y
+2025-02-19 10:36:19,359 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] PAX Autopolling Flag : N
+2025-02-19 10:36:19,359 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] P2PE Key Status : N
+2025-02-19 10:36:19,359 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Default Data Center Time : 3600
+2025-02-19 10:36:19,359 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Default AESDK Trans Response : N
+2025-02-19 10:36:19,359 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] POS VERSION :  
+2025-02-19 10:36:19,359 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] ped conn timeout time : 600000
+2025-02-19 10:36:19,359 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Zone Type : TMX_2
+2025-02-19 10:36:19,499 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] OS FILE ONE : OS.TAR
+2025-02-19 10:36:19,499 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] ADA FILE : AURUSDNLDER.OGZ
+2025-02-19 10:36:19,499 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] FILE CHUNKER : 2048
+2025-02-19 10:36:19,499 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] APSP FILE : TCP_APSP_ADK.tgz
+2025-02-19 10:36:19,499 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] AESDK_REBOOT_TIME : 400
+2025-02-19 10:36:19,499 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] MATRIX VALUE : [null, null, null, null, null, null, null]
+2025-02-19 10:36:19,499 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] PED Timeout : 170
+2025-02-19 10:36:19,499 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] ONE TIME SOCKET : Y
+2025-02-19 10:36:19,499 ERROR    EcommConfiguration                                 [INIT] File not found at D://Ganesh//CircleK//AESDK//UAT//AESDK v24.01.000.003/GiftCustomMessages.json :D:\Ganesh\CircleK\AESDK\UAT\AESDK v24.01.000.003\GiftCustomMessages.json (The system cannot find the file specified)
+2025-02-19 10:36:19,499 ERROR    EcommConfiguration                                 [INIT] File not found at D://Ganesh//CircleK//AESDK//UAT//AESDK v24.01.000.003/CreditCustomMessage.json :D:\Ganesh\CircleK\AESDK\UAT\AESDK v24.01.000.003\CreditCustomMessage.json (The system cannot find the file specified)
+2025-02-19 10:36:19,515 ERROR    EcommConfiguration                                 [INIT] File not found at D://Ganesh//CircleK//AESDK//UAT//AESDK v24.01.000.003/DebitCustomMessage.json :D:\Ganesh\CircleK\AESDK\UAT\AESDK v24.01.000.003\DebitCustomMessage.json (The system cannot find the file specified)
+2025-02-19 10:36:19,515 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] ADSDK properties initilization done
+2025-02-19 10:36:19,515 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Time Out Mapping : {SetCashBackLimit=170, GetConfigParameters=170, CloseTransaction=170, CCTTicketDisplay=170, GetSignatureStatus=170, OtherAmount=170, ByPassScreen=170, UploadStoredBatch=170, CCTConfiguration=170, GetAccountLookup=170, EmailOption=170, GetUserInput=170, UpdateData=170, Rewards=170, Trans=170, GetStoredBatch=170, LaneRequest=170, GetStatus=170, GetCardBIN=170, ShowScreen=170, CCTDisplayMessage=170, RestartCCT=170, CalibrateCCT=170, PLCCApplication=170, ListInput=170, SetLimit=170, FloorLimitOverride=170, FinalizeRewards=170, Signature=170, CancelLastTrans=170, WICCard=170, ShowList=170}
+2025-02-19 10:36:19,531 INFO     [AURUS.25.02.106.001]  HiberNetConfig              H2 Database Directory :: D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003//
+2025-02-19 10:36:19,656 INFO     org.hibernate.Version                              HHH000412: Hibernate Core {5.1.14.Final}
+2025-02-19 10:36:19,656 INFO     org.hibernate.cfg.Environment                      HHH000206: hibernate.properties not found
+2025-02-19 10:36:19,656 INFO     org.hibernate.cfg.Environment                      HHH000021: Bytecode provider name : javassist
+2025-02-19 10:36:19,984 INFO     org.hibernate.annotations.common.Version           HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2025-02-19 10:36:20,031 WARN     org.hibernate.orm.connections.pooling              HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2025-02-19 10:36:20,046 INFO     org.hibernate.orm.connections.pooling              HHH10001005: using driver [org.h2.Driver] at URL [jdbc:h2:D:/Ganesh/CircleK/AESDK/UAT/AESDK v24.01.000.003//AESDKDATABASE;FILE_LOCK=NO;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=FALSE;TRACE_LEVEL_FILE=0;]
+2025-02-19 10:36:20,046 INFO     org.hibernate.orm.connections.pooling              HHH10001001: Connection properties: {password=****, user=aurus}
+2025-02-19 10:36:20,046 INFO     org.hibernate.orm.connections.pooling              HHH10001003: Autocommit mode: false
+2025-02-19 10:36:20,046 INFO     tions.internal.DriverManagerConnectionProviderImpl HHH000115: Hibernate connection pool size: 5 (min=1)
+2025-02-19 10:36:20,327 INFO     org.hibernate.dialect.Dialect                      HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2025-02-19 10:36:20,937 INFO     org.hibernate.orm.connections.access               HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@18a25bbd] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+2025-02-19 10:36:20,984 INFO     rnate.hql.internal.QueryTranslatorFactoryInitiator HHH000397: Using ASTQueryTranslatorFactory
+2025-02-19 10:36:21,202 INFO     EcommConfiguration                                 [INIT] Inside else if database ::Jvi/FatdHjvAlJMxXPTfFI5/sJ3yA+Cq0vC6WgBsosD+krWMXXwBAbKZ5Q/9/sSSyyr05HdBt+MfF9FheN17BEoaaN85t8xw3ZkLqn6QHknK52yN+dPIVc7kbzCKrCatGUC2Jdf+mW5FLMtcsYN2oE1C3EmUZYuSmw86xFjlaXkixgQxW6TWZg7C2yr/ypAdPU5ZiWE3tAUkBpPCDjjCUz5qJu8eGoMa2HwWUzotwQ5Be78k+/wj8p8+vX7D+RJhyu1rC8UJT0+3RLJr/TCKjrIhLTentjDIBDXNLCRW/fUsTIkuWSpvJFBV3dxIdNHzq0GChiijo7UzdOFEnp9SnmicC5HcqNE2MrrydljlMn59RijJqIKfEIYh6DlVOP3YwO4iWgHRQyZkrdGs1b9AdRwn6ysgaFcX7MAKjSSdvIY=
+2025-02-19 10:36:21,202 INFO     EcommConfiguration                                 [INIT] ADSDK Back-Up Folder Status :D:\Ganesh\CircleK\AESDK\UAT\AESDK v24.01.000.003\Backup
+2025-02-19 10:36:21,202 INFO     EcommConfiguration                                 [INIT] Aesdk aesdk-config.properties file already exists in Backup folder : copyConfigFileToBackupFolder
+2025-02-19 10:36:21,218 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Resolve the DNS ip before registration 
+2025-02-19 10:36:21,218 INFO     [AURUS.25.02.106.001] TcpHostConnectionManager     [INIT] Scheduling DNSIP Task
+2025-02-19 10:36:21,218 INFO     EcommConfiguration                                 Inside checkDatabaseHealth ::
+2025-02-19 10:36:21,218 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] Checking Primary DNS and Secondary DNS
+2025-02-19 10:36:21,218 INFO     EcommConfiguration                                 [INIT] Backup scheduler cancelled
+2025-02-19 10:36:21,232 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] ADSDK Registration status in Database is : false
+2025-02-19 10:36:21,233 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [INIT] Resolve the DNS ip after registration
+2025-02-19 10:36:21,233 INFO     [AURUS.25.02.106.001] TcpHostConnectionManager     [INIT] Scheduling DNSIP Task
+2025-02-19 10:36:21,233 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] Checking Primary DNS and Secondary DNS
+2025-02-19 10:36:21,280 INFO     [AURUS.25.02.106.001]  Utils                       [INIT]  DATABASE IS PRESENT RESOLVING IP FROM DATABASE PRIMARY URL :: 
+2025-02-19 10:36:21,280 INFO     [AURUS.25.02.106.001]  Utils                       [INIT]  DATABASE IS PRESENT RESOLVING IP FROM DATABASE PRIMARY URL :: 
+2025-02-19 10:36:21,289 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] Inside createPEDSocket 
+2025-02-19 10:36:21,304 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:01:8030:d7459d4f] AUTOINSTALLATION PROCESS START
+2025-02-19 10:36:21,316 INFO     [AURUS.25.02.106.001]  RegistrationDAOImpl         [36525:::gpatil-win8:::d7459d4f] Row affected are :: 1
+2025-02-19 10:36:21,320 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] Is Primary DNS Resolved :: true
+2025-02-19 10:36:21,322 INFO     [AURUS.25.02.106.001]  RegistrationDAOImpl         [36525:::gpatil-win8:::d7459d4f] Row affected are :: 1
+2025-02-19 10:36:21,322 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] Is Primary DNS Resolved :: true
+2025-02-19 10:36:21,353 INFO     [AURUS.25.02.106.001]  Utils                       [INIT]  DATABASE IS PRESENT RESOLVING IP FROM DATABASE SECONDARY URL :: 
+2025-02-19 10:36:21,353 INFO     [AURUS.25.02.106.001]  Utils                       [INIT]  DATABASE IS PRESENT RESOLVING IP FROM DATABASE SECONDARY URL :: 
+2025-02-19 10:36:21,362 INFO     [AURUS.25.02.106.001]  RegistrationDAOImpl         [36525:::gpatil-win8:::d7459d4f] Row affected are :: 1
+2025-02-19 10:36:21,362 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] Is Secondary DNS Resolved :: true
+2025-02-19 10:36:21,362 INFO     [AURUS.25.02.106.001]  RegistrationDAOImpl         [36525:::gpatil-win8:::d7459d4f] Row affected are :: 1
+2025-02-19 10:36:21,362 INFO     [AURUS.25.02.106.001]  Utils                       [INIT] Is Secondary DNS Resolved :: true
+2025-02-19 10:36:21,822 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:01:8030:d7459d4f] Client Socket is Not Connected Closing ClientScheduler
+2025-02-19 10:36:21,822 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:01:8030:d7459d4f] Starting Daemon Timer
+2025-02-19 10:36:21,822 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] Accepting Socket Connections from CCT on port: 8030
+2025-02-19 10:36:21,822 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] First Waiting for CCT Client for making communication for the first time: 8030
+2025-02-19 10:36:22,327 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:02:8031:d7459d4f] Inside createPEDSocket 
+2025-02-19 10:36:22,327 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:02:8031:d7459d4f] Starting Daemon Timer
+2025-02-19 10:36:22,327 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:02:8031:d7459d4f] Accepting Socket Connections from CCT on port: 8031
+2025-02-19 10:36:22,327 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:02:8031:d7459d4f] First Waiting for CCT Client for making communication for the first time: 8031
+2025-02-19 10:36:22,830 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:03:8032:d7459d4f] Inside createPEDSocket 
+2025-02-19 10:36:22,830 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:03:8032:d7459d4f] Starting Daemon Timer
+2025-02-19 10:36:22,830 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:03:8032:d7459d4f] Accepting Socket Connections from CCT on port: 8032
+2025-02-19 10:36:22,830 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:03:8032:d7459d4f] First Waiting for CCT Client for making communication for the first time: 8032
+2025-02-19 10:36:23,333 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:04:8033:d7459d4f] Inside createPEDSocket 
+2025-02-19 10:36:23,333 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:04:8033:d7459d4f] Starting Daemon Timer
+2025-02-19 10:36:23,333 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:04:8033:d7459d4f] Accepting Socket Connections from CCT on port: 8033
+2025-02-19 10:36:23,333 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:04:8033:d7459d4f] First Waiting for CCT Client for making communication for the first time: 8033
+2025-02-19 10:36:23,838 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:05:8034:d7459d4f] Inside createPEDSocket 
+2025-02-19 10:36:23,838 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:05:8034:d7459d4f] Starting Daemon Timer
+2025-02-19 10:36:23,838 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:05:8034:d7459d4f] Accepting Socket Connections from CCT on port: 8034
+2025-02-19 10:36:23,838 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:05:8034:d7459d4f] First Waiting for CCT Client for making communication for the first time: 8034
+2025-02-19 10:36:24,403 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:05:8034:d7459d4f] Inside LOG UPLOADING METHOD
+2025-02-19 10:36:24,494 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:05:8034:d7459d4f] Is Upload Flag Inside EnabledLogUploading :1
+2025-02-19 10:36:24,536 INFO     [AURUS.25.02.106.001]  SftpFileTransferHandler     [36525:::gpatil-win8:::d7459d4f] SftpFileTransferHandler called.
+2025-02-19 10:36:24,597 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            Getting empty Tid from BO 
+2025-02-19 10:36:24,602 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:05:8034:d7459d4f] After putting last two digit of TerminalID : 10
+2025-02-19 10:36:24,604 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            LOG upload Minutes : 11
+2025-02-19 10:36:24,611 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            ##### Scheduled time : Thu Feb 20 00:11:00 IST 2025
+2025-02-19 10:36:24,621 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:05:8034:d7459d4f] AESDK RESPONSE : {"InitAesdkResponse":{"StatusInfos":{"StatusInfo":[{"ResponseCode":"00000","POSID":"01","LANENO":"01","ResponseText":"SUCCESS"},{"ResponseCode":"00000","POSID":"02","LANENO":"02","ResponseText":"SUCCESS"},{"ResponseCode":"00000","POSID":"03","LANENO":"03","ResponseText":"SUCCESS"},{"ResponseCode":"00000","POSID":"04","LANENO":"04","ResponseText":"SUCCESS"},{"ResponseCode":"00000","POSID":"05","LANENO":"05","ResponseText":"SUCCESS"}]}}}
+2025-02-19 10:36:24,622 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:05:8034:d7459d4f] Default encoding used in Service init Cp1252
+2025-02-19 10:36:24,674 INFO     [AURUS.25.02.106.001]  ServiceInitAESDK            [36525:::gpatil-win8:05:8034:d7459d4f] Total Time taken for ServiceInitAESDK : 5489 milli seconds
+2025-02-19 10:37:53,768 INFO     [SDKWRAPPER.21.0.6.9]  AesdkServiceThread          AESDKServiceThread is Connected to socket id -> /10.190.10.187:15583
+2025-02-19 10:37:53,768 INFO     [SDKWRAPPER.21.0.6.9]  AesdkServiceThread          Client POS Connected with socket id => /10.190.10.187:15583
+2025-02-19 10:37:53,785 INFO     [SDKWRAPPER.21.0.6.9]  AesdkPOSRequestHandler      Inside POSRequestHandler.
+2025-02-19 10:37:53,786 INFO     [SDKWRAPPER.21.0.6.9]  AesdkServiceThread          AESDKServiceThread thread waiting for request..
+2025-02-19 10:37:53,786 INFO     [SDKWRAPPER.21.0.6.9]  AesdkPOSRequestHandler      Value of set so timeout from Initserveradapter 10
+2025-02-19 10:37:53,787 INFO     [SDKWRAPPER.21.0.6.9]  AesdkPOSRequestHandler      Value of InitServerAdapter.getPOSOTS() Y
+2025-02-19 10:37:54,272 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              Final Received Request is in JSON Format ::  {"GetCardBINRequest":{"CCTID":"01","ADSDKSpecVer":"6.14.8","ClerkID":"001009352","TransactionType":"","POSID":"01","MessageLine1":"Sale Transaction","APPID":"01","TenderAmount":"10.00","ProcessingMode":"0","LookUpFlag":"8","CashBackFlag":"1","HeaderMessage":"Please Tap / Insert card","EntrySource":"","CVVFlag":"0","AllowKeyedEntry":"N","languageIndicator":"sv","SessionId":"123456789"}}
+2025-02-19 10:37:54,273 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              @checkPOSRequestType GetCardBinRequest Received
+2025-02-19 10:37:54,305 INFO     [AURUS.25.02.106.001]  ServiceGetCardBIN           [36525:::gpatil-win8:01:8030:d7459d4f] POS REQUEST : {"GetCardBINRequest":{"CCTID":"01","ADSDKSpecVer":"6.14.8","ClerkID":"001009352","TransactionType":"","POSID":"01","MessageLine1":"Sale Transaction","APPID":"01","TenderAmount":"10.00","ProcessingMode":"0","LookUpFlag":"8","CashBackFlag":"1","HeaderMessage":"Please Tap / Insert card","EntrySource":"","CVVFlag":"0","AllowKeyedEntry":"N","languageIndicator":"sv","SessionId":"123456789"}}
+2025-02-19 10:37:54,337 INFO     [AURUS.25.02.106.001]  SchemaValidation            [36525:::gpatil-win8:01:8030:d7459d4f] Inside requestValidator
+2025-02-19 10:37:54,338 INFO     [AURUS.25.02.106.001]  Utils                       [36525:::gpatil-win8:01:8030:d7459d4f] ADSDK Spec Version : 6.12
+2025-02-19 10:37:54,353 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] Inside checkConnectivityStatus 
+2025-02-19 10:37:54,357 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] Current time 1739941674354 Heartbeat time 0
+2025-02-19 10:37:54,360 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] checking status attempt no 1
+2025-02-19 10:37:55,862 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] checking status attempt no 2
+2025-02-19 10:37:57,365 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] checking status attempt no 3
+2025-02-19 10:37:58,868 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] checking status attempt no 4
+2025-02-19 10:38:00,369 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] PED Terminal still Busy after attempting maximum attempts, PED is down
+2025-02-19 10:38:01,869 INFO     [AURUS.25.02.106.001]  ServiceGetCardBIN           [36525:::gpatil-win8:01:8030:d7459d4f] Got connectivity status for GCB : false
+2025-02-19 10:38:01,870 INFO     [AURUS.25.02.106.001]  ServiceGetCardBIN           [36525:::gpatil-win8:01:8030:d7459d4f] AESDK RESPONSE {"GetCardBINResponse":{"CCTID":"01","ResponseCode":"60099","POSID":"01","APPID":"01","ResponseText":"PED NOT READY","SessionId":"123456789","MerchantOrderTraceId":""}}
+2025-02-19 10:38:01,879 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              sendResponsePOS method called
+2025-02-19 10:38:01,903 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              Data sending in character stream  
+2025-02-19 10:38:01,904 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              sendResponsePOS response send to POS ::{"GetCardBINResponse":{"CCTID":"01","ResponseCode":"60099","POSID":"01","APPID":"01","ResponseText":"PED NOT READY","SessionId":"123456789","MerchantOrderTraceId":""}}
+2025-02-19 10:38:01,904 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              @sendResponsePOS() closed thread for request received and send
+2025-02-19 10:38:01,904 INFO     [SDKWRAPPER.21.0.6.9]  AesdkServiceThread          AESDKServiceThread is Connected to socket id -> /10.190.10.187:15583
+2025-02-19 10:38:01,905 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              Value of InitServerAdapter.getPOSOTS() Y
+2025-02-19 10:38:01,905 INFO     [SDKWRAPPER.21.0.6.9]  AesdkServiceThread          Client POS Connected with socket id => /10.190.10.187:15583
+2025-02-19 10:38:01,905 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              Socket is potentially in CLOSE_WAIT state. Awaiting proper closure.
+2025-02-19 10:38:01,905 INFO     [SDKWRAPPER.21.0.6.9]  AesdkPOSRequestHandler      Inside POSRequestHandler.
+2025-02-19 10:38:01,906 INFO     [SDKWRAPPER.21.0.6.9]  AesdkPOSRequestHandler      Value of set so timeout from Initserveradapter 10
+2025-02-19 10:38:01,906 INFO     [SDKWRAPPER.21.0.6.9]  AesdkServiceThread          AESDKServiceThread thread waiting for request..
+2025-02-19 10:38:01,906 INFO     [SDKWRAPPER.21.0.6.9]  AesdkPOSRequestHandler      Value of InitServerAdapter.getPOSOTS() Y
+2025-02-19 10:38:02,407 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              Final Received Request is in JSON Format ::  {"CloseTransactionRequest":{"CCTID":"01","ADSDKSpecVer":"6.14.8","ClerkID":"111","POSID":"01","APPID":"01","CloseReasonCode":"TRANSACTION_COMPLETE","SessionId":"123456789"}}
+2025-02-19 10:38:02,408 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              @checkPOSRequestType CloseTransactionRequest Received
+2025-02-19 10:38:02,411 INFO     [AURUS.25.02.106.001]  ServiceCloseTransaction     [36525:::gpatil-win8:01:8030:d7459d4f] POS REQUEST : {'CloseTransactionRequest': {'POSID': '01', 'APPID': '01', 'CCTID': '01', 'ADSDKSpecVer': '6.14.8', 'SessionId': '123456789', 'CloseReasonCode': 'TRANSACTION_COMPLETE', 'ClerkID': '111'}}
+2025-02-19 10:38:02,416 INFO     [AURUS.25.02.106.001]  ServiceCloseTransaction     [36525:::gpatil-win8:01:8030:d7459d4f] ADSDK Registration status is false
+2025-02-19 10:38:02,417 INFO     [AURUS.25.02.106.001]  SchemaValidation            [36525:::gpatil-win8:01:8030:d7459d4f] Inside requestValidator
+2025-02-19 10:38:02,417 INFO     [AURUS.25.02.106.001]  Utils                       [36525:::gpatil-win8:01:8030:d7459d4f] ADSDK Spec Version : 6.12
+2025-02-19 10:38:02,418 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] Inside hasByPassScreenSent 
+2025-02-19 10:38:02,418 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] checking status attempt no 1
+2025-02-19 10:38:03,919 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] checking status attempt no 2
+2025-02-19 10:38:05,421 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] checking status attempt no 3
+2025-02-19 10:38:06,922 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] checking status attempt no 4
+2025-02-19 10:38:08,424 INFO     [AURUS.25.02.106.001]  EnterprisePEDManager        [36525:::gpatil-win8:01:8030:d7459d4f] PED Terminal still Busy after attempting maximum attempts, PED Down
+2025-02-19 10:38:08,424 INFO     [AURUS.25.02.106.001]  ServiceCloseTransaction     [36525:::gpatil-win8:01:8030:d7459d4f] Status got in connectivityStatus : false
+2025-02-19 10:38:08,425 INFO     [AURUS.25.02.106.001]  ServiceCloseTransaction     [36525:::gpatil-win8:01:8030:d7459d4f] AESDK RESPONSE : {"CloseTransactionResponse":{"CCTID":"01","ResponseCode":"60099","POSID":"01","APPID":"01","ResponseText":"PED NOT READY","SessionId":"123456789","MerchantOrderTraceId":""}}
+2025-02-19 10:38:08,434 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              sendResponsePOS method called
+2025-02-19 10:38:08,434 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              Data sending in character stream  
+2025-02-19 10:38:08,435 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              sendResponsePOS response send to POS ::{"CloseTransactionResponse":{"CCTID":"01","ResponseCode":"60099","POSID":"01","APPID":"01","ResponseText":"PED NOT READY","SessionId":"123456789","MerchantOrderTraceId":""}}
+2025-02-19 10:38:08,435 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              @sendResponsePOS() closed thread for request received and send
+2025-02-19 10:38:08,435 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              Value of InitServerAdapter.getPOSOTS() Y
+2025-02-19 10:38:08,435 INFO     [SDKWRAPPER.21.0.6.9]  AesdkLibraryOp              Socket is potentially in CLOSE_WAIT state. Awaiting proper closure.
