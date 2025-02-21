@@ -33,7 +33,7 @@ class Transaction_Request_Builder :
             "02" : "02", "15" : "02", "16" : "02", "06_02_01" : "02",                      # refund
             "03" : "06", "06" : "06", "08" : "06",                                         # void
             "05" : "05",                                                                   # post-auth
-            "20" : "76", "04_76" : "04"                                                    # cancellast
+            "20" : "76", "04_76" : "04"                                                     # cancellast
         }
 
     def InitAESDKRequest(self):
