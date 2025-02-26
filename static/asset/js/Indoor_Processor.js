@@ -289,10 +289,10 @@ function Transaction_report(itr, data, Transaction_type) {
     }
     if (Child_TransactionType != null && Child_Response != null){
         rowspan = "4"
-        ChildRequest = (Transaction_type != "20") ? Child_Request.TransRequest : Child_Request.CancelLastTransRequest
-        ChildResponse = (Transaction_type != "20") ? Child_Response.TransResponse : Child_Response.CancelLastTransResponse
-        ChildTransactionDetails = (Transaction_type == "20") ? ChildTransactionDetails = ChildResponse : (requestFormat === "JSON") ? ChildResponse?.TransDetailsData?.TransDetailData?.[0] ?? "" : ChildResponse?.TransDetailsData?.TransDetailData ?? "";
-        Child_Transaction_CardNumber = ChildTransactionDetails?.CardNumber ?? ""
+        ChildRequest = (Transaction_type != "20" && Transaction_type != "04_76") ? Child_Request.TransRequest : Child_Request.CancelLastTransRequest;
+        transactionType = ChildRequest?.TransactionType ?? "00"
+        ChildResponse = (transactionType != "76") ? Child_Response.TransResponse : Child_Response.CancelLastTransResponse
+        ChildTransactionDetails = (transactionType == "76") ? ChildTransactionDetails = ChildResponse : (requestFormat === "JSON") ? ChildResponse?.TransDetailsData?.TransDetailData?.[0] ?? "" : ChildResponse?.TransDetailsData?.TransDetailData ?? ""; Child_Transaction_CardNumber = ChildTransactionDetails?.CardNumber ?? ""
         Child_Transaction_CIToken = ChildTransactionDetails?.CardIdentifier ?? ""
         Child_Transaction_CRMToken = ChildTransactionDetails?.CRMToken ?? ""
         Child_Transaction_CardEntryMode = ChildTransactionDetails?.CardEntryMode ?? ""

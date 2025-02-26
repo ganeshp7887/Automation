@@ -8,7 +8,6 @@ from API.Socket_API import Adsdk_Socket as socket
 from API.config import config
 from Request_Builder.Instore_request_builder import Transaction_Request_Builder
 
-
 class Transaction_Processing :
 
     def __init__(self):
@@ -121,7 +120,7 @@ class Transaction_Processing :
 
     def displayTicket(self, productCount, bypassEnabled, bypassOption) :
         try : self.handleSocketRequest(self.Transaction_Request_Builder.CCTTicketDisplayRequest(productCount), bypassEnabled, bypassOption)
-        except Exception : self.ErrorText = f"Error in displayTicket: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+        except Exception as e: self.ErrorText = f"Error in displayTicket: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
     def SHOWLIST(self, OptionsType, bypassEnabled, bypassOption) :
         try : self.handleSocketRequest(self.Transaction_Request_Builder.ShowListRequest(OptionsType), bypassEnabled, bypassOption)
@@ -181,16 +180,13 @@ class Transaction_Processing :
         except Exception as e :
             self.ErrorText = f"Error in GCBTransaction: {e}\nTraceback:\n{traceback.format_exc()}"
 
-
     def ParentTransactionProcessing(self,AllowKeyedEntry, productCount, Token_type, TransactionType, TransAmount) :
         try :
             if self.Gcb_Transaction_ResponseCode is None or self.Gcb_Transaction_ResponseCode.startswith("0") :
-                Parent_Transaction_req = self.Transaction_Request_Builder.Parent_Transaction(AllowKeyedEntry=AllowKeyedEntry,
-                    RandomNumber=self.RandomNumberForInvoice, productCount=productCount,
-                    Token_type=Token_type, Token=self.tokenForTransaction,
-                    TransactionTypeID=TransactionType, CardType=self.Gcb_Transaction_CardType,
-                    TransAmount=TransAmount, cashbackAmount=self.Gcb_Transaction_CashbackAmount
-                )
+                Parent_Transaction_req = self.Transaction_Request_Builder.Parent_Transaction(AllowKeyedEntry=AllowKeyedEntry, RandomNumber=self.RandomNumberForInvoice,
+                                                                                             productCount=productCount,Token_type=Token_type, Token=self.tokenForTransaction,
+                                                                                             TransactionTypeID=TransactionType, CardType=self.Gcb_Transaction_CardType,
+                                                                                             TransAmount=TransAmount, cashbackAmount=self.Gcb_Transaction_CashbackAmount)
                 Parent_Transaction_res = self.handleSocketRequest(Parent_Transaction_req, False, "")
                 if Parent_Transaction_res:
                     try :
@@ -288,6 +284,11 @@ class Transaction_Processing :
     def CLOSETransaction(self) :
         """Close the transaction."""
         try :
-           self.handleSocketRequest(self.Transaction_Request_Builder.CloseTransactionRequest(), False, "")
+            closeTransRes = self.handleSocketRequest(self.Transaction_Request_Builder.CloseTransactionRequest(), False, "")
+            if closeTransRes:
+                closeData = Excel_Operations.ConvertToJson(closeTransRes, self.isXml)
+                ResponseCode = closeData.get("CloseTransactionResponse").get("ResponseCode")
+                if not ResponseCode.startswith('0'):
+                    self.CLOSETransaction()
         except Exception as e :
             self.ErrorText = f"Error in CLOSETransaction: {e}\nTraceback:\n{traceback.format_exc()}"; print(self.ErrorText)

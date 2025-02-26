@@ -25,15 +25,15 @@ class Transaction_Request_Builder :
         self.isXml = config.request_format().upper() == "XML"
         self.ParentTransactionTypeMapping = {
             "01" : "01", "02" : "01", "03" : "01", "15" : "01", "16" : "01", "20" : "01", "06_02_01" : "01",  # for sale
-            "04" : "04", "05" : "04", "06" : "04","04_76" : "04",                                         # for pre-auth
-            "07" : "02", "08" : "02",                                                      # for refund
-            "09" : "11", "10" : "16", "11" : "18", "12" : "12", "13" : "11", "14" : "16"   # for gift
+            "04" : "04", "05" : "04", "06" : "04","04_76" : "04",                                             # for pre-auth
+            "07" : "02", "08" : "02",                                                                         # for refund
+            "09" : "11", "10" : "16", "11" : "18", "12" : "12", "13" : "11", "14" : "16"                      # for gift
         }
         self.ChildTransactionTypeMapping = {
             "02" : "02", "15" : "02", "16" : "02", "06_02_01" : "02",                      # refund
             "03" : "06", "06" : "06", "08" : "06",                                         # void
             "05" : "05",                                                                   # post-auth
-            "20" : "76", "04_76" : "04"                                                     # cancellast
+            "20" : "76", "04_76" : "76"                                                    # cancellast
         }
 
     def InitAESDKRequest(self):
@@ -55,7 +55,7 @@ class Transaction_Request_Builder :
                 "TransTotalAmount" : str(self.DefaultAmount),
                 "HeaderText" : "Please check Products"
             })
-            if productCount != 0 :
+            if int(productCount) != 0 :
                 products = Product_data_mapping.ProductData_Mapping(str(self.DefaultAmount), "", "TicketProductData", productCount)
                 product_count = products['Product_count']
                 product_list = products['Product_list']

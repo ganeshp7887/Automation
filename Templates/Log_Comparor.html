@@ -10,8 +10,6 @@
         <div class="container" data-aos="zoom-out" data-aos-delay="100">
             <div class="sidepanel" id="sidepanel">
                 <div class="row mt-5">
-                    <form method="post" enctype="multipart/form-data" action="{% url 'Log_Comparor' %}" class="w-100">
-                        {% csrf_token %}
                         <div class="container">
                             <div class="form-container">
                                 <div class="row">
@@ -31,14 +29,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-3">
-                                        <button type="submit" class="btn btn-primary w-100">Upload</button>
+                                        <button type="button" class="btn btn-primary w-100" onclick="performSS()">Upload</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
                 </div>
-                {% if data is not None %}
                 <div class="row mt-5">
                     <div class="table-responsive">
                         <div id="message" class="w-100"></div>
@@ -51,31 +47,14 @@
                                     <th class="col-5">TIME DIFF</th>
                                     <th class="col-5">TIME DIFF</th>
                                     <th class="col-4">FILE2 SEQUENCE</th>
-
                                 </tr>
                                 </thead>
-                                <tbody id="divBody">
-                                {% for item1 in data %}
-                                <tr id="">
-                                    <td class="col-1" id="{{ forloop.counter }}">{{ forloop.counter }}</td>
-                                    <td class="col-4" id="C">{{ item1.file1sequence }}</td>
-                                    <td class="col-5" id="dateCell">{{ item1.File1Loggers }}</td>
-                                    <td class="col-5">{{ item1.File2Loggers }}</td>
-                                    <td class="col-4" id="A">{{ item1.file2sequence }}</td>
-
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="3">No data available.</td>
-                                </tr>
-                                {% endfor %}
+                                <tbody id="APIData">
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
                 </div>
-                {% endif %}
             </div>
         </div>
     </section>
@@ -130,16 +109,35 @@
 </script>
 <script>
 
-    async function PerformScenario() {
-        const csrf = "{{ csrf_token }}"
-        const Requestdata = {{ data|safe }}
-        const RequestType = ""
-        SortedData = createPerformableScenarios(Requestdata, RequestType)
-        timediffArray =  SortedData.timeDifferences
-        apiRequestArray = SortedData.sortedRequests
-        timestampASID =  SortedData.TimestampsAPI
-        APIKEY =  SortedData.requestKeys
-        await performAjaxCallScenarios(timediffArray, apiRequestArray, APIKEY, timestampASID, csrf)
+    async function performSS() {
+        try {
+            let file1 = $("#file1")[0].files[0];
+            let file2 = $("#file2")[0].files[0];
+            const patterns = $("#patterns").val();
+            let formData = new FormData();
+            formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+            formData.append("file1", file1);
+            formData.append("file2", file2);
+            formData.append("patterns", patterns);
+            const response = await $.ajax({
+                type: "POST",
+                dataType: "JSON",
+                url: "{% url 'Log_Comparor' %}",
+                processData: false, // Prevent jQuery from processing the data
+                contentType: false, // Prevent jQuery from setting content type
+                data: formData
+            });
+            await new Promise(resolve => setTimeout(() => {
+                let ln = response.data.length
+                for (i = 0; i < ln; i++) {
+                    $("#APIData").append("<tr><td>"+i+"</td><td><div><pre lang='xml'>"+response.data[i].file1sequence[1]+"</pre></div></td><td><div><pre lang='xml'>"+response.data[i].file1sequence[2]+"</pre></div></td><td><div><pre lang='xml'>"+response.data[i].file2sequence[2]+"</pre></div></td><td><div><pre lang='xml'>"+response.data[i].file2sequence[1]+"</pre></div></td></tr>")
+                }
+                //   Transaction_report(iteration, response, TransType);
+                resolve();
+            }, 500));
+        } catch (error) {
+            console.error('Error in AJAX call:', error);
+        }
     }
 </script>
 </body>

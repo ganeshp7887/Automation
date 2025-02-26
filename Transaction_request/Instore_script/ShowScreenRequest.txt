@@ -17,7 +17,7 @@
 			"Button2Text": "NO",
 			"Button3Text": "SKIP"
 		},
-		"TimeOut": "5",
+		"TimeOut": "150",
 		"LineDisplay": "1",
 		"SessionId": "",
 		"LanguageIndicator": "",
