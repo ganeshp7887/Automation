@@ -1,0 +1,22 @@
+{
+  "TransactionTypes" : {
+    "Sale" : "01",
+    "Refund of sale" : "01_02",
+    "Void of refund of sale": "01_02_06",
+    "Void of sale" : "01_06",
+    "Refund without sale" : "02",
+    "Void of Refund without sale" : "02_06",
+    "Pre-auth" : "04",
+    "Post-auth" : "04_05",
+    "Void of Pre-auth" : "04_06",
+    "Refund of Post-auth" : "04_05_02",
+    "CancelLast sale transaction" : "01_76",
+    "CancelLast pre-auth transaction" : "04_76",
+    "Gift Activation" : "11",
+    "Gift Reload" : "16",
+    "Gift Redeem" : "18",
+    "Gift Balance Enquiry" : "12",
+    "Gift pre-auth activation" : "11",
+    "Gift pre-auth reload" : "16"
+  }
+}

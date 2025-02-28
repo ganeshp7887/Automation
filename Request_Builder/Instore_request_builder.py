@@ -23,18 +23,7 @@ class Transaction_Request_Builder :
         self.currentTime = time.strftime("%H:%M:%S:%MS", time.localtime()).replace(":", "")[:-3]
         self.DefaultAmount = "10.00" #Decimal(Decimal((str(random.randint(0, 99)))).quantize(Decimal('1.00')))
         self.isXml = config.request_format().upper() == "XML"
-        self.ParentTransactionTypeMapping = {
-            "01" : "01", "02" : "01", "03" : "01", "15" : "01", "16" : "01", "20" : "01", "06_02_01" : "01",  # for sale
-            "04" : "04", "05" : "04", "06" : "04","04_76" : "04",                                             # for pre-auth
-            "07" : "02", "08" : "02",                                                                         # for refund
-            "09" : "11", "10" : "16", "11" : "18", "12" : "12", "13" : "11", "14" : "16"                      # for gift
-        }
-        self.ChildTransactionTypeMapping = {
-            "02" : "02", "15" : "02", "16" : "02", "06_02_01" : "02",                      # refund
-            "03" : "06", "06" : "06", "08" : "06",                                         # void
-            "05" : "05",                                                                   # post-auth
-            "20" : "76", "04_76" : "76"                                                    # cancellast
-        }
+
 
     def InitAESDKRequest(self):
         data = Excel_Operations.readIndoorFile("InitAESDKRequest.txt")
@@ -113,7 +102,7 @@ class Transaction_Request_Builder :
     def GetCardBINRequest(self, Transaction_type, AllowKeyedEntry, EntrySource, LookUpFlag) :
         data = Excel_Operations.readIndoorFile("GetCardBINRequest.txt")
         if data :
-            TransactionTypeToRequest = self.ParentTransactionTypeMapping.get(Transaction_type)
+            TransactionTypeToRequest = Transaction_type
             data["GetCardBINRequest"].update({
                 "POSID" : self.POSID,
                 "CCTID" : self.CCTID,
@@ -196,8 +185,8 @@ class Transaction_Request_Builder :
             Token_type = Token_type if Token_type is not None else ""
             Token = Token if Token is not None else ""
             CardType = CardType if CardType is not None else ""
-            TransactionTypeToRequest = self.ParentTransactionTypeMapping.get(TransactionTypeID)
-            TransAmount = str(TransAmount) if TransAmount is not None else  "1000.00" if TransactionTypeToRequest == "04" else str(self.DefaultAmount)
+            TransactionTypeToRequest =  TransactionTypeID
+            TransAmount = str(TransAmount) if TransAmount is not None else str(self.DefaultAmount)
             rounded_value = str((Decimal(TransAmount) / 4).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
             EntrySource = "K" if AllowKeyedEntry.upper() == "Y" else ""
             Parent = data["TransRequest"]
@@ -211,7 +200,7 @@ class Transaction_Request_Builder :
                 "TransactionType" : TransactionTypeToRequest,
                 "EntrySource" : EntrySource,
                 **(
-                    {"SubTransType" : "04" if TransactionTypeToRequest in ("14", "11") else "",
+                    {"SubTransType" : "04" if TransactionTypeToRequest in ("16", "18") else "",
                      "BlackHawkUpc" : Gift_processor.BlackHawkUpc_finder(Token),
                      "ProgramId" : "11" if CardType.upper().endswith("P") else "",
                      } if CardType.upper().startswith("GC") else {}
@@ -258,11 +247,11 @@ class Transaction_Request_Builder :
         return self.request
 
     def Child_Transaction(self, RandomNumber, TransactionTypeID, Parent_TransactionID, Parent_AurusPayTicketNum, CardType, productCount, Transaction_total) :
-        FileName = "CancelLastTransRequest" if TransactionTypeID.upper() in ["20", "04_76"] else "ChildTransRequest"
+        FileName = "CancelLastTransRequest" if TransactionTypeID.upper() == "76" else "ChildTransRequest"
         data = Excel_Operations.readIndoorFile(FileName + ".txt")
         if data :
             CardType = "XXC" if CardType is None else CardType
-            TransactionTypeToRequest = self.ChildTransactionTypeMapping.get(TransactionTypeID)
+            TransactionTypeToRequest =  TransactionTypeID
             Child = data["CancelLastTransRequest"] if TransactionTypeToRequest.upper() == "76" else data["TransRequest"]
             Child.update({
                 "APPID" : self.APPID,

@@ -10,25 +10,12 @@
             <div class="col-md-2">
               <div class="shadow-textarea">
                 <select class="mytext w-100 text-center z-depth-1" id="Transaction_Type" name="Transaction_Type" required>
-                  <option value="00">Select Transaction</option>
-                  <option value="000">GCB</option>
-                  <option value="01">Sale</option>
-                  <option value="02">Refund of Sale</option>
-                  <option value="07">Refund without sale</option>
-                  <option value="03">Void of Sale</option>
-                  <option value="04">Pre-auth</option>
-                  <option value="05">Post-auth</option>
-                  <option value="06">Void of Pre-auth</option>
-                  <option value="06_02_01">Void of refund of sale</option>
-                  <option value="08">Void of Refund without sale</option>
-                  <option value="09">Gift Activation</option>
-                  <option value="10">Gift Reload</option>
-                  <option value="11">Gift Redeem</option>
-				  <option value="12">Gift Balance Enquiry</option>
-				  <option value="13">Gift pre-auth activation</option>
-				  <option value="14">Gift pre-auth reload</option>
-                  <option value="20">CancelLast Sale</option>
-				</select>
+                    <option value="00">Select Transaction</option>
+                    <option value="000">GCB</option>
+                    {% for item, key in Transactions.TransactionTypes.items %}
+                        <option value="{{ key }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
               </div>
             <p id="TransactionTypeP" class="error-text"></p>
             </div>

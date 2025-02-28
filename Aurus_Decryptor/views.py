@@ -58,10 +58,7 @@ class Aurus_Decryptor:
                 except Exception as e :
                     decrypted_data = f"Decryption Failed : {e}"
             print(f"Decrypted Text: {decrypted_data}")
-            try:
-                decrypted_data = json.dumps(json.loads(decrypted_data), sort_keys=False, indent=4)
-            except Exception as e:
-                print("unable to convert to json")
             context = {"EncryptedData" : json.dumps(Payload, sort_keys=False, indent=2), "DecryptedData" : decrypted_data}
+            print(context)
             return render(request, 'Aurus_Decryptor.html', context)
         return render(request, 'Aurus_Decryptor.html')

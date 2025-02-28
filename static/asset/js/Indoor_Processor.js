@@ -168,49 +168,25 @@ function chaseProcessorResponseCode(code){
 
 }
 
-function report_Generator(itr, data) {
-    requestData = data
-    lenData = data.length
-    for(let i = 0; i <= lenData; i++){
-        if( [i].includes("<")){
-           console.log("xml")
-        }
-        else if(requestData[i].includes("{")){
-            console.log("json")
-            if(requestData[i].includes("GetCardBINRequest")){
-                gcbreqdata = {"GCB_request" :requestData[i], "GCB_response" :  {}, "parent_Request" : {}, "Parent_Response" : {}, "Child_Request" : {}, "Child_Response" : {} }
-                Transaction_report(1, gcbreqdata, "")
-            }
-            if(requestData[i].includes("GetCardBINResponse")){
-                gcbresdata = {"GCB_request" : {}, "GCB_response" : requestData[i], "parent_Request" : {}, "Parent_Response" : {}, "Child_Request" : {}, "Child_Response" : {} }
-                Transaction_report(1, gcbresdata, "")
-            }
-            if(requestData[i].includes("TransRequest")){
-                Transreqdata = {"GCB_request" : {}, "GCB_response" : {}, "parent_Request" : requestData[i], "Parent_Response" : {}, "Child_Request" : {}, "Child_Response" : {} }
-                Transaction_report(1, Transreqdata, "")
-            }
-            if(requestData[i].includes("TransResponse")){
-                Transresdata = {"GCB_request" : {}, "GCB_response" : {}, "parent_Request" : {}, "Parent_Response" : requestData[i], "Child_Request" : {}, "Child_Response" : {} }
-                Transaction_report(1, Transresdata, "")
-            }
-        }
-    }
-}
-
 function Transaction_report(itr, data, Transaction_type) {
     var error = '<p class="red"><b>'+data.ErrorText+'</p></b>'
     $("#error").html(error)
-    let gcbRow = null, parentRow = null, childRow = null, Gcb_Transaction_CardToken = null, rowspan = "0";
+    let gcbRow = null, parentRow = null, childRow = null, childOfChildRow = null, Gcb_Transaction_CardToken = null, rowspan = "0";
     var CARDNAME = null;
-    Parent_TransactionType = data.Parent_TransactionType
-    Child_TransactionType = data.Child_TransactionType
-    requestFormat = data.RequestFormat
-    GCB_request = data.GCB_request
-	GCB_response = data.GCB_response
-	parent_Request = data.Parent_Transaction_request
-    Parent_Response = data.Parent_Transaction_response
-    Child_Request =  data.Child_Transaction_request
-    Child_Response = data.Child_Transaction_response
+    Parent_TransactionType = data.Data.Parent_TransactionType
+    Child_TransactionType = data.Data.Child_TransactionType
+    Child_of_Child_TransactionType = data.Data.ChildofChildTransactionType
+    requestFormat = data.Data.RequestFormat
+    GCB_request = data.Result.GCB_request
+	GCB_response = data.Result.GCB_response
+	parent_Request = data.Result.Parent_Transaction_request
+    Parent_Response = data.Result.Parent_Transaction_response
+    Child_Request =  data.Result.Child_Transaction_request
+    Child_Response = data.Result.Child_Transaction_response
+    Child_Request =  data.Result.Child_Transaction_request
+    Child_Response = data.Result.Child_Transaction_response
+    Child_of_child_Transaction_request =  data.Result.Child_of_child_Transaction_request
+    Child_of_child_Transaction_response = data.Result.Child_of_child_Transaction_response
     if(GCB_response != null) {
         rowspan = "2"
         GCB_UNKN = ""
@@ -345,6 +321,64 @@ function Transaction_report(itr, data, Transaction_type) {
         responsive: { 0: { items: 1, }, 600: { items: 1, }, 1000: { items: 1, } }
     });
 }
+    if (Child_of_Child_TransactionType != null && Child_of_child_Transaction_response != null){
+        rowspan = "5"
+        ChildRequest = (Transaction_type != "20" && Transaction_type != "04_76") ? Child_of_child_Transaction_request.TransRequest : Child_of_child_Transaction_request.CancelLastTransRequest;
+        transactionType = ChildRequest?.TransactionType ?? "00"
+        ChildResponse = (transactionType != "76") ? Child_of_child_Transaction_response.TransResponse : Child_of_child_Transaction_response.CancelLastTransResponse
+        ChildTransactionDetails = (transactionType == "76") ? ChildTransactionDetails = ChildResponse : (requestFormat === "JSON") ? ChildResponse?.TransDetailsData?.TransDetailData?.[0] ?? "" : ChildResponse?.TransDetailsData?.TransDetailData ?? ""; Child_of_Child_Transaction_CardNumber = ChildTransactionDetails?.CardNumber ?? ""
+        Child_of_Child_Transaction_CIToken = ChildTransactionDetails?.CardIdentifier ?? ""
+        Child_of_Child_Transaction_CRMToken = ChildTransactionDetails?.CRMToken ?? ""
+        Child_of_Child_Transaction_CardEntryMode = ChildTransactionDetails?.CardEntryMode ?? ""
+        Child_of_Child_Transaction_TransactionTypeCode = ChildTransactionDetails?.TransactionTypeCode ?? ""
+        Child_of_Child_Transaction_TransactionSequenceNumber = ChildTransactionDetails?.TransactionSequenceNumber ?? ""
+        Child_of_Child_Transaction_CardType = ChildTransactionDetails?.CardType ?? ""
+        Child_of_Child_Transaction_SubCardType = ChildTransactionDetails?.SubCardType ?? ""
+        Child_of_Child_Transaction_requestAmount = ChildRequest?.TransAmountDetails?.TransactionTotal ?? ""
+        Child_of_Child_Transaction_TransactionAmount = ChildTransactionDetails?.TotalApprovedAmount ?? ""
+        Child_of_Child_Transaction_ResponseText = ChildTransactionDetails?.ResponseText ?? ""
+        Child_of_Child_Transaction_ResponseCode = ChildTransactionDetails?.ResponseCode ?? ""
+        Child_of_Child_Transaction_TransactionIdentifier = ChildTransactionDetails?.TransactionIdentifier ?? ""
+        Child_of_Child_Transaction_AurusPayTicketNum = ChildResponse?.AurusPayTicketNum ?? ""
+        Child_of_Child_Transaction_ApprovalCode = ChildTransactionDetails?.ApprovalCode ?? ""
+        Child_of_Child_Transaction_ProductCount = ChildTransactionDetails?.ProductCount ?? ""
+        Child_of_Child_Transaction_ProcessorMerchantId = ChildTransactionDetails?.ProcessorMerchantId ?? ""
+        Child_of_Child_Transaction_ProcessorResponseCode =  ChildTransactionDetails?.ProcessorResponseCode ?? ""
+        Child_of_Child_Transaction_ReceiptInfo = (Transaction_Type !== "20")? JSON.stringify(ChildTransactionDetails?.ReceiptDetails ?? {}, null, 4)  : "";
+        Child_of_Child_Transaction_FleetPromptsData = (Transaction_Type !== "20")?  JSON.stringify(ChildTransactionDetails?.FleetPromptsData ?? {}, null, 4) : "";
+        if (ChildRequest.hasOwnProperty("Level3ProductsData") && ChildRequest.hasOwnProperty("FleetData")) {
+            Child_of_Child_Transaction_Products = JSON.stringify("{}", null, 4)
+        } else if (ChildRequest.hasOwnProperty("Level3ProductsData")) {
+            Child_of_Child_Transaction_Products = JSON.stringify(ChildRequest.Level3ProductsData, null, 4)
+        } else if (ChildRequest.hasOwnProperty("FleetData")) {
+            Child_of_Child_Transaction_Products = JSON.stringify(ChildRequest.FleetData, null, 4)
+        } else {
+            Child_of_Child_Transaction_Products = JSON.stringify("{}", null, 4)
+        }
+        if (Child_of_Child_Transaction_ResponseText == "APPROVAL" || Child_of_Child_Transaction_ResponseText == "Success") {
+            var Child_color = "green"
+            var Child_of_Child_Transaction_ResponseText = "<p style='color:green'>" + Child_of_Child_Transaction_ResponseText + "</p>"
+        } else {
+            var Child_color = "red"
+            var Child_of_Child_Transaction_ResponseText = "<p style='color:red'>" + Child_of_Child_Transaction_ResponseText + "</p>"
+        }
+        let tcolor = (Child_of_Child_Transaction_TransactionIdentifier?.length === 18) ? "green" : "red";
+        childOfChildRow = $('<tr><td>' + Child_of_Child_TransactionType + '</td><td>' + Child_of_Child_Transaction_CardEntryMode + '</td><td>' + Child_of_Child_Transaction_TransactionTypeCode + '</td><td>' + Child_of_Child_Transaction_CardType + '</td><td>' + Child_of_Child_Transaction_SubCardType + '</td><td>' + Child_of_Child_Transaction_requestAmount + '</td><td>' + Child_of_Child_Transaction_TransactionAmount + '</td><td>' + Child_of_Child_Transaction_ResponseText + '</td><td> ' + Child_of_Child_Transaction_ResponseCode + '</td><td>' + Child_of_Child_Transaction_TransactionIdentifier + '</td><td>' + Child_of_Child_Transaction_AurusPayTicketNum + '</td><td>' + Child_of_Child_Transaction_ApprovalCode + '</td></tr>').hide();
+        var Child_owl_data = '<div id="Child_owl_data' + Child_of_Child_Transaction_TransactionIdentifier + '" class="owl-carousel"><div class="item"><p class="text-center">' + ' Receipt ' + '</p><hr><pre><code>' + Child_of_Child_Transaction_ReceiptInfo + '</code></pre></div><div class="item"><p class="text-center">' + ' Products ' + '</p><hr><pre><code>' + Child_of_Child_Transaction_Products + '</code></pre></div><div class="item"><p class="text-center">' + ' FleetPromptsData ' + '</p><hr><pre><code>' + Child_of_Child_Transaction_FleetPromptsData + '</code></pre></div></div>'
+        var Child_data = $('<div class="card ' + Child_color + '"><div class="card-header" data-toggle="collapse" href="#collapse_' + Child_of_Child_Transaction_TransactionIdentifier + '"><a class="card-link"># ' + Child_of_Child_TransactionType + ' Transaction ' + Child_of_Child_Transaction_TransactionIdentifier + '</a><i class="fa-solid fa-chevron-down fa-style"></i></div><div id="collapse_' + Child_of_Child_Transaction_TransactionIdentifier + '" class="collapse" data-parent="#accordion"><div class="card-body">' + Child_owl_data + '</div></div></div>').hide();
+        $("#accordion").append(Child_data);
+        $(Child_data).fadeIn("slow");
+        $("#Child_owl_data" + Child_of_Child_Transaction_TransactionIdentifier).owlCarousel({
+            autoPlay: 3000,
+            items: 1,
+            margin: 10,
+            itemsDesktop: [1199, 1],
+            itemsDesktopSmall: [979, 1],
+            navigation: false,
+            responsiveClass: true,
+            responsive: { 0: { items: 1, }, 600: { items: 1, }, 1000: { items: 1, } }
+        });
+    }
     var first_row = $('<tr><td rowspan="' + rowspan + '">' + Gcb_Transaction_CardToken + '</td><td rowspan="' + rowspan + '">' + CARDNAME + '</td></tr>').hide();
     if (gcbRow != null) {
         $("#divBody").append(first_row); $(first_row).fadeIn("slow");
@@ -352,6 +386,7 @@ function Transaction_report(itr, data, Transaction_type) {
     }
     if (parentRow != null) { $("#divBody").append(parentRow); $(parentRow).fadeIn("slow"); }
     if (childRow != null) { $("#divBody").append(childRow); $(childRow).fadeIn("slow"); }
+    if (childOfChildRow != null) { $("#divBody").append(childOfChildRow); $(childOfChildRow).fadeIn("slow"); }
   }
 
 function ChildTransactionOnly(data) {

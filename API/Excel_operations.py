@@ -9,6 +9,12 @@ from API.config import config
 class Excel_Operations :
 
     @staticmethod
+    def readTransactionTypes():
+        with open("./TransactionTypes.json", 'r') as file :
+            request = json.load(file)
+        return request
+
+    @staticmethod
     def readIndoorFile(filename):
         file_path = rf"{config.Full_Indoor_file_path()}{filename}"
         with open(file_path, 'r') as file :

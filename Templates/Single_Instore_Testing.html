@@ -14,27 +14,12 @@
             <div class="col-md-2">
               <div class="shadow-textarea">
                 <select class="mytext w-100 text-center z-depth-1" id="Transaction_Type" name="Trans_type" required>
-					  <option value="00">Select Transaction</option>
-					  <option value="000">GCB</option>
-					  <option value="01">Sale</option>
-					  <option value="02">Refund of Sale</option>
-					  <option value="03">Void of Sale</option>
-					  <option value="07">Refund without sale</option>
-					  <option value="06_02_01">Void of Refund of sale</option>
-					  <option value="08">Void of Refund without sale</option>
-					  <option value="04">Pre-auth</option>
-					  <option value="05">Post-auth</option>
-					  <option value="06">Void of Pre-auth</option>
-					  <option value="20">CancelLast sale transaction</option>
-					  <option value="15">Inside Sale Outdoor Refund</option>
-					  <option value="16">Refund Retry</option>
-					  <option value="09">Gift Activation</option>
-					  <option value="10">Gift Reload</option>
-					  <option value="11">Gift Redeem</option>
-					  <option value="12">Gift Balance Enquiry</option>
-					  <option value="13">Gift pre-auth activation</option>
-					  <option value="14">Gift pre-auth reload</option>
-				</select>
+                      <option value="00">Select Transaction</option>
+                      <option value="000">GCB</option>
+                      {% for item, key in Transactions.TransactionTypes.items %}
+                        <option value="{{ key }}">{{ item }}</option>
+                      {% endfor %}
+               </select>
               </div>
             </div>
             <div class="col-md-2">
@@ -88,24 +73,24 @@
 	</form>
 	{% if Data.gcb %}
 	<div class="col-md-12 mt-5">
-		<div class="row">
+		{% if Data.ErrorText %}<div class="row">
 			<div class="col-md-12"> <p class="red"> <b>{{Data.ErrorText}} </b> </p> </div>
-		</div>
+		</div>{% endif %}
 		<div class="row">
-			<div class="col-md-4 tableFixHead">
+			<div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
 			   {% if Data.gcb %} <p class="trn">{{ Data.gcb }} </p> {% endif %}
 				<div id="owl-example" class="trndiv owl-carousel">
 					<div class="item">
 						<div>
-							<a class="float-button" id='gcb_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#gcb_request', '#gcb_button_req')"><i class="fas fa-copy"></i></a>
+							<a class="float-button" id='gcb_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#GCB_request', '#gcb_button_req')"><i class="fas fa-copy"></i></a>
 						</div>
-						<div><pre lang="xml"><code id="gcb_request"> {{ Result.gcb_request }} </code></pre></div>
+						<div><pre lang="xml"><code id="GCB_request"> {{ Result.GCB_request }} </code></pre></div>
 					</div>
 					<div class="item">
 						<div>
-							<a class="float-button" id='gcb_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#gcb_response', '#gcb_button_res')"><i class="fas fa-copy"></i></a>
+							<a class="float-button" id='gcb_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#GCB_response', '#gcb_button_res')"><i class="fas fa-copy"></i></a>
 						</div>
-						<pre lang="xml"><code id="gcb_response">{{ Result.gcb_response }}</code></pre>
+						<pre lang="xml"><code id="GCB_response">{{ Result.GCB_response }}</code></pre>
 					</div>
 				</div>
 				<div class="shadow-textarea w-100 text-center">
@@ -115,20 +100,20 @@
 				  	<div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Card Type :  {{  Data.GCBCardType }}</span></div>
 				</div>
 			</div>
-			<div class="col-md-4 tableFixHead">
-				{% if Data.Parent_transaction %}<p class="trn">{{ Data.Parent_transaction }} </p>{% endif %}
+			<div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
+				{% if Data.Parent_TransactionType %}<p class="trn">{{ Data.Parent_TransactionType }} </p>{% endif %}
 				  <div id="owl-example1" class="trndiv owl-carousel">
 					<div class="item">
 						<div>
-							<a class="float-button" id="parent_button_req" data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#parent_request', '#parent_button_req')"><i class="fas fa-copy"></i></a>
+							<a class="float-button" id="parent_button_req" data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Parent_Transaction_request', '#parent_button_req')"><i class="fas fa-copy"></i></a>
 						</div>
-						<pre><code id="parent_request">{{ Result.Parent_request }}</code></pre>
+						<pre><code id="Parent_Transaction_request">{{ Result.Parent_Transaction_request }}</code></pre>
 					</div>
 					<div class="item">
 						<div>
-							<a class="float-button" id="parent_button_res" data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#parent_response', '#parent_button_res')"><i class="fas fa-copy"></i></a>
+							<a class="float-button" id="parent_button_res" data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Parent_Transaction_response', '#parent_button_res')"><i class="fas fa-copy"></i></a>
 						</div>
-						<pre><code id="parent_response">{{ Result.Parent_response }}</code></pre>
+						<pre><code id="Parent_Transaction_response">{{ Result.Parent_Transaction_response }}</code></pre>
 					</div>
 				 </div>
 				  <div class="shadow-textarea w-100 text-center">
@@ -138,20 +123,20 @@
 			   <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">TransactionID : {{ Data.ParentTransactionID }}</span></div>
 			   </div>
 			</div>
-			<div class="col-md-4 tableFixHead">
-				{% if Data.Child_transaction %}<p class="trn">{{ Data.Child_transaction }}</p>{% endif %}
+			<div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
+				{% if Data.Child_TransactionType %}<p class="trn">{{ Data.Child_TransactionType }}</p>{% endif %}
 			   <div id="owl-example2" class="trndiv owl-carousel">
 					<div class="item">
 						<div>
-							<a class="float-button" id='child_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#child_request', '#child_button_req')"><i class="fas fa-copy"></i></a>
+							<a class="float-button" id='child_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_Transaction_request', '#child_button_req')"><i class="fas fa-copy"></i></a>
 						</div>
-						<pre id="child_request">{{ Result.Child_request }}</pre>
+						<pre id="Child_Transaction_request">{{ Result.Child_Transaction_request }}</pre>
 					</div>
 					<div class="item">
 						<div>
-							<a class="float-button" id='child_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#child_response', '#child_button_res')"><i class="fas fa-copy"></i></a>
+							<a class="float-button" id='child_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_Transaction_response', '#child_button_res')"><i class="fas fa-copy"></i></a>
 						</div>
-						<pre id="child_response">{{ Result.Child_response }}</pre>
+						<pre id="Child_Transaction_response">{{ Result.Child_Transaction_response }}</pre>
 					</div>
 				</div>
 			   <div class="shadow-textarea w-100 text-center">
@@ -161,6 +146,29 @@
 			   <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">TransactionID : {{ Data.ChildTransactionID }}</span></div>
 			   </div>
 			</div>
+			<div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
+            				{% if Data.ChildofChildTransactionType %}<p class="trn">{{ Data.ChildofChildTransactionType }}</p>{% endif %}
+            			   <div id="owl-example2" class="trndiv owl-carousel">
+            					<div class="item">
+            						<div>
+            							<a class="float-button" id='child_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_of_child_Transaction_request', '#child_button_req')"><i class="fas fa-copy"></i></a>
+            						</div>
+            						<pre id="Child_of_child_Transaction_request">{{ Result.Child_of_child_Transaction_request }}</pre>
+            					</div>
+            					<div class="item">
+            						<div>
+            							<a class="float-button" id='child_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_of_child_Transaction_response', '#child_button_res')"><i class="fas fa-copy"></i></a>
+            						</div>
+            						<pre id="Child_of_child_Transaction_response">{{ Result.Child_of_child_Transaction_response }}</pre>
+            					</div>
+            				</div>
+            			   <div class="shadow-textarea w-100 text-center">
+            			   <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Response Text : {{ Data.ChildofchildResponseText }}</span></div>
+            			   </div>
+            			   <div class="shadow-textarea w-100 text-center">
+            			   <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">TransactionID : {{ Data.ChildofchildTransactionID }}</span></div>
+            			   </div>
+            			</div>
 		</div>
 	</div>
 	{% endif %}

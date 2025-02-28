@@ -37,13 +37,13 @@ class Adsdk_Socket:
             return buf.decode('utf-8')
 
     def httpsRequest(self, url, request, requestFormat):
-        print(f"Request send :: {request}")
+      #  print(f"Request send :: {request}")
         time.sleep(0.200)
         headers = {"Content-Type": f"application/json"}
         self.httpsResponse  = requests.post(url, json=request, verify=False, headers=headers).text
 
     def receiveResponsehttps(self):
-        print(f"Response Rec :: {self.httpsResponse}")
+     #   print(f"Response Rec :: {self.httpsResponse}")
         time.sleep(0.200)
         return self.httpsResponse
 

@@ -18,6 +18,9 @@ class Transaction_Processing :
         self.Parent_Transaction_response = {}
         self.Child_Transaction_response = {}
         self.Child_Transaction_request = {}
+        self.Child_of_child_Transaction_request = {}
+        self.Child_of_child_Transaction_response = {}
+
         self.GETUSERINPUT_Request = {}
         self.GETUSERINPUT_Response = {}
 
@@ -38,8 +41,13 @@ class Transaction_Processing :
         self.Parent_Transaction_AurusPayTicketNum = None
 
         self.Child_Transaction_ResponseText = None
+        self.Child_Transaction_ResponseCode = None
         self.Child_Transaction_TransactionIdentifier = None
         self.Child_Transaction_AurusPayTicketNumber = None
+
+        self.Child_of_child_Transaction_ResponseText = None
+        self.Child_of_child_TransactionIdentifier = None
+        self.Child_of_child_AurusPayTicketNumber = None
 
         self.RandomNumberForInvoice = random.randint(100000, 999999)
         self.port = config.Config_Indoor_port()
@@ -53,12 +61,15 @@ class Transaction_Processing :
         self.isHttps = config.commProtocol() != "5"
         self.isXml = config.request_format().upper() == "XML"
         self.isSignatureEnabled = "0"
-        self.ParentTransactionType = ""
-        self.ChildTransactionType = ""
-        self.ErrorText = ""
+        self.ChildTransactionType = None
+        self.ChildOfChildTransactionType = None
+        self.ErrorText = None
         self.tokenForTransaction = ""
+        self.ParentTransactionTypeName = None
+        self.ChildTransactionTypeName = None
+        self.ChildOfChildTransactionTypeName = None
 
-    def handleSocketRequest(self, request_data, bypassEnabled, bypassOption) :
+    def handleSocketRequest(self, request_data) :
         if not self.isXml: request_data = json.loads(request_data)
         if self.isHttps :
             try:
@@ -75,110 +86,83 @@ class Transaction_Processing :
             except Exception as e:
                 self.ErrorText = f"Connection Fails @ {self.ip}::{self.port} ==> {e}"
         else :
-            threads = []
-            response_list = []
-            if bypassEnabled :
-                bypassData = self.Transaction_Request_Builder.ByPassScreenRequest(bypassOption)
-                if not self.isXml : bypassData = json.loads(bypassData)
-                data = [request_data, bypassData]
-
-                def send_request(url, request_data) :
-                    self.socket.httpsRequest(url, request_data, config.request_format().lower())
-                    response = self.socket.receiveResponsehttps()
-                    if '{"ByPassScreenResponse":' not in response : response_list.append(response)
-
-                for i in data :
-                    thread = threading.Thread(target=send_request, args=(self.url, i))
-                    threads.append(thread)
-                    thread.start()
-                    time.sleep(3)
-                for thread in threads : thread.join()
-                response = response_list[0]
-                return response
-            else :
+            try:
+                self.socket.httpsRequest(self.url, request_data, config.request_format().lower())
                 try:
-                    self.socket.httpsRequest(self.url, request_data, config.request_format().lower())
-                    try:
-                        response = self.socket.receiveResponsehttps()
-                        return response
-                    except Exception as e:
-                        self.ErrorText = f"Received response Fails @ {self.ip}::{self.port} ==> {e}"
+                    response = self.socket.receiveResponsehttps()
+                    return response
                 except Exception as e:
-                    self.ErrorText = f"Connection Fails @ {self.ip}::{self.port} ==> {e}"
+                    self.ErrorText = f"Received response Fails @ {self.ip}::{self.port} ==> {e}"
+            except Exception as e:
+                self.ErrorText = f"Connection Fails @ {self.ip}::{self.port} ==> {e}"
 
-    def GetStatusRequest(self, RequestType, bypassEnabled, bypassOption) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.GetStatusRequest(RequestType), bypassEnabled, bypassOption)
+    def GetStatusRequest(self, RequestType) :
+        try : self.handleSocketRequest(self.Transaction_Request_Builder.GetStatusRequest(RequestType))
         except Exception as e: self.ErrorText = f"Error in GetStatusRequest: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
     def RestartCCTRequestTransaction(self):
         try : self.handleSocketRequest(self.Transaction_Request_Builder.RestartCCTRequest(), "", "")
         except Exception as e: self.ErrorText = f"Error in RestartCCTRequest: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def Signature(self, bypassEnabled, bypassOption) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.SignatureRequest(), bypassEnabled, bypassOption)
+    def Signature(self) :
+        try : self.handleSocketRequest(self.Transaction_Request_Builder.SignatureRequest())
         except Exception as e: self.ErrorText = f"Error in Signature: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def displayTicket(self, productCount, bypassEnabled, bypassOption) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.CCTTicketDisplayRequest(productCount), bypassEnabled, bypassOption)
+    def displayTicket(self, productCount) :
+        try : self.handleSocketRequest(self.Transaction_Request_Builder.CCTTicketDisplayRequest(productCount))
         except Exception as e: self.ErrorText = f"Error in displayTicket: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def SHOWLIST(self, OptionsType, bypassEnabled, bypassOption) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.ShowListRequest(OptionsType), bypassEnabled, bypassOption)
+    def SHOWLIST(self, OptionsType) :
+        try : self.handleSocketRequest(self.Transaction_Request_Builder.ShowListRequest(OptionsType))
         except Exception as e :   self.ErrorText = f"Error in SHOWLIST: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
     def BYPASSTransaction(self, bypassoption) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.ByPassScreenRequest(bypassoption), False, "")
+        try : self.handleSocketRequest(self.Transaction_Request_Builder.ByPassScreenRequest(bypassoption))
         except Exception as e :  self.ErrorText = f"Error in Bypass: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def SHOWSCREEN(self, message, flag, bypassEnabled, bypassOption) :
+    def SHOWSCREEN(self, message, flag) :
         try :
             message2 = self.GetUserInput_inputText if self.GetUserInput_inputText else ""
-            showscrn = self.Transaction_Request_Builder.ShowScreenRequest(str(message), str(message2), flag)
-            self.handleSocketRequest(showscrn, bypassEnabled, bypassOption)
-        except Exception as e :
-            self.ErrorText = f"Error in SHOWSCREEN: {e}\nTraceback:\n{traceback.format_exc()}"; print(self.ErrorText)
-            self.CLOSETransaction()
+            self.handleSocketRequest(self.Transaction_Request_Builder.ShowScreenRequest(str(message), str(message2), flag))
+        except Exception as e : self.ErrorText = f"Error in SHOWSCREEN: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def GETUSERINPUT(self, message, option, bypassEnabled, bypassOption) :
+    def GETUSERINPUT(self, message, option) :
         """Get user input."""
         try :
             gui = self.Transaction_Request_Builder.GetUserInputRequest(message, option)
-            guiResponse = self.handleSocketRequest(gui, bypassEnabled, bypassOption)
+            guiResponse = self.handleSocketRequest(gui)
             if guiResponse:
                 self.GETUSERINPUT_Request = Excel_Operations.ConvertToJson(gui, self.isXml)
                 self.GETUSERINPUT_Response = Excel_Operations.ConvertToJson(guiResponse, self.isXml)
                 self.GetUserInput_inputText = self.GETUSERINPUT_Response.get("GetUserInputResponse", {}).get("InputData")
-        except Exception as e :
-            self.ErrorText = f"Error in GETUSERINPUT: {e}\nTraceback:\n{traceback.format_exc()}"; print(self.ErrorText)
-            self.CLOSETransaction()
+        except Exception as e : self.ErrorText = f"Error in GETUSERINPUT: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def GCBTransaction(self,Transaction_type, AllowKeyedEntry, EntrySource, LookUpFlag, bypassEnabled, bypassOption, Token_type) :
+    def GCBTransaction(self,Transaction_type, AllowKeyedEntry, EntrySource, LookUpFlag, Token_type) :
         """Handle GCB transaction and parse the response."""
         try :
             Gcb_Transaction_Req = self.Transaction_Request_Builder.GetCardBINRequest(Transaction_type, AllowKeyedEntry, EntrySource, LookUpFlag)
-            GCB_Transaction_res = self.handleSocketRequest(Gcb_Transaction_Req, bypassEnabled, bypassOption)
+            GCB_Transaction_res = self.handleSocketRequest(Gcb_Transaction_Req)
             if GCB_Transaction_res:
                 try:
                     self.Gcb_Transaction_Request = Excel_Operations.ConvertToJson(Gcb_Transaction_Req, self.isXml)
                     self.Gcb_Transaction_Response = Excel_Operations.ConvertToJson(GCB_Transaction_res, self.isXml)
-                    self.GcbResponse = self.Gcb_Transaction_Response.get("GetCardBINResponse", {})
-                    self.Gcb_Transaction_ResponseCode = self.GcbResponse.get("ResponseCode", "")
-                    self.Gcb_Transaction_ResponseText = self.GcbResponse.get("ResponseeText", "")
-                    self.Gcb_Transaction_CardType = self.GcbResponse.get("CardType", "")
-                    self.Gcb_Transaction_CashbackAmount = self.GcbResponse.get("CashBackAmount", "")
+                    GcbResponse = self.Gcb_Transaction_Response.get("GetCardBINResponse", {})
+                    self.Gcb_Transaction_ResponseCode = GcbResponse.get("ResponseCode", "")
+                    self.Gcb_Transaction_ResponseText = GcbResponse.get("ResponseText", "")
+                    self.Gcb_Transaction_CardType = GcbResponse.get("CardType", "")
+                    self.Gcb_Transaction_CashbackAmount = GcbResponse.get("CashBackAmount", "")
                     if self.Gcb_Transaction_ResponseCode.startswith("0") :
-                        self.Gcb_Transaction_CardToken = self.GcbResponse.get("CardToken", "")
+                        self.Gcb_Transaction_CardToken = GcbResponse.get("CardToken", "")
                         if LookUpFlag in ["16", "8"] :
-                            self.Gcb_Transaction_CIToken = self.GcbResponse.get("ECOMMInfo", {}).get("CardIdentifier", "")
-                            self.Gcb_Transaction_CRMToken = self.GcbResponse.get("CRMToken", "")
+                            self.Gcb_Transaction_CIToken = GcbResponse.get("ECOMMInfo", {}).get("CardIdentifier", "")
+                            self.Gcb_Transaction_CRMToken = GcbResponse.get("CRMToken", "")
                         self.tokenForTransaction = {"01" : self.Gcb_Transaction_CardToken, "02" : self.Gcb_Transaction_CIToken, "03" : self.Gcb_Transaction_CRMToken}.get(Token_type, "")
                     else:
                         self.CLOSETransaction()
                 except Exception:
-                    self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"
-
+                    self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"; self.CLOSETransaction()
         except Exception as e :
-            self.ErrorText = f"Error in GCBTransaction: {e}\nTraceback:\n{traceback.format_exc()}"
+            self.ErrorText = f"Error in GCBTransaction: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
     def ParentTransactionProcessing(self,AllowKeyedEntry, productCount, Token_type, TransactionType, TransAmount) :
         try :
@@ -187,7 +171,7 @@ class Transaction_Processing :
                                                                                              productCount=productCount,Token_type=Token_type, Token=self.tokenForTransaction,
                                                                                              TransactionTypeID=TransactionType, CardType=self.Gcb_Transaction_CardType,
                                                                                              TransAmount=TransAmount, cashbackAmount=self.Gcb_Transaction_CashbackAmount)
-                Parent_Transaction_res = self.handleSocketRequest(Parent_Transaction_req, False, "")
+                Parent_Transaction_res = self.handleSocketRequest(Parent_Transaction_req)
                 if Parent_Transaction_res:
                     try :
                         self.Parent_Transaction_request = Excel_Operations.ConvertToJson(Parent_Transaction_req, self.isXml)
@@ -201,94 +185,75 @@ class Transaction_Processing :
                         self.Parent_Transaction_TransactionAmount = trans_detail.get('TotalApprovedAmount', "")
                         self.isSignatureEnabled = trans_detail.get("SignatureReceiptFlag", "") if trans_detail.get("SignatureReceiptFlag", "") is not None else self.isSignatureEnabled
                         self.Parent_Transaction_AurusPayTicketNum = self.Parent_Transaction_response.get("TransResponse", {}).get("AurusPayTicketNum", "")
-                        self.ParentTransactionType = "Sale" if TransType == "01" else "Pre-auth" if TransType == "04" else "Refund w/o Sale" if TransType == "02" else "Gift Transactions"
-                        if TransactionType != "20":
-                            self.CLOSETransaction()
+                        self.ParentTransactionTypeName = "Sale" if TransType == "01" else "Pre-auth" if TransType == "04" else "Refund w/o Sale" if TransType == "02" else "Gift Transactions"
                     except Exception:
-                        self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"
-                        self.CLOSETransaction()
+                        self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"; self.CLOSETransaction()
         except Exception as e :
-            self.ErrorText = f"Error in TransRequest: {e}\nTraceback:\n{traceback.format_exc()}"; print(self.ErrorText)
-            self.CLOSETransaction()
+            self.ErrorText = f"Error in TransRequest: {e}\nTraceback:\n{traceback.format_exc()}"; print(self.ErrorText); self.CLOSETransaction()
 
-    def ChildTransactionProcessing(self, childData, productCount, Child_TransactionType, TransAmount) :
-        default_values = {
-            'Parent_Transaction_ResponseCode' : self.Parent_Transaction_ResponseCode,
-            'Parent_Transaction_TransactionIdentifier' : self.Parent_Transaction_TransactionIdentifier,
-            'Parent_Transaction_AurusPayTicketNum' : self.Parent_Transaction_AurusPayTicketNum,
-            'Gcb_Transaction_CardType' : self.Gcb_Transaction_CardType,
-            'Parent_Transaction_TransactionAmount' : self.Parent_Transaction_TransactionAmount
-        }
+    def ChildTransactionProcessing(self, productCount, TransactionType, TransAmount) :
+        Parent_Transaction_ResponseCode = self.Parent_Transaction_ResponseCode
+        Parent_Transaction_TransactionIdentifier = self.Parent_Transaction_TransactionIdentifier
+        Parent_Transaction_AurusPayTicketNum = self.Parent_Transaction_AurusPayTicketNum
+        Gcb_Transaction_CardType = self.Gcb_Transaction_CardType
+        Parent_Transaction_TransactionAmount = self.Parent_Transaction_TransactionAmount if TransAmount is None else TransAmount
 
-        if childData is not None :
-            childData = json.loads(childData)
-            default_values.update({
-                'Parent_Transaction_ResponseCode' : childData.get('Parent_Transaction_ResponseCode'),
-                'Parent_Transaction_TransactionIdentifier' : childData.get('Parent_Transaction_TransactionIdentifier'),
-                'Parent_Transaction_AurusPayTicketNum' : childData.get('Parent_Transaction_AurusPayTicketNum'),
-                'Gcb_Transaction_CardType' : childData.get('Parent_Transaction_CardType'),
-                'Parent_Transaction_TransactionAmount' : childData.get('Parent_Transaction_TransactionAmount')
-            })
-        Parent_Transaction_ResponseCode = default_values['Parent_Transaction_ResponseCode']
-        Parent_Transaction_TransactionIdentifier = default_values['Parent_Transaction_TransactionIdentifier']
-        Parent_Transaction_AurusPayTicketNum = default_values['Parent_Transaction_AurusPayTicketNum']
-        Gcb_Transaction_CardType = default_values['Gcb_Transaction_CardType']
-        Parent_Transaction_TransactionAmount = default_values['Parent_Transaction_TransactionAmount'] if TransAmount is None else TransAmount
         if Parent_Transaction_ResponseCode is not None and Parent_Transaction_ResponseCode.startswith("0") :
-            if Child_TransactionType in {"02", "03", "05", "06", "08", "20", "06_02_01"} :
-                Child_Transaction = self.Transaction_Request_Builder.Child_Transaction(
-                    RandomNumber=self.RandomNumberForInvoice,
-                    productCount=productCount,
-                    Parent_TransactionID=Parent_Transaction_TransactionIdentifier,
-                    Parent_AurusPayTicketNum=Parent_Transaction_AurusPayTicketNum,
-                    CardType=Gcb_Transaction_CardType,
-                    Transaction_total=Parent_Transaction_TransactionAmount,
-                    TransactionTypeID=Child_TransactionType
-                )
-                child_Transaction_res = self.handleSocketRequest(Child_Transaction, False, "")
-                if child_Transaction_res:
-                    try:
-                        self.Child_Transaction_request = Excel_Operations.ConvertToJson(Child_Transaction, self.isXml)
-                        self.Child_Transaction_response = Excel_Operations.ConvertToJson(child_Transaction_res, self.isXml)
-                        trans_detail = self.Child_Transaction_response.get("TransResponse", {}).get("TransDetailsData", {}).get("TransDetailData", {})
-                        if isinstance(trans_detail, list) and len(trans_detail) > 0 : trans_detail = trans_detail[0]
-                        self.Child_Transaction_TransactionIdentifier = trans_detail.get("TransactionIdentifier", "")
-                        self.Child_Transaction_AurusPayTicketNumber = self.Child_Transaction_response.get("TransResponse", {}).get("AurusPayTicketNum")
-                        if Child_TransactionType == "06_02_01":
-                            self.CLOSETransaction()
-                            Child_Transaction = self.Transaction_Request_Builder.Child_Transaction(
-                                RandomNumber=self.RandomNumberForInvoice,
-                                productCount=productCount,
-                                Parent_TransactionID=self.Child_Transaction_TransactionIdentifier,
-                                Parent_AurusPayTicketNum=self.Child_Transaction_AurusPayTicketNumber,
-                                CardType=Gcb_Transaction_CardType,
-                                Transaction_total=Parent_Transaction_TransactionAmount,
-                                TransactionTypeID="06"
-                            )
-                            child_Transaction_res = self.handleSocketRequest(Child_Transaction, False, "")
-                        self.Child_Transaction_request = Excel_Operations.ConvertToJson(Child_Transaction, self.isXml)
-                        self.Child_Transaction_response = Excel_Operations.ConvertToJson(child_Transaction_res, self.isXml)
-                        RequestTop_node = next(iter(self.Child_Transaction_request))
-                        ResponseTopNode = next(iter(self.Child_Transaction_response))
-                        TransType = self.Child_Transaction_request.get(RequestTop_node, {}).get("TransactionType")
-                        trans_detail = self.Child_Transaction_response.get(ResponseTopNode, {}).get("TransDetailsData", {}).get("TransDetailData", {})
-                        if isinstance(trans_detail, list) and len(trans_detail) > 0 : trans_detail = trans_detail[0]
-                        self.Child_Transaction_ResponseText = trans_detail.get("ResponseText", "")
-                        self.Child_Transaction_TransactionIdentifier = trans_detail.get("TransactionIdentifier", "")
-                        self.ChildTransactionType = "Refund" if TransType == "02" else "Void" if TransType == "06" else "Post-auth" if TransType == "05" else "CancelLast" if TransType == "76" else None
-                        self.CLOSETransaction()
-                    except Exception:
-                        self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"
-                        self.CLOSETransaction()
+            Transactions = TransactionType.split("_")
+            childTransactionType = Transactions[0]
+            childOfChildTransactionType = Transactions[1] if len(Transactions) > 1 else None
+
+            Child_Transaction = self.Transaction_Request_Builder.Child_Transaction(RandomNumber=self.RandomNumberForInvoice, productCount=productCount,
+                                                                                   Parent_TransactionID=Parent_Transaction_TransactionIdentifier,
+                                                                                   Parent_AurusPayTicketNum=Parent_Transaction_AurusPayTicketNum,
+                                                                                   CardType=Gcb_Transaction_CardType, Transaction_total=Parent_Transaction_TransactionAmount,
+                                                                                   TransactionTypeID=childTransactionType)
+            child_Transaction_res = self.handleSocketRequest(Child_Transaction)
+            if child_Transaction_res:
+                try:
+                    self.Child_Transaction_request = Excel_Operations.ConvertToJson(Child_Transaction, self.isXml)
+                    self.Child_Transaction_response = Excel_Operations.ConvertToJson(child_Transaction_res, self.isXml)
+                    RequestTop_node = next(iter(self.Child_Transaction_request))
+                    ResponseTopNode = next(iter(self.Child_Transaction_response))
+                    TransType = self.Child_Transaction_request.get(RequestTop_node, {}).get("TransactionType")
+                    trans_detail = self.Child_Transaction_response.get(ResponseTopNode, {}).get("TransDetailsData", {}).get("TransDetailData", {})
+                    if isinstance(trans_detail, list) and len(trans_detail) > 0 : trans_detail = trans_detail[0]
+                    self.Child_Transaction_ResponseText = trans_detail.get("ResponseText", "")
+                    self.Child_Transaction_ResponseCode= trans_detail.get("ResponseCode", "")
+                    self.Child_Transaction_TransactionIdentifier = trans_detail.get("TransactionIdentifier", "")
+                    self.Child_Transaction_AurusPayTicketNumber = self.Child_Transaction_response.get("TransResponse", {}).get("AurusPayTicketNum")
+                    self.ChildTransactionTypeName = "Refund" if TransType == "02" else "Void" if TransType == "06" else "Post-auth" if TransType == "05" else "CancelLast" if TransType == "76" else None
+                    if childOfChildTransactionType and self.Child_Transaction_ResponseCode.startswith("0"):
+                        Child_of_child_Transaction = self.Transaction_Request_Builder.Child_Transaction(RandomNumber=self.RandomNumberForInvoice,productCount=productCount,
+                                                                                                        Parent_TransactionID=self.Child_Transaction_TransactionIdentifier,
+                                                                                                        Parent_AurusPayTicketNum=self.Child_Transaction_AurusPayTicketNumber,
+                                                                                                        CardType=Gcb_Transaction_CardType,
+                                                                                                        Transaction_total=Parent_Transaction_TransactionAmount,
+                                                                                                        TransactionTypeID=childOfChildTransactionType )
+                        Child_of_child_res = self.handleSocketRequest(Child_of_child_Transaction)
+                        if Child_of_child_res:
+                            self.Child_of_child_Transaction_request = Excel_Operations.ConvertToJson(Child_of_child_Transaction, self.isXml)
+                            self.Child_of_child_Transaction_response = Excel_Operations.ConvertToJson(Child_of_child_res, self.isXml)
+                            RequestTop_node = next(iter(self.Child_of_child_Transaction_request))
+                            ResponseTopNode = next(iter(self.Child_of_child_Transaction_response))
+                            TransType = self.Child_of_child_Transaction_request.get(RequestTop_node, {}).get("TransactionType")
+                            trans_detail = self.Child_of_child_Transaction_response.get(ResponseTopNode, {}).get("TransDetailsData", {}).get("TransDetailData", {})
+                            if isinstance(trans_detail, list) and len(trans_detail) > 0 : trans_detail = trans_detail[0]
+                            self.Child_of_child_Transaction_ResponseText = trans_detail.get("ResponseText", "")
+                            self.Child_of_child_TransactionIdentifier = trans_detail.get("TransactionIdentifier", "")
+                            self.Child_of_child_AurusPayTicketNumber = self.Child_Transaction_response.get("TransResponse", {}).get("AurusPayTicketNum")
+                            self.ChildOfChildTransactionTypeName = "Refund" if TransType == "02" else "Void" if TransType == "06" else "Post-auth" if TransType == "05" else "CancelLast" if TransType == "76" else None
+                except Exception:
+                    self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"; self.CLOSETransaction()
 
     def CLOSETransaction(self) :
         """Close the transaction."""
         try :
-            closeTransRes = self.handleSocketRequest(self.Transaction_Request_Builder.CloseTransactionRequest(), False, "")
+            closeTransRes = self.handleSocketRequest(self.Transaction_Request_Builder.CloseTransactionRequest())
             if closeTransRes:
                 closeData = Excel_Operations.ConvertToJson(closeTransRes, self.isXml)
                 ResponseCode = closeData.get("CloseTransactionResponse").get("ResponseCode")
-                if not ResponseCode.startswith('0'):
+                if ResponseCode and not ResponseCode.startswith('0'):
                     self.CLOSETransaction()
         except Exception as e :
             self.ErrorText = f"Error in CLOSETransaction: {e}\nTraceback:\n{traceback.format_exc()}"; print(self.ErrorText)
