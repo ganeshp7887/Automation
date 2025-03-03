@@ -23,6 +23,9 @@ class config :
     def LanguageIndicator() : return config.configData.get('AESDKParameter', 'LanguageIndicator')
 
     @staticmethod
+    def API_Delay(): return config.configData.get("SensitiveData", "API_Delay")
+
+    @staticmethod
     def commProtocol() : return config.configData.get('SensitiveData', 'wrap_comm_type')
 
     @staticmethod

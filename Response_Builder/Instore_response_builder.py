@@ -1,7 +1,5 @@
 import json
 import random
-import threading
-import time
 import traceback
 from API.Excel_operations import Excel_Operations
 from API.Socket_API import Adsdk_Socket as socket
@@ -101,7 +99,7 @@ class Transaction_Processing :
         except Exception as e: self.ErrorText = f"Error in GetStatusRequest: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
     def RestartCCTRequestTransaction(self):
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.RestartCCTRequest(), "", "")
+        try : self.handleSocketRequest(self.Transaction_Request_Builder.RestartCCTRequest())
         except Exception as e: self.ErrorText = f"Error in RestartCCTRequest: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
     def Signature(self) :
@@ -234,7 +232,6 @@ class Transaction_Processing :
                 except Exception:
                     self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"; self.CLOSETransaction()
 
-
     def CLOSETransaction(self) :
         """Close the transaction."""
         try :
@@ -245,4 +242,4 @@ class Transaction_Processing :
                 if ResponseCode and not ResponseCode.startswith('0'):
                     self.CLOSETransaction()
         except Exception as e :
-            self.ErrorText = f"Error in CLOSETransaction: {e}\nTraceback:\n{traceback.format_exc()}"; print(self.ErrorText)
+            self.ErrorText = f"Error in CLOSETransaction: {e}\nTraceback:\n{traceback.format_exc()}"
