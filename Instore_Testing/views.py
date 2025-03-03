@@ -81,7 +81,7 @@ class InstoreTesting:
                 'GCB': lambda: self.transaction_processor.GCBTransaction(TransactionType=parentTransactionType, AllowKeyedEntry=AllowKeyedEntry, EntrySource=EntrySource, LookUpFlag=str(api_number), TransactionToken=Token_type),
                 'GETUSERINPUT': lambda: self.transaction_processor.GETUSERINPUT(str(api_message), int(api_number)),
                 'SHOWSCREEN': lambda : self.transaction_processor.SHOWSCREEN(str(api_message), int(api_number)),
-                'TRANSREQUEST':  [PARENTTRANSREQUEST, CHILDTRANSREQUEST],
+                'TRANSREQUEST': lambda : [PARENTTRANSREQUEST, CHILDTRANSREQUEST],
                 'RESTARTCCTREQUEST' : lambda : self.transaction_processor.RestartCCTRequestTransaction(),
                 'CLOSEREQUEST' : lambda :self.transaction_processor.CLOSETransaction()
             }

@@ -204,9 +204,9 @@ class Transaction_Processing :
                 try:
                     self.Child_Transaction_request = Excel_Operations.ConvertToJson(Child_Transaction, self.isXml)
                     self.Child_Transaction_response = Excel_Operations.ConvertToJson(child_Transaction_res, self.isXml)
-                    RequestTop_node = next(iter(self.Child_Transaction_request))
+                    RequestTopnode = next(iter(self.Child_Transaction_request))
                     ResponseTopNode = next(iter(self.Child_Transaction_response))
-                    TransType = self.Child_Transaction_request.get(RequestTop_node, {}).get("TransactionType")
+                    TransType = self.Child_Transaction_request.get(RequestTopnode, {}).get("TransactionType")
                     trans_detail = self.Child_Transaction_response.get(ResponseTopNode, {}).get("TransDetailsData", {}).get("TransDetailData", {})
                     if isinstance(trans_detail, list) and len(trans_detail) > 0 : trans_detail = trans_detail[0]
                     self.Child_Transaction_ResponseText = trans_detail.get("ResponseText", "")
@@ -222,9 +222,9 @@ class Transaction_Processing :
                         if Child_of_child_res:
                             self.Child_of_child_Transaction_request = Excel_Operations.ConvertToJson(Child_of_child_Transaction, self.isXml)
                             self.Child_of_child_Transaction_response = Excel_Operations.ConvertToJson(Child_of_child_res, self.isXml)
-                            RequestTop_node = Excel_Operations.findNode(self.Child_of_child_Transaction_request)
-                            ResponseTopNode = Excel_Operations.findNode(self.Child_of_child_Transaction_response)
-                            TransType = self.Child_of_child_Transaction_request.get(RequestTop_node, {}).get("TransactionType")
+                            RequestTopnode = next(iter(self.Child_of_child_Transaction_request))
+                            ResponseTopNode = next(iter(self.Child_of_child_Transaction_response))
+                            TransType = self.Child_of_child_Transaction_request.get(RequestTopnode, {}).get("TransactionType")
                             trans_detail = self.Child_of_child_Transaction_response.get(ResponseTopNode, {}).get("TransDetailsData", {}).get("TransDetailData", {})
                             if isinstance(trans_detail, list) and len(trans_detail) > 0 : trans_detail = trans_detail[0]
                             self.Child_of_child_Transaction_ResponseText = trans_detail.get("ResponseText", "")

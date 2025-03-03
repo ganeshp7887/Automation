@@ -185,6 +185,7 @@ class Transaction_Request_Builder :
             TransactionToken = kwargs.get("TransactionToken", "")
             Token = kwargs.get("Token", "")
             CardType =  kwargs.get("CardType", "")
+            print(f"this is cardtype :: {CardType}")
             TransactionTypeToRequest = kwargs.get("TransactionType", "")
             TransAmount = kwargs.get("TransactionAmount", None) if kwargs.get("TransactionAmount") else str(self.DefaultAmount)
             EntrySource = "K" if kwargs.get("AllowKeyedEntry", "").upper() == "Y" else ""
