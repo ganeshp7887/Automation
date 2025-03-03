@@ -99,10 +99,10 @@ class Transaction_Request_Builder :
             self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
-    def GetCardBINRequest(self, Transaction_type, AllowKeyedEntry, EntrySource, LookUpFlag) :
+    def GetCardBINRequest(self, **kwargs) :
         data = Excel_Operations.readIndoorFile("GetCardBINRequest.txt")
+        TransactionType, AllowKeyedEntry, EntrySource,LookUpFlag = kwargs.get("TransactionType"), kwargs.get("AllowKeyedEntry"), kwargs.get("EntrySource"), kwargs.get("LookUpFlag")
         if data :
-            TransactionTypeToRequest = Transaction_type
             data["GetCardBINRequest"].update({
                 "POSID" : self.POSID,
                 "CCTID" : self.CCTID,
@@ -110,8 +110,8 @@ class Transaction_Request_Builder :
                 "SessionId" : self.SessionId,
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
                 "languageIndicator" : self.languageIndicator,
-                "MessageLine1" : ("Sale" if TransactionTypeToRequest == "01" else "Pre-auth" if TransactionTypeToRequest == "04" else "Refund w/o Sale" if TransactionTypeToRequest == "02" else "Gift" if TransactionTypeToRequest in ("11", "12", "16", "18") else "" )+" Transaction",
-                "TransactionType" : TransactionTypeToRequest if TransactionTypeToRequest == "02" else "",
+                "MessageLine1" : ("Sale" if TransactionType == "01" else "Pre-auth" if TransactionType == "04" else "Refund w/o Sale" if TransactionType == "02" else "Gift" if TransactionType in ("11", "12", "16", "18") else "" )+" Transaction",
+                "TransactionType" : TransactionType if TransactionType == "02" else "",
                 "TenderAmount" : self.DefaultAmount,
                 "AllowKeyedEntry" : AllowKeyedEntry,
                 "EntrySource" : EntrySource,
@@ -179,18 +179,21 @@ class Transaction_Request_Builder :
             self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
-    def Parent_Transaction(self,AllowKeyedEntry, Token_type, TransactionTypeID, Token, CardType, productCount, RandomNumber, TransAmount, cashbackAmount) :
+    def Parent_Transaction(self, **kwargs) :
         data = Excel_Operations.readIndoorFile("TransRequest.txt")
         if data :
-            Token_type = Token_type if Token_type is not None else ""
-            Token = Token if Token is not None else ""
-            CardType = CardType if CardType is not None else ""
-            TransactionTypeToRequest =  TransactionTypeID
-            TransAmount = str(TransAmount) if TransAmount is not None else str(self.DefaultAmount)
-            rounded_value = str((Decimal(TransAmount) / 4).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
-            EntrySource = "K" if AllowKeyedEntry.upper() == "Y" else ""
+            TransactionToken = kwargs.get("TransactionToken", "")
+            Token = kwargs.get("Token", "")
+            CardType =  kwargs.get("CardType", "")
+            TransactionTypeToRequest = kwargs.get("TransactionType", "")
+            TransAmount = kwargs.get("TransactionAmount", None) if kwargs.get("TransactionAmount") else str(self.DefaultAmount)
+            EntrySource = "K" if kwargs.get("AllowKeyedEntry", "").upper() == "Y" else ""
+            productCount = kwargs.get("ProductCount", 0)
+            RandomNumber = kwargs.get("RandomNumber", 0)
+            cashbackAmount = kwargs.get("cashbackAmount", "")
             Parent = data["TransRequest"]
             TransAmountDetails = Parent["TransAmountDetails"]
+            rounded_value = str((Decimal(TransAmount) / 4).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
             Parent.update({
                 "APPID" : self.APPID,
                 "POSID" : self.POSID,
@@ -206,9 +209,9 @@ class Transaction_Request_Builder :
                      } if CardType.upper().startswith("GC") else {}
                 ),
                 **(
-                    {"CardToken" : Token} if Token_type == "01" else
-                    {"CRMToken" : Token} if Token_type == "03" else
-                    {"ECOMMInfo" : {"CardIdentifier" : Token} if Token_type == "02" else {}}
+                    {"CardToken" : Token} if TransactionToken == "01" else
+                    {"CRMToken" : Token} if TransactionToken == "03" else
+                    {"ECOMMInfo" : {"CardIdentifier" : Token} if TransactionToken == "02" else {}}
                 ),
                 "ReferenceNumber" : f"{self.TodaysDate}{RandomNumber}{self.currentTime}" if CardType.upper() != "EPP" else f"{self.TodaysDate}1234",
                 "InvoiceNumber" : f"{self.TodaysDate}{RandomNumber}{self.currentTime}",
@@ -246,12 +249,18 @@ class Transaction_Request_Builder :
             self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
-    def Child_Transaction(self, RandomNumber, TransactionTypeID, Parent_TransactionID, Parent_AurusPayTicketNum, CardType, productCount, Transaction_total) :
-        FileName = "CancelLastTransRequest" if TransactionTypeID.upper() == "76" else "ChildTransRequest"
+    def Child_Transaction(self, **kwargs) :
+        TransactionType = kwargs.get("TransactionType")
+        FileName = "CancelLastTransRequest" if TransactionType.upper() == "76" else "ChildTransRequest"
         data = Excel_Operations.readIndoorFile(FileName + ".txt")
         if data :
-            CardType = "XXC" if CardType is None else CardType
-            TransactionTypeToRequest =  TransactionTypeID
+            CardType = "XXC" if  kwargs.get("CardType") is None else kwargs.get("CardType")
+            RandomNumber = kwargs.get("RandomNumber")
+            Parent_TransactionID = kwargs.get("Parent_TransactionID")
+            Parent_AurusPayTicketNum =kwargs.get("Parent_AurusPayTicketNum")
+            TransactionAmount = kwargs.get("TransactionAmount")
+            productCount = kwargs.get("ProductCount")
+            TransactionTypeToRequest =  TransactionType
             Child = data["CancelLastTransRequest"] if TransactionTypeToRequest.upper() == "76" else data["TransRequest"]
             Child.update({
                 "APPID" : self.APPID,
@@ -268,8 +277,8 @@ class Transaction_Request_Builder :
                        "TransactionDate" : self.TodaysDate,
                        "TransactionTime" : self.currentTime,
                        "TransAmountDetails" : {
-                           "TransactionTotal" : Transaction_total,
-                           "TenderAmount" : Transaction_total,
+                           "TransactionTotal" : TransactionAmount,
+                           "TenderAmount" : TransactionAmount,
                        }
                    } if TransactionTypeToRequest.upper() != "76" else
                    {
@@ -280,7 +289,7 @@ class Transaction_Request_Builder :
 
             if int(productCount) != 0 and TransactionTypeToRequest.upper() in ("02", "05"):
                 if config.processor().upper() == "CHASE" and CardType.endswith("D") or CardType.endswith("C") :
-                    products = Product_data_mapping.ProductData_Mapping(Transaction_total,"", "l3productdata", productCount)
+                    products = Product_data_mapping.ProductData_Mapping(TransactionAmount,"", "l3productdata", productCount)
                     Child.update({
                         "Level3ProductsData" :
                             {"Level3ProductCount" : products['Product_count'],
@@ -289,7 +298,7 @@ class Transaction_Request_Builder :
                              }
                     })
                 if config.processor().upper() == "FD" or CardType.endswith("F") :
-                    products = Product_data_mapping.ProductData_Mapping(Transaction_total,"", "fleetproductdata", productCount)
+                    products = Product_data_mapping.ProductData_Mapping(TransactionAmount,"", "fleetproductdata", productCount)
                     Child.update({
                         "FleetData" :
                             {"FleetProductCount" : products['Product_count'],

@@ -66,10 +66,10 @@ class InstoreTesting:
             amount = None if not request.POST.get('amount') else request.POST.get('amount', None)
             parentTransactionType = Transaction_type[0]
             childTransactionType = Transaction_type[1] if len(Transaction_type) > 1 else None
-            if parentTransactionType:
-                PARENTTRANSREQUEST = lambda : self.transaction_processor.ParentTransactionProcessing(AllowKeyedEntry, product_count, Token_type, parentTransactionType, amount)
+            if parentTransactionType and parentTransactionType != "000":
+                PARENTTRANSREQUEST = lambda : self.transaction_processor.ParentTransactionProcessing(AllowKeyedEntry=AllowKeyedEntry, ProductCount=product_count, TransactionToken=Token_type, TransactionType=parentTransactionType, TransactionAmount=amount)
             if childTransactionType:
-                CHILDTRANSREQUEST = lambda : self.transaction_processor.ChildTransactionProcessing(product_count,childTransactionType, amount)
+                CHILDTRANSREQUEST = lambda : self.transaction_processor.ChildTransactionProcessing(ProductCount=product_count ,TransactionType=childTransactionType, TransactionAmount=amount)
 
             print(f'Performing # {Iteration} Transaction of {childTransactionType + " of" if childTransactionType is not None else ""} {parentTransactionType}')
 
@@ -78,7 +78,7 @@ class InstoreTesting:
                 'TIMEDELAY': lambda : time.sleep(float(api_message)),
                 'SHOWLIST': lambda : self.transaction_processor.SHOWLIST(int(api_number)),
                 'CCTTICKETDISPLAYREQUEST': lambda: self.transaction_processor.displayTicket(int(api_number)),
-                'GCB': lambda: self.transaction_processor.GCBTransaction(parentTransactionType, AllowKeyedEntry, EntrySource, str(api_number), Token_type),
+                'GCB': lambda: self.transaction_processor.GCBTransaction(TransactionType=parentTransactionType, AllowKeyedEntry=AllowKeyedEntry, EntrySource=EntrySource, LookUpFlag=str(api_number), TransactionToken=Token_type),
                 'GETUSERINPUT': lambda: self.transaction_processor.GETUSERINPUT(str(api_message), int(api_number)),
                 'SHOWSCREEN': lambda : self.transaction_processor.SHOWSCREEN(str(api_message), int(api_number)),
                 'TRANSREQUEST':  [PARENTTRANSREQUEST, CHILDTRANSREQUEST],

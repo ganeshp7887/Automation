@@ -8,6 +8,7 @@ from API.config import config
 
 class Excel_Operations :
 
+
     @staticmethod
     def readTransactionTypes():
         with open("./TransactionTypes.json", 'r') as file :
@@ -44,6 +45,9 @@ class Excel_Operations :
             request = json.loads(data)
         return request
 
+    @staticmethod
+    def findNode(request):
+        return next(iter(request))
 
     @staticmethod
     def Read_indoor_Transrequest(format, filename) :
