@@ -11,6 +11,8 @@
     "Void of Pre-auth" : "04_06",
     "CancelLast sale transaction" : "01_76",
     "CancelLast pre-auth transaction" : "04_76",
+    "CancelLast of refund transaction" : "02_76",
+    "CancelLast of refund of sale"  : "01_02_76",
     "Gift Activation" : "11",
     "Gift Reload" : "16",
     "Gift Redeem" : "18",

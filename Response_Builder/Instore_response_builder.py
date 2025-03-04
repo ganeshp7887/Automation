@@ -183,6 +183,8 @@ class Transaction_Processing :
                         self.Parent_Transaction_TransactionIdentifier = trans_detail.get('TransactionIdentifier')
                         self.Parent_Transaction_TransactionAmount = trans_detail.get('TotalApprovedAmount')
                         self.ParentTransactionTypeName = "Sale" if TransType == "01" else "Pre-auth" if TransType == "04" else "Refund w/o Sale" if TransType == "02" else "Gift Transactions"
+                        if kwargs.get("childTransactionType") and  "76" not in kwargs.get("childTransactionType").upper():
+                            self.CLOSETransaction()
                     except Exception:
                         self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"; self.CLOSETransaction()
         except Exception as e :

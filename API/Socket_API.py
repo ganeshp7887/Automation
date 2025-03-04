@@ -13,9 +13,7 @@ class Adsdk_Socket:
         self.ip = config.Config_machine_ip()
         self.response = None
         self.httpsResponse = None
-
         self.delay = Decimal(Decimal(config.API_Delay()).quantize(Decimal("1.000")))
-        print(self.delay)
 
     def openSocket(self, port):
         server_address = (self.ip, int(port))
@@ -24,7 +22,6 @@ class Adsdk_Socket:
 
     def sendRequest(self, request):
         print(f"Request send :: {request}")
-        time.sleep(float(self.delay))
         self.sock.sendall(request.encode('utf-8'))
 
     def receiveResponseFromSocket(self):
@@ -40,7 +37,6 @@ class Adsdk_Socket:
 
     def httpsRequest(self, url, request, requestFormat):
         print(f"Request send :: {request}")
-        time.sleep(float(self.delay))
         headers = {"Content-Type": f"application/json"}
         self.httpsResponse  = requests.post(url, json=request, verify=False, headers=headers).text
 

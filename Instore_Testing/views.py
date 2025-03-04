@@ -67,7 +67,7 @@ class InstoreTesting:
             parentTransactionType = Transaction_type[0]
             childTransactionType = Transaction_type[1] if len(Transaction_type) > 1 else None
             if parentTransactionType and parentTransactionType != "000":
-                PARENTTRANSREQUEST = lambda : self.transaction_processor.ParentTransactionProcessing(AllowKeyedEntry=AllowKeyedEntry, ProductCount=product_count, TransactionToken=Token_type, TransactionType=parentTransactionType, TransactionAmount=amount)
+                PARENTTRANSREQUEST = lambda : self.transaction_processor.ParentTransactionProcessing(AllowKeyedEntry=AllowKeyedEntry, ProductCount=product_count, TransactionToken=Token_type, TransactionType=parentTransactionType, childTransactionType=childTransactionType, TransactionAmount=amount)
             if childTransactionType:
                 CHILDTRANSREQUEST = lambda : self.transaction_processor.ChildTransactionProcessing(ProductCount=product_count ,TransactionType=childTransactionType, TransactionAmount=amount)
 

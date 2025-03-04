@@ -10,38 +10,33 @@ class Product_data_mapping:
         productDict, productList = {}, []
         ProductTotalAmt = Decimal(0.00)
         unitprice = (Decimal(Transaction_amount) / Decimal(product_count)).quantize(Decimal('1.000'))
-        if Product_type == "EPPProductData":
-            products = [{"ItemCode": "00032390003808", "ItemReferenceNumber": "0001", "Quantity": "001","RedemptionReqAmount": "7.99", "TaxAmount": "0.00", "UnitPrice" : "1.000"},
-                        {"ItemCode": "00003800000120", "ItemReferenceNumber": "0002", "Quantity": "001", "RedemptionReqAmount": "0.12", "TaxAmount": "0.00", "UnitPrice" : "1.000"}]
-        else:
-            products = [{"ProductCode": "040", "ProductName": "Other", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "001", "ProductName": "erosene", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "042", "ProductName": "Bread", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "002", "ProductName": "Diesel", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "004", "ProductName": "Super Unleaded", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "034", "ProductName": "Car Wash", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "001", "ProductName": "Gasoline", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "150", "ProductName": "General Alcohol", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "099", "ProductName": "Miscellaneous", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "021", "ProductName": "Motor Oil", "UnitOfMeasure": "O", "UnitPrice": "1.000"},
-                        {"ProductCode": "150", "ProductName": "General Alcohol", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "011", "ProductName": "CNG", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "006", "ProductName": "Unleaded Plus", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "024", "ProductName": "Battery", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "001", "ProductName": "Unleaded", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "042", "ProductName": "Bread", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "002", "ProductName": "Diesel", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "004", "ProductName": "Super Unleaded", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "034", "ProductName": "Car Wash", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "001", "ProductName": "Gasoline", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "150", "ProductName": "General Alcohol", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "099", "ProductName": "Miscellaneous", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "021", "ProductName": "Motor Oil", "UnitOfMeasure": "O", "UnitPrice": "1.000"},
-                        {"ProductCode": "150", "ProductName": "General Alcohol", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        {"ProductCode": "011", "ProductName": "CNG", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "006", "ProductName": "Unleaded Plus", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
-                        {"ProductCode": "024", "ProductName": "Battery", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                        ]
+        products = [{"ProductCode": "040", "ProductName": "Other", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "001", "ProductName": "erosene", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "042", "ProductName": "Bread", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "002", "ProductName": "Diesel", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "004", "ProductName": "Super Unleaded", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "034", "ProductName": "Car Wash", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "001", "ProductName": "Gasoline", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "150", "ProductName": "General Alcohol", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "099", "ProductName": "Miscellaneous", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "021", "ProductName": "Motor Oil", "UnitOfMeasure": "O", "UnitPrice": "1.000"},
+                    {"ProductCode": "150", "ProductName": "General Alcohol", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "011", "ProductName": "CNG", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "006", "ProductName": "Unleaded Plus", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "024", "ProductName": "Battery", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "001", "ProductName": "Unleaded", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "042", "ProductName": "Bread", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "002", "ProductName": "Diesel", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "004", "ProductName": "Super Unleaded", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "034", "ProductName": "Car Wash", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "001", "ProductName": "Gasoline", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "150", "ProductName": "General Alcohol", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "099", "ProductName": "Miscellaneous", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "021", "ProductName": "Motor Oil", "UnitOfMeasure": "O", "UnitPrice": "1.000"},
+                    {"ProductCode": "150", "ProductName": "General Alcohol", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
+                    {"ProductCode": "011", "ProductName": "CNG", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "006", "ProductName": "Unleaded Plus", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "024", "ProductName": "Battery", "UnitOfMeasure": "U", "UnitPrice": "1.000"}]
         if CB and Product_type == "l3productdata":
             productDict = {
                 "L3ProductSeqNo" : str("1"),
@@ -97,8 +92,3 @@ class Product_data_mapping:
             productList.append(productDict)
         ProductTotalAmt = str(ProductTotalAmt)
         return {"Product_count": str(len(productList)), "Product_list": productList, "ProductTotalAmt": ProductTotalAmt}
-
-    @staticmethod
-    def Ewic_Product_Mapping(products):
-        data = {"PrescriptionData": products}
-        return data

@@ -169,10 +169,12 @@ function chaseProcessorResponseCode(code){
 }
 
 function Transaction_report(itr, data, Transaction_type) {
+
     var error = '<p class="red"><b>'+data.ErrorText+'</p></b>'
     $("#error").html(error)
     let gcbRow = null, parentRow = null, childRow = null, childOfChildRow = null, Gcb_Transaction_CardToken = null, rowspan = "0";
     var CARDNAME = null;
+    let childTransactionType = Transaction_type.split("_");
     Parent_TransactionType = data.Data.Parent_TransactionType
     Child_TransactionType = data.Data.Child_TransactionType
     Child_of_Child_TransactionType = data.Data.ChildofChildTransactionType
@@ -211,27 +213,26 @@ function Transaction_report(itr, data, Transaction_type) {
         ParentResponse = Parent_Response.TransResponse
         ParentTransactionDetails = (requestFormat === "JSON") ? ParentResponse.TransDetailsData.TransDetailData[0] : ParentResponse.TransDetailsData.TransDetailData;
         if(CARDNAME == null || CARDNAME == ""){
-            CARDNAME = ParentTransactionDetails.CustomerName;
+            CARDNAME = ParentTransactionDetails?.CustomerName ?? "";
         }
-        Parent_Transaction_CardNumber = ParentTransactionDetails.CardNumber;
-        Parent_Transaction_CIToken = ParentTransactionDetails.CardIdentifier;
-        Parent_Transaction_CRMToken = ParentTransactionDetails.CRMToken;
-        Parent_Transaction_CardEntryMode = ParentTransactionDetails.CardEntryMode;
-        Parent_Transaction_TransactionTypeCode = ParentTransactionDetails.TransactionTypeCode;
-        Parent_Transaction_TransactionSequenceNumber = ParentTransactionDetails.TransactionSequenceNumber;
-        Parent_Transaction_CardType = ParentTransactionDetails.CardType;
-        Parent_Transaction_BalAmount = ParentTransactionDetails.BalanceAmount;
-        Parent_Transaction_SubCardType = ParentTransactionDetails.SubCardType;
-        Parent_Transaction_requestAmount = parentRequest.TransAmountDetails.TransactionTotal;
-        Parent_Transaction_TransactionAmount = ParentTransactionDetails.TotalApprovedAmount;
-        Parent_Transaction_ResponseText = ParentTransactionDetails.ResponseText;
-        Parent_Transaction_ResponseCode = ParentTransactionDetails.ResponseCode;
+        Parent_Transaction_CardNumber = ParentTransactionDetails?.CardNumber ?? "";
+        Parent_Transaction_CIToken = ParentTransactionDetails?.CardIdentifier ?? "";
+        Parent_Transaction_CRMToken = ParentTransactionDetails?.CRMToken ?? "";
+        Parent_Transaction_CardEntryMode = ParentTransactionDetails?.CardEntryMode ?? "";
+        Parent_Transaction_TransactionTypeCode = ParentTransactionDetails?.TransactionTypeCode ?? "";
+        Parent_Transaction_TransactionSequenceNumber = ParentTransactionDetails?.TransactionSequenceNumber ?? "";
+        Parent_Transaction_CardType = ParentTransactionDetails?.CardType ?? "";
+        Parent_Transaction_BalAmount = ParentTransactionDetails?.BalanceAmount ?? "";
+        Parent_Transaction_SubCardType = ParentTransactionDetails?.SubCardType ?? "";
+        Parent_Transaction_requestAmount = parentRequest?.TransAmountDetails?.TransactionTotal ?? "";
+        Parent_Transaction_TransactionAmount = ParentTransactionDetails?.TotalApprovedAmount ?? "";
+        Parent_Transaction_ResponseText = ParentTransactionDetails?.ResponseText ?? "";
+        Parent_Transaction_ResponseCode = ParentTransactionDetails?.ResponseCode ?? "";
         Parent_Transaction_TransactionIdentifier = ParentTransactionDetails?.TransactionIdentifier ?? "";
-        Parent_Transaction_AurusPayTicketNum = ParentResponse.AurusPayTicketNum;
-        parent_Transaction_ProcessorMerchantId = ParentTransactionDetails.ProcessorMerchantId;
-        parent_Transaction_ProcessorResponseCode = ParentTransactionDetails.ProcessorResponseCode;
-        Parent_Transaction_ApprovalCode = ParentTransactionDetails.ApprovalCode;
-        Parent_Transaction_ProductCount = ParentTransactionDetails.ProductCount;
+        Parent_Transaction_AurusPayTicketNum = ParentResponse?.AurusPayTicketNum ?? "";
+        parent_Transaction_ProcessorMerchantId = ParentTransactionDetails?.ProcessorMerchantId ?? "";
+        parent_Transaction_ProcessorResponseCode = ParentTransactionDetails?.ProcessorResponseCode ?? "";
+        Parent_Transaction_ApprovalCode = ParentTransactionDetails?.ApprovalCode ?? "";
         Parent_Transaction_ReceiptInfo =  JSON.stringify(ParentTransactionDetails.ReceiptDetails, null, 4)
         Parent_Transaction_FleetPromptsData = JSON.stringify(ParentTransactionDetails.FleetPromptsData, null, 4)
         if (parentRequest.hasOwnProperty("Level3ProductsData") && parentRequest.hasOwnProperty("FleetData")) {
@@ -265,10 +266,11 @@ function Transaction_report(itr, data, Transaction_type) {
     }
     if (Child_TransactionType != null && Child_Response != null){
         rowspan = "4"
-        ChildRequest = (Transaction_type != "20" && Transaction_type != "04_76") ? Child_Request.TransRequest : Child_Request.CancelLastTransRequest;
-        transactionType = ChildRequest?.TransactionType ?? "00"
-        ChildResponse = (transactionType != "76") ? Child_Response.TransResponse : Child_Response.CancelLastTransResponse
-        ChildTransactionDetails = (transactionType == "76") ? ChildTransactionDetails = ChildResponse : (requestFormat === "JSON") ? ChildResponse?.TransDetailsData?.TransDetailData?.[0] ?? "" : ChildResponse?.TransDetailsData?.TransDetailData ?? ""; Child_Transaction_CardNumber = ChildTransactionDetails?.CardNumber ?? ""
+        let isCancelLast = childTransactionType[1].includes("76");
+        ChildRequest = (!isCancelLast) ? Child_Request.TransRequest : Child_Request.CancelLastTransRequest;
+        ChildResponse = (!isCancelLast) ? Child_Response.TransResponse : Child_Response.CancelLastTransResponse;
+        ChildTransactionDetails = (isCancelLast) ? ChildTransactionDetails = ChildResponse : (requestFormat === "JSON") ? ChildResponse?.TransDetailsData?.TransDetailData?.[0] ?? "" : ChildResponse?.TransDetailsData?.TransDetailData ?? "";
+        Child_Transaction_CardNumber = ChildTransactionDetails?.CardNumber ?? ""
         Child_Transaction_CIToken = ChildTransactionDetails?.CardIdentifier ?? ""
         Child_Transaction_CRMToken = ChildTransactionDetails?.CRMToken ?? ""
         Child_Transaction_CardEntryMode = ChildTransactionDetails?.CardEntryMode ?? ""
@@ -305,7 +307,7 @@ function Transaction_report(itr, data, Transaction_type) {
             var Child_Transaction_ResponseText = "<p style='color:red'>" + Child_Transaction_ResponseText + "</p>"
         }
         let tcolor = (Child_Transaction_TransactionIdentifier?.length === 18) ? "green" : "red";
-        childRow = $('<tr><td>' + Child_TransactionType + '</td><td>' + Child_Transaction_CardEntryMode + '</td><td>' + Child_Transaction_TransactionTypeCode + '</td><td>' + Child_Transaction_CardType + '</td><td>' + Child_Transaction_SubCardType + '</td><td>' + Child_Transaction_requestAmount + '</td><td>' + Child_Transaction_TransactionAmount + '</td><td>' + Child_Transaction_ResponseText + '</td><td> ' + Child_Transaction_ResponseCode + '</td><td>' + Child_Transaction_TransactionIdentifier + '</td><td>' + Child_Transaction_AurusPayTicketNum + '</td><td>' + Child_Transaction_ApprovalCode + '</td></tr>').hide();
+        childRow = $('<tr><td>' + Child_TransactionType + '</td><td>' + Child_Transaction_CardEntryMode + '</td><td>' + Child_Transaction_TransactionTypeCode + '</td><td>' + Child_Transaction_CardType + '</td><td>' + Child_Transaction_SubCardType + '</td><td>' + Child_Transaction_requestAmount + '</td><td>' + Child_Transaction_TransactionAmount + '</td><td>' + Child_Transaction_ResponseText + '</td><td> ' + Child_Transaction_ResponseCode + '</td><td><p style=color:'+Child_color+'>' + Child_Transaction_TransactionIdentifier + '</p></td><td>' + Child_Transaction_AurusPayTicketNum + '</td><td>' + Child_Transaction_ApprovalCode + '</td></tr>').hide();
         var Child_owl_data = '<div id="Child_owl_data' + Child_Transaction_TransactionIdentifier + '" class="owl-carousel"><div class="item"><p class="text-center">' + ' Receipt ' + '</p><hr><pre><code>' + Child_Transaction_ReceiptInfo + '</code></pre></div><div class="item"><p class="text-center">' + ' Products ' + '</p><hr><pre><code>' + Child_Transaction_Products + '</code></pre></div><div class="item"><p class="text-center">' + ' FleetPromptsData ' + '</p><hr><pre><code>' + Child_Transaction_FleetPromptsData + '</code></pre></div></div>'
         var Child_data = $('<div class="card ' + Child_color + '"><div class="card-header" data-toggle="collapse" href="#collapse_' + Child_Transaction_TransactionIdentifier + '"><a class="card-link"># ' + Child_TransactionType + ' Transaction ' + Child_Transaction_TransactionIdentifier + '</a><i class="fa-solid fa-chevron-down fa-style"></i></div><div id="collapse_' + Child_Transaction_TransactionIdentifier + '" class="collapse" data-parent="#accordion"><div class="card-body">' + Child_owl_data + '</div></div></div>').hide();
         $("#accordion").append(Child_data);
@@ -323,10 +325,12 @@ function Transaction_report(itr, data, Transaction_type) {
 }
     if (Child_of_Child_TransactionType != null && Child_of_child_Transaction_response != null){
         rowspan = "5"
-        ChildRequest = (Transaction_type != "20" && Transaction_type != "04_76") ? Child_of_child_Transaction_request.TransRequest : Child_of_child_Transaction_request.CancelLastTransRequest;
-        transactionType = ChildRequest?.TransactionType ?? "00"
-        ChildResponse = (transactionType != "76") ? Child_of_child_Transaction_response.TransResponse : Child_of_child_Transaction_response.CancelLastTransResponse
-        ChildTransactionDetails = (transactionType == "76") ? ChildTransactionDetails = ChildResponse : (requestFormat === "JSON") ? ChildResponse?.TransDetailsData?.TransDetailData?.[0] ?? "" : ChildResponse?.TransDetailsData?.TransDetailData ?? ""; Child_of_Child_Transaction_CardNumber = ChildTransactionDetails?.CardNumber ?? ""
+        let isCancelLast = childTransactionType[2].includes("76");
+        ChildRequest = (!isCancelLast) ? Child_of_child_Transaction_request.TransRequest : Child_of_child_Transaction_request.CancelLastTransRequest;
+        ChildResponse = (!isCancelLast) ? Child_of_child_Transaction_response.TransResponse : Child_of_child_Transaction_response.CancelLastTransResponse
+        ChildTransactionDetails = (isCancelLast) ? ChildTransactionDetails = ChildResponse : (requestFormat === "JSON") ? ChildResponse?.TransDetailsData?.TransDetailData?.[0] ?? "" : ChildResponse?.TransDetailsData?.TransDetailData ?? "";
+        console.log(ChildTransactionDetails)
+        Child_Transaction_CardNumber = ChildTransactionDetails?.CardNumber ?? ""
         Child_of_Child_Transaction_CIToken = ChildTransactionDetails?.CardIdentifier ?? ""
         Child_of_Child_Transaction_CRMToken = ChildTransactionDetails?.CRMToken ?? ""
         Child_of_Child_Transaction_CardEntryMode = ChildTransactionDetails?.CardEntryMode ?? ""
