@@ -5,7 +5,7 @@ from API.Utility import Utility
 from API.Socket_API import Adsdk_Socket as socket
 from API.config import config
 from Request_Builder.Instore_request_builder import Transaction_Request_Builder
-from  API.Logger import *
+from  API.Logger import Logger
 
 class Transaction_Processing :
 
@@ -141,7 +141,7 @@ class Transaction_Processing :
         """Handle GCB transaction and parse the response."""
         try :
             Gcb_Transaction_Req = self.Transaction_Request_Builder.GetCardBINRequest(**kwargs)
-            GCB_Transaction_res = self.handleSocketRequest(Gcb_Transaction_Req, kwargs.get("getStatusEnabled"), kwargs.get("getStatusEnabled"))
+            GCB_Transaction_res = self.handleSocketRequest(Gcb_Transaction_Req)
             if GCB_Transaction_res:
                 try:
                     self.Gcb_Transaction_Request = Utility.ConvertToJson(Gcb_Transaction_Req, self.isXml)

@@ -45,7 +45,6 @@ class InstoreTesting:
     def extract_api_details(self, api_string):
         for api_name, pattern in self.api_patterns.items():
             api_string = api_string.upper().strip()
-            print(f"name : {api_name}, pattern : {pattern}")
             match = re.match(pattern, api_string, re.IGNORECASE)
             if match:
                 number = match.group(2) if match.group(2) else str("4") if "BIN" in api_string else "0"
