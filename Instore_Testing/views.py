@@ -8,14 +8,14 @@ from django.shortcuts import render
 
 from API.config import config
 from Response_Builder.Instore_response_builder import Transaction_Processing
-from API.Excel_operations import Excel_Operations
+from API.Utility import Utility
 
 
 class InstoreTesting:
 
     def __init__(self):
         self.result  = {
-            "Transactions" : Excel_Operations.readTransactionTypes(),
+            "Transactions" : Utility.readTransactionTypes(),
         }
         self.transaction_processor = Transaction_Processing()
         self.RequestFormat = config.request_format().upper()
@@ -38,13 +38,14 @@ class InstoreTesting:
 
     def format_data(self, data, singleTransactionCheck):
         if singleTransactionCheck == "1":
-            return dict2xml.dict2xml(data) if self.isXml else json.dumps(data, sort_keys=False, indent=2)
+             return dict2xml.dict2xml(data) if self.isXml else json.dumps(data, sort_keys=False, indent=2)
         else:
             return data
 
     def extract_api_details(self, api_string):
         for api_name, pattern in self.api_patterns.items():
             api_string = api_string.upper().strip()
+            print(f"name : {api_name}, pattern : {pattern}")
             match = re.match(pattern, api_string, re.IGNORECASE)
             if match:
                 number = match.group(2) if match.group(2) else str("4") if "BIN" in api_string else "0"
@@ -74,13 +75,13 @@ class InstoreTesting:
             print(f'Performing # {Iteration} Transaction of {childTransactionType + " of" if childTransactionType is not None else ""} {parentTransactionType}')
 
             method_mapping = {
-                'GETSTATUS': lambda : self.transaction_processor.GetStatusRequest(int(api_number)),
+                'GETSTATUS': lambda : self.transaction_processor.GetStatusRequest(str(api_number)),
                 'TIMEDELAY': lambda : time.sleep(float(api_message)),
-                'SHOWLIST': lambda : self.transaction_processor.SHOWLIST(int(api_number)),
+                'SHOWLIST': lambda : self.transaction_processor.SHOWLIST(str(api_number)),
                 'CCTTICKETDISPLAYREQUEST': lambda: self.transaction_processor.displayTicket(int(api_number)),
-                'GCB': lambda: self.transaction_processor.GCBTransaction(TransactionType=parentTransactionType, AllowKeyedEntry=AllowKeyedEntry, EntrySource=EntrySource, LookUpFlag=str(api_number), TransactionToken=Token_type),
-                'GETUSERINPUT': lambda: self.transaction_processor.GETUSERINPUT(str(api_message), int(api_number)),
-                'SHOWSCREEN': lambda : self.transaction_processor.SHOWSCREEN(str(api_message), int(api_number)),
+                'GCB': lambda: self.transaction_processor.GCBTransaction(TransactionType=parentTransactionType, AllowKeyedEntry=AllowKeyedEntry, EntrySource=EntrySource, LookUpFlag=str(api_number), TransactionToken=Token_type, TransactionAmount=amount),
+                'GETUSERINPUT': lambda: self.transaction_processor.GETUSERINPUT(str(api_message), str(api_number)),
+                'SHOWSCREEN': lambda : self.transaction_processor.SHOWSCREEN(str(api_message), str(api_number)),
                 'TRANSREQUEST': [PARENTTRANSREQUEST, CHILDTRANSREQUEST],
                 'RESTARTCCTREQUEST' : lambda : self.transaction_processor.RestartCCTRequestTransaction(),
                 'CLOSEREQUEST' : lambda :self.transaction_processor.CLOSETransaction()
@@ -101,7 +102,7 @@ class InstoreTesting:
                     print(f"Method {method_name} not found or is not callable.")
                 context = {
                     "Data": {
-                        "CountApiPerfomed" : "3" if self.transaction_processor.ChildOfChildTransactionTypeName else "4" if self.transaction_processor.ChildTransactionTypeName else "2" if self.transaction_processor.ParentTransactionTypeName else "1",
+                        "CountApiPerfomed" : "3" if self.transaction_processor.ChildOfChildTransactionTypeName else "4" if self.transaction_processor.ChildTransactionTypeName else "6" if self.transaction_processor.ParentTransactionTypeName else "12",
                         "GCBResponseText" : self.transaction_processor.Gcb_Transaction_ResponseText,
                         "GCBCardType" : self.transaction_processor.Gcb_Transaction_CardType,
                         "ParentTransactionID" : self.transaction_processor.Parent_Transaction_TransactionIdentifier,

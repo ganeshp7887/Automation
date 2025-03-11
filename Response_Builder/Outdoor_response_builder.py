@@ -1,6 +1,6 @@
 import traceback
 
-from API.Excel_operations import Excel_Operations
+from API.Utility import Utility
 from API.Socket_API import Adsdk_Socket as socket
 from API.config import config
 from Request_Builder.Outdoor_request_builder import Outdoor_Request_Builder
@@ -30,7 +30,7 @@ class Transaction_Processing:
 
         self.Outdoor_Request_Builder = Outdoor_Request_Builder()
         self.port = config.Config_Outdoor_port()
-        self.operations = Excel_Operations()
+        self.operations = Utility()
         self.isXml = config.Outdoor_request_format().upper() == "XML"
         self.ip = config.Config_machine_ip()
         self.urlExtention = ""

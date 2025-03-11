@@ -155,7 +155,7 @@ document.addEventListener("contextmenu", function (e){
 async function performAjaxCall(iteration, TransType, TokenType, GcbType, ProductCount) {
     try {
         // Update message and show loader
-        updateMessage("PLEASE PERFORM TRANSACTIONS")
+        updateMessage("PLEASE WAIT TRANSACTION IN PROGESS...")
 
         const response = await $.ajax({
             type: "POST",
@@ -175,6 +175,7 @@ async function performAjaxCall(iteration, TransType, TokenType, GcbType, Product
         await new Promise(resolve => setTimeout(() => {
             Transaction_report(iteration, response, TransType);
             resolve();
+            updateMessage("TRANSACTION COMPLETED...")
         }, 500));
     } catch (error) {
         console.error('Error in AJAX call:', error);

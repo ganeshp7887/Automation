@@ -8,6 +8,7 @@
     "Void of Refund without sale" : "02_06",
     "Pre-auth" : "04",
     "Post-auth" : "04_05",
+	"Refund of Post-auth" : "04_05_02",
     "Void of Pre-auth" : "04_06",
     "CancelLast sale transaction" : "01_76",
     "CancelLast pre-auth transaction" : "04_76",

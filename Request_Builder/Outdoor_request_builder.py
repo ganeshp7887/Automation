@@ -2,7 +2,7 @@ import datetime
 import json
 import time
 
-from API.Excel_operations import Excel_Operations
+from API.Utility import Utility
 from API.Fleet_Processor import fleet_processor, fleet_data_appender
 from API.Gift_Processor import Gift_processor
 from API.Product_data_mapping import Product_data_mapping
@@ -38,7 +38,7 @@ class Outdoor_Request_Builder :
         }
 
     def gcb(self, lookUpFlag, TrackData, EncryptionMode, CardDataSource, EMVDetailsData, PINBlock, KSNBlock, PinBlockMode) :
-        data = Excel_Operations.readOutdoorFile("GetCardBINRequest.txt")
+        data = Utility.readOutdoorFile("GetCardBINRequest.txt")
         if data :
             data["GetCardBINRequest"].update({
                 "POSID" : self.POSID,
@@ -56,11 +56,11 @@ class Outdoor_Request_Builder :
                     "PinBlockMode" : PinBlockMode,
                 }
             })
-            self.Request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.Request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.Request
 
     def Parent_Transaction(self, TransactionSeqNum, TransactionTypeID, TrackData, EncryptionMode, CardDataSource, EMVDetailsData, PINBlock, KSNBlock, PinBlockMode, CardType, TransAmount, productCount) :
-        data = Excel_Operations.readOutdoorFile("parentTransRequest.txt")
+        data = Utility.readOutdoorFile("parentTransRequest.txt")
         if data :
             TransactionTypeToRequest = self.ParentTransactionTypeMapping.get(TransactionTypeID)
             self.defaultAmount = self.defaultAmount if TransAmount == "" else TransAmount
@@ -130,11 +130,11 @@ class Outdoor_Request_Builder :
                 Parent.update({
                     "FleetPromptsData" : prompts_appender
                 })
-            self.Request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.Request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.Request
 
     def Child_Transaction(self, productCount, TransactionSeqNum, Transaction_Type, CardType, Parent_TransactionID, Parent_AurusPayTicketNum, TransAmount, DuplicateTransCheck) :
-        data = Excel_Operations.readOutdoorFile("childTransRequest.txt")
+        data = Utility.readOutdoorFile("childTransRequest.txt")
         if data:
             TransactionTypeToRequest = self.ChildTransactionTypeMapping.get(Transaction_Type)
             Parent = data["TransRequest"]
@@ -178,5 +178,5 @@ class Outdoor_Request_Builder :
                                  {"FleetProduct" : products['Product_list']}
                              }
                     })
-            self.Request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.Request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.Request

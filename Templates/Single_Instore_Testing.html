@@ -3,179 +3,192 @@
 <!-- ======= Hero Section ======= -->
 
 <main id="main">
-  <section class="d-flex align-items-center" style="">
-    <div class="container" data-aos="zoom-out" data-aos-delay="100">
-      <div class="sidepanel" id="sidepanel">
-      <form method="POST" action="/Instore_Testing" novalidate>
-	  {% csrf_token %}
-		  <input type="hidden" name="singleTransactionCheck" value="1">
-      <div class="col-md-12">
-          <div class="row mt-5">
-            <div class="col-md-2">
-              <div class="shadow-textarea">
-                <select class="mytext w-100 text-center z-depth-1" id="Transaction_Type" name="Trans_type" required>
-                      <option value="00">Select Transaction</option>
-                      <option value="000">GCB</option>
-                      {% for item, key in Transactions.TransactionTypes.items %}
-                        <option value="{{ key }}">{{ item }}</option>
-                      {% endfor %}
-               </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="shadow-textarea">
-                <select class="mytext w-100 text-center z-depth-1" id="token_type" name="token_type" required>
-                  <option value="00">Select Token</option>
-                  <option value="01">Card Token</option>
-                  <option value="02">CI Token</option>
-                  <option value="03">CRM Token</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="shadow-textarea">
-                <select class="mytext w-100 text-center z-depth-1" id="gcb_type" name="gcb_type" required>
-					<option value="00">Select GCB type</option>
-                  	<option value="N">MSR & EMV</option>
-                  	<option value="Y">Manual Keyed</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="shadow-textarea">
-                <select class="mytext w-100 text-center z-depth-1" id="product_count" name="product_count" required>
-                  <option value="0">Select products count</option>
-                  <option value="0">00</option>
-                  <option value="1">01</option>
-                  <option value="2">02</option>
-                  <option value="3">03</option>
-                  <option value="4">04</option>
-                  <option value="5">05</option>
-                  <option value="6">06</option>
-                  <option value="7">07</option>
-                  <option value="8">08</option>
-                  <option value="9">09</option>
-                  <option value="10">10</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="shadow-textarea">
-                <input type="text" class="mytext w-100 text-center z-depth-1" id="amount" name="amount" placeholder="Enter Amount" required>
-              </div>
-            </div>
-            <div class="col-md-2">
-               <input type="submit" class="shadow-textarea mytext  text-center z-depth-1 btn btn-secondary " id="send_data" name="addsubmit" value="Submit" />
+    <section class="d-flex align-items-center" style="">
+        <div class="container" data-aos="zoom-out" data-aos-delay="100">
+            <div class="sidepanel" id="sidepanel">
+                <form method="POST" action="/Instore_Testing" novalidate>
+                    {% csrf_token %}
+                    <input type="hidden" name="singleTransactionCheck" value="1">
+                    <div class="col-md-12">
+                        <div class="row mt-5">
+                            <div class="col-md-2">
+                                <div class="shadow-textarea">
+                                    <select class="mytext w-100 text-center z-depth-1" id="Transaction_Type" name="Trans_type" required>
+                                        <option value="00">Select Transaction</option>
+                                        <option value="000">GCB</option>
+                                        {% for item, key in Transactions.TransactionTypes.items %}
+                                        <option value="{{ key }}">{{ item }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="shadow-textarea">
+                                    <select class="mytext w-100 text-center z-depth-1" id="token_type" name="token_type" required>
+                                        <option value="00">Select Token</option>
+                                        <option value="01">Card Token</option>
+                                        <option value="02">CI Token</option>
+                                        <option value="03">CRM Token</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="shadow-textarea">
+                                    <select class="mytext w-100 text-center z-depth-1" id="gcb_type" name="gcb_type" required>
+                                        <option value="00">Select GCB type</option>
+                                        <option value="N">MSR & EMV</option>
+                                        <option value="Y">Manual Keyed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="shadow-textarea">
+                                    <select class="mytext w-100 text-center z-depth-1" id="product_count" name="product_count" required>
+                                        <option value="0">Select products count</option>
+                                        <option value="0">00</option>
+                                        <option value="1">01</option>
+                                        <option value="2">02</option>
+                                        <option value="3">03</option>
+                                        <option value="4">04</option>
+                                        <option value="5">05</option>
+                                        <option value="6">06</option>
+                                        <option value="7">07</option>
+                                        <option value="8">08</option>
+                                        <option value="9">09</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="shadow-textarea">
+                                    <input type="text" class="mytext w-100 text-center z-depth-1" id="amount" name="amount" placeholder="Enter Amount" required>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" class="shadow-textarea mytext  text-center z-depth-1 btn btn-secondary " id="send_data" name="addsubmit" value="Submit" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
 
+                <div class="col-md-12 mt-5">
+                    <div class="row">
+                         {% if Data.ErrorText %}
+                        <div class="col-md-12">
+                            <p class="red"> <b>{{Data.ErrorText}} </b> </p>
+                        </div>
+                         {% endif %}
+                    </div>
+
+                    <div class="row">
+                        {% if Data.gcb %}
+                        <div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
+                            <p class="trn">{{ Data.gcb }} </p>
+                            <div id="owl-example" class="trndiv owl-carousel">
+                                <div class="item">
+                                    <div>
+                                        <a class="float-button" id='gcb_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#GCB_request', '#gcb_button_req')"><i class="fas fa-copy"></i></a>
+                                    </div>
+                                    <div>
+                                        <pre lang="xml"><code id="GCB_request"> {{ Result.GCB_request }} </code></pre>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div>
+                                        <a class="float-button" id='gcb_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#GCB_response', '#gcb_button_res')"><i class="fas fa-copy"></i></a>
+                                    </div>
+                                    <pre lang="xml"><code id="GCB_response">{{ Result.GCB_response }}</code></pre>
+                                </div>
+                            </div>
+                            <div class="shadow-textarea w-100 text-center">
+                                <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Response Text :  {{ Data.GCBResponseText }}</span></div>
+                            </div>
+                            <div class="shadow-textarea w-100 text-center">
+                                <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Card Type :  {{  Data.GCBCardType }}</span></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if Data.Parent_TransactionType %}
+                        <div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
+                            <p class="trn">{{ Data.Parent_TransactionType }} </p>
+                            <div id="owl-example1" class="trndiv owl-carousel">
+                                <div class="item">
+                                    <div>
+                                        <a class="float-button" id="parent_button_req" data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Parent_Transaction_request', '#parent_button_req')"><i class="fas fa-copy"></i></a>
+                                    </div>
+                                    <pre><code id="Parent_Transaction_request">{{ Result.Parent_Transaction_request }}</code></pre>
+                                </div>
+                                <div class="item">
+                                    <div>
+                                        <a class="float-button" id="parent_button_res" data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Parent_Transaction_response', '#parent_button_res')"><i class="fas fa-copy"></i></a>
+                                    </div>
+                                    <pre><code id="Parent_Transaction_response">{{ Result.Parent_Transaction_response }}</code></pre>
+                                </div>
+                            </div>
+                            <div class="shadow-textarea w-100 text-center">
+                                <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Response Text :  {{ Data.ParentResponseText }}</span></div>
+                            </div>
+                            <div class="shadow-textarea w-100 text-center">
+                                <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">TransactionID : {{ Data.ParentTransactionID }}</span></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if Data.Child_TransactionType %}
+                        <div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
+                            <p class="trn">{{ Data.Child_TransactionType }}</p>
+                            <div id="owl-example2" class="trndiv owl-carousel">
+                                <div class="item">
+                                    <div>
+                                        <a class="float-button" id='child_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_Transaction_request', '#child_button_req')"><i class="fas fa-copy"></i></a>
+                                    </div>
+                                    <pre id="Child_Transaction_request">{{ Result.Child_Transaction_request }}</pre>
+                                </div>
+                                <div class="item">
+                                    <div>
+                                        <a class="float-button" id='child_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_Transaction_response', '#child_button_res')"><i class="fas fa-copy"></i></a>
+                                    </div>
+                                    <pre id="Child_Transaction_response">{{ Result.Child_Transaction_response }}</pre>
+                                </div>
+                            </div>
+                            <div class="shadow-textarea w-100 text-center">
+                                <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Response Text : {{ Data.ChildResponseText }}</span></div>
+                            </div>
+                            <div class="shadow-textarea w-100 text-center">
+                                <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">TransactionID : {{ Data.ChildTransactionID }}</span></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if Data.ChildofChildTransactionType %}
+                        <div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
+                            <p class="trn">{{ Data.ChildofChildTransactionType }}</p>
+                            <div id="owl-example2" class="trndiv owl-carousel">
+                                <div class="item">
+                                    <div>
+                                        <a class="float-button" id='child_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_of_child_Transaction_request', '#child_button_req')"><i class="fas fa-copy"></i></a>
+                                    </div>
+                                    <pre id="Child_of_child_Transaction_request">{{ Result.Child_of_child_Transaction_request }}</pre>
+                                </div>
+                                <div class="item">
+                                    <div>
+                                        <a class="float-button" id='child_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_of_child_Transaction_response', '#child_button_res')"><i class="fas fa-copy"></i></a>
+                                    </div>
+                                    <pre id="Child_of_child_Transaction_response">{{ Result.Child_of_child_Transaction_response }}</pre>
+                                </div>
+                            </div>
+                            <div class="shadow-textarea w-100 text-center">
+                                <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Response Text : {{ Data.ChildofchildResponseText }}</span></div>
+                            </div>
+                            <div class="shadow-textarea w-100 text-center">
+                                <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">TransactionID : {{ Data.ChildofchildTransactionID }}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-          </div>
-	  </div>
-	</form>
-	{% if Data.gcb %}
-	<div class="col-md-12 mt-5">
-		{% if Data.ErrorText %}<div class="row">
-			<div class="col-md-12"> <p class="red"> <b>{{Data.ErrorText}} </b> </p> </div>
-		</div>{% endif %}
-		<div class="row">
-			<div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
-			   {% if Data.gcb %} <p class="trn">{{ Data.gcb }} </p> {% endif %}
-				<div id="owl-example" class="trndiv owl-carousel">
-					<div class="item">
-						<div>
-							<a class="float-button" id='gcb_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#GCB_request', '#gcb_button_req')"><i class="fas fa-copy"></i></a>
-						</div>
-						<div><pre lang="xml"><code id="GCB_request"> {{ Result.GCB_request }} </code></pre></div>
-					</div>
-					<div class="item">
-						<div>
-							<a class="float-button" id='gcb_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#GCB_response', '#gcb_button_res')"><i class="fas fa-copy"></i></a>
-						</div>
-						<pre lang="xml"><code id="GCB_response">{{ Result.GCB_response }}</code></pre>
-					</div>
-				</div>
-				<div class="shadow-textarea w-100 text-center">
-					<div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Response Text :  {{ Data.GCBResponseText }}</span></div>
-				</div>
-				<div class="shadow-textarea w-100 text-center">
-				  	<div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Card Type :  {{  Data.GCBCardType }}</span></div>
-				</div>
-			</div>
-			<div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
-				{% if Data.Parent_TransactionType %}<p class="trn">{{ Data.Parent_TransactionType }} </p>{% endif %}
-				  <div id="owl-example1" class="trndiv owl-carousel">
-					<div class="item">
-						<div>
-							<a class="float-button" id="parent_button_req" data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Parent_Transaction_request', '#parent_button_req')"><i class="fas fa-copy"></i></a>
-						</div>
-						<pre><code id="Parent_Transaction_request">{{ Result.Parent_Transaction_request }}</code></pre>
-					</div>
-					<div class="item">
-						<div>
-							<a class="float-button" id="parent_button_res" data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Parent_Transaction_response', '#parent_button_res')"><i class="fas fa-copy"></i></a>
-						</div>
-						<pre><code id="Parent_Transaction_response">{{ Result.Parent_Transaction_response }}</code></pre>
-					</div>
-				 </div>
-				  <div class="shadow-textarea w-100 text-center">
-				  <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Response Text :  {{ Data.ParentResponseText }}</span></div>
-				  </div>
-				  <div class="shadow-textarea w-100 text-center">
-			   <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">TransactionID : {{ Data.ParentTransactionID }}</span></div>
-			   </div>
-			</div>
-			<div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
-				{% if Data.Child_TransactionType %}<p class="trn">{{ Data.Child_TransactionType }}</p>{% endif %}
-			   <div id="owl-example2" class="trndiv owl-carousel">
-					<div class="item">
-						<div>
-							<a class="float-button" id='child_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_Transaction_request', '#child_button_req')"><i class="fas fa-copy"></i></a>
-						</div>
-						<pre id="Child_Transaction_request">{{ Result.Child_Transaction_request }}</pre>
-					</div>
-					<div class="item">
-						<div>
-							<a class="float-button" id='child_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_Transaction_response', '#child_button_res')"><i class="fas fa-copy"></i></a>
-						</div>
-						<pre id="Child_Transaction_response">{{ Result.Child_Transaction_response }}</pre>
-					</div>
-				</div>
-			   <div class="shadow-textarea w-100 text-center">
-			   <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Response Text : {{ Data.ChildResponseText }}</span></div>
-			   </div>
-			   <div class="shadow-textarea w-100 text-center">
-			   <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">TransactionID : {{ Data.ChildTransactionID }}</span></div>
-			   </div>
-			</div>
-			<div class="col-md-{{ Data.CountApiPerfomed }} tableFixHead">
-            				{% if Data.ChildofChildTransactionType %}<p class="trn">{{ Data.ChildofChildTransactionType }}</p>{% endif %}
-            			   <div id="owl-example2" class="trndiv owl-carousel">
-            					<div class="item">
-            						<div>
-            							<a class="float-button" id='child_button_req' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_of_child_Transaction_request', '#child_button_req')"><i class="fas fa-copy"></i></a>
-            						</div>
-            						<pre id="Child_of_child_Transaction_request">{{ Result.Child_of_child_Transaction_request }}</pre>
-            					</div>
-            					<div class="item">
-            						<div>
-            							<a class="float-button" id='child_button_res' data-toggle="tooltip" data-placement="bottom" title="Copy" onclick="copyToClipboard('#Child_of_child_Transaction_response', '#child_button_res')"><i class="fas fa-copy"></i></a>
-            						</div>
-            						<pre id="Child_of_child_Transaction_response">{{ Result.Child_of_child_Transaction_response }}</pre>
-            					</div>
-            				</div>
-            			   <div class="shadow-textarea w-100 text-center">
-            			   <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">Response Text : {{ Data.ChildofchildResponseText }}</span></div>
-            			   </div>
-            			   <div class="shadow-textarea w-100 text-center">
-            			   <div data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0" class="w-100 text-center p-2" ><span style="vertical-align: middle;"><i class="fa fa-solid fa-check" aria-hidden="true"></i></span><span class="m-5" style="font-weight:600">TransactionID : {{ Data.ChildofchildTransactionID }}</span></div>
-            			   </div>
-            			</div>
-		</div>
-	</div>
-	{% endif %}
         </div>
-      </div>
-    </div>
-  </section>
+        </div>
+    </section>
 </main>
 <a class="back-to-top" href="#"><i class="icofont-simple-up"></i></a>
 <script src="{% static 'asset/vendor/php-email-form/validate.js' %}"></script>
@@ -234,7 +247,6 @@ $(".trndiv").owlCarousel({
     }
 
 });
-	console.log(typeof Parent_request);
 </script>
 </body>
 </html>

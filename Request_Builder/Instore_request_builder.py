@@ -3,11 +3,10 @@ import json
 import time
 from decimal import Decimal, ROUND_HALF_UP
 
-from API.Excel_operations import Excel_Operations
+from API.Utility import Utility
 from API.Gift_Processor import Gift_processor
 from API.Product_data_mapping import Product_data_mapping
 from API.config import config
-
 
 class Transaction_Request_Builder :
 
@@ -26,13 +25,13 @@ class Transaction_Request_Builder :
 
 
     def InitAESDKRequest(self):
-        data = Excel_Operations.readIndoorFile("InitAESDKRequest.txt")
+        data = Utility.readIndoorFile("InitAESDKRequest.txt")
         if data:
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def CCTTicketDisplayRequest(self, productCount) :
-        data = Excel_Operations.readIndoorFile("CCTTicketDisplayRequest.txt")
+        data = Utility.readIndoorFile("CCTTicketDisplayRequest.txt")
         if data :
             data["CCTTicketDisplayRequest"].update({
                 "POSID" : self.POSID,
@@ -62,11 +61,11 @@ class Transaction_Request_Builder :
                         }
                     }
                 })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def GetStatusRequest(self, Type) :
-        data = Excel_Operations.readIndoorFile("GetStatusRequest.txt")
+        data = Utility.readIndoorFile("GetStatusRequest.txt")
         if data :
             data["GetStatusRequest"].update({
                 "POSID" : self.POSID,
@@ -76,11 +75,11 @@ class Transaction_Request_Builder :
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
                 "StatusType" : Type
             })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def SignatureRequest(self) :
-        data = Excel_Operations.readIndoorFile("SignatureRequest.txt")
+        data = Utility.readIndoorFile("SignatureRequest.txt")
         if data :
             data["SignatureRequest"].update({
                 "POSID" : self.POSID,
@@ -90,18 +89,18 @@ class Transaction_Request_Builder :
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
 
             })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def RestartCCTRequest(self):
-        data = Excel_Operations.readIndoorFile("RestartCCTRequest.txt")
+        data = Utility.readIndoorFile("RestartCCTRequest.txt")
         if data:
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def GetCardBINRequest(self, **kwargs) :
-        data = Excel_Operations.readIndoorFile("GetCardBINRequest.txt")
-        TransactionType, AllowKeyedEntry, EntrySource,LookUpFlag = kwargs.get("TransactionType"), kwargs.get("AllowKeyedEntry"), kwargs.get("EntrySource"), kwargs.get("LookUpFlag")
+        data = Utility.readIndoorFile("GetCardBINRequest.txt")
+        TransactionType, AllowKeyedEntry, EntrySource,LookUpFlag, TransactionAmount = kwargs.get("TransactionType"), kwargs.get("AllowKeyedEntry"), kwargs.get("EntrySource"), kwargs.get("LookUpFlag"), kwargs.get("TransactionAmount")
         if data :
             data["GetCardBINRequest"].update({
                 "POSID" : self.POSID,
@@ -112,16 +111,16 @@ class Transaction_Request_Builder :
                 "languageIndicator" : self.languageIndicator,
                 "MessageLine1" : ("Sale" if TransactionType == "01" else "Pre-auth" if TransactionType == "04" else "Refund w/o Sale" if TransactionType == "02" else "Gift" if TransactionType in ("11", "12", "16", "18") else "" )+" Transaction",
                 "TransactionType" : TransactionType if TransactionType == "02" else "",
-                "TenderAmount" : self.DefaultAmount,
+                "TenderAmount" : str(TransactionAmount) if TransactionAmount else self.DefaultAmount,
                 "AllowKeyedEntry" : AllowKeyedEntry,
                 "EntrySource" : EntrySource,
                 "LookUpFlag" : LookUpFlag,
             })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def ShowScreenRequest(self, message, message2, flag) :
-        data = Excel_Operations.readIndoorFile("ShowScreenRequest.txt")
+        data = Utility.readIndoorFile("ShowScreenRequest.txt")
         if data :
             data["ShowScreenRequest"].update({
                 "APPID" : self.APPID,
@@ -133,11 +132,11 @@ class Transaction_Request_Builder :
                 "MessageLine2" : message2,
                 "ActivityFlag" : flag
             })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def ShowListRequest(self, OptionsType) :
-        data = Excel_Operations.readIndoorFile("ShowListRequest.txt")
+        data = Utility.readIndoorFile("ShowListRequest.txt")
         if data :
             data["ShowListRequest"].update({
                 "APPID" : self.APPID,
@@ -147,11 +146,11 @@ class Transaction_Request_Builder :
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
                 "OptionsType" : OptionsType
             })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def GetUserInputRequest(self, message, option) :
-        data = Excel_Operations.readIndoorFile("GetUserInputRequest.txt")
+        data = Utility.readIndoorFile("GetUserInputRequest.txt")
         if data :
             data["GetUserInputRequest"].update({
                 "APPID" : self.APPID,
@@ -160,13 +159,13 @@ class Transaction_Request_Builder :
                 "SessionId" : self.SessionId,
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
                 "HeaderText" : message,
-                "Type" : option
+                "Type" : str(option)
             })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def ByPassScreenRequest(self, ByPassOptions) :
-        data = Excel_Operations.readIndoorFile("ByPassScreenRequest.txt")
+        data = Utility.readIndoorFile("ByPassScreenRequest.txt")
         if data :
             data["ByPassScreenRequest"].update({
                 "APPID" : self.APPID,
@@ -176,11 +175,11 @@ class Transaction_Request_Builder :
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
                 "ByPassOptions" : str(ByPassOptions)
             })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def Parent_Transaction(self, **kwargs) :
-        data = Excel_Operations.readIndoorFile("TransRequest.txt")
+        data = Utility.readIndoorFile("TransRequest.txt")
         if data :
             TransactionToken = kwargs.get("TransactionToken", "")
             Token = kwargs.get("Token", "")
@@ -246,13 +245,13 @@ class Transaction_Request_Builder :
                             {"FleetProductCount" : products['Product_count'],
                              "FleetProducts" :
                                  {"FleetProduct" : products['Product_list']}}})
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def Child_Transaction(self, **kwargs) :
         TransactionType = kwargs.get("TransactionType")
         FileName = "CancelLastTransRequest" if TransactionType.upper() == "76" else "ChildTransRequest"
-        data = Excel_Operations.readIndoorFile(FileName + ".txt")
+        data = Utility.readIndoorFile(FileName + ".txt")
         if data :
             CardType = "XXC" if  kwargs.get("CardType") is None else kwargs.get("CardType")
             RandomNumber = kwargs.get("RandomNumber")
@@ -306,11 +305,11 @@ class Transaction_Request_Builder :
                                  {"FleetProduct" : products['Product_list']}
                              }
                 })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request
 
     def CloseTransactionRequest(self) :
-        data = Excel_Operations.readIndoorFile("CloseTransactionRequest.txt")
+        data = Utility.readIndoorFile("CloseTransactionRequest.txt")
         if data :
             CloseTransactionRequest = data["CloseTransactionRequest"]
             CloseTransactionRequest.update({
@@ -320,5 +319,5 @@ class Transaction_Request_Builder :
                 "SessionId" : self.SessionId,
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
             })
-            self.request = Excel_Operations.ConvertToXml(data) if self.isXml else json.dumps(data)
+            self.request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.request

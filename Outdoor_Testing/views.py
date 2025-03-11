@@ -3,10 +3,8 @@ import re
 
 from django.http import JsonResponse
 from django.shortcuts import render
-
 from API.config import config
 from Response_Builder.Outdoor_response_builder import Transaction_Processing
-
 
 class OutdoorTesting:
 

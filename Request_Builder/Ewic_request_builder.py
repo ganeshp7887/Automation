@@ -2,7 +2,7 @@ import datetime
 import json
 from API.config import config
 import xmltodict
-from API.Excel_operations import Excel_Operations
+from API.Utility import Utility
 from API.Product_data_mapping import Product_data_mapping
 from API.Socket_API import Adsdk_Socket as Socket
 from lxml import etree
@@ -21,11 +21,11 @@ class Ewic_request_builder:
     def Gcb():
         request = None
         if config.request_format().upper() == "XML":
-            data = Excel_Operations.Read_Indoor_File("/EWIC/GetCardBINRequest.xml")
+            data = Utility.Read_Indoor_File("/EWIC/GetCardBINRequest.xml")
             if data:
                 request = etree.tostring(data, pretty_print=False, encoding=str, method='html')
         if config.request_format().upper() == "JSON":
-            data = Excel_Operations.Read_Indoor_File("/EWIC/GetCardBINRequest.json")
+            data = Utility.Read_Indoor_File("/EWIC/GetCardBINRequest.json")
             if data:
                 data = json.load(data)
                 request = json.dumps(data)
@@ -49,7 +49,7 @@ class Ewic_request_builder:
     def Ewic_Pin_Entry():
         request = None
         if config.request_format().upper() == "XML":
-            data = Excel_Operations.Read_Indoor_File("/EWIC/Pin_Entry.xml")
+            data = Utility.Read_Indoor_File("/EWIC/Pin_Entry.xml")
             if data:
                 data.find('.//TransactionDate').text = date
                 request = etree.tostring(data, pretty_print=False, encoding=str)
@@ -71,7 +71,7 @@ class Ewic_request_builder:
     def Ewic_Balance_Enquiry():
         request = None
         if config.request_format().upper() == "XML":
-            data = Excel_Operations.Read_Indoor_File("/EWIC/Balance_enquiry.xml")
+            data = Utility.Read_Indoor_File("/EWIC/Balance_enquiry.xml")
             if data:
                 data.find('.//TransactionDate').text = date
                 request = etree.tostring(data, pretty_print=False, encoding=str)
@@ -93,7 +93,7 @@ class Ewic_request_builder:
     def Ewic_Transrequest(Products):
         request = None
         if config.request_format().upper() == "XML":
-            data = Excel_Operations.Read_Indoor_File("/EWIC/Transrequest.xml")
+            data = Utility.Read_Indoor_File("/EWIC/Transrequest.xml")
             if data:
                 root = data.getroot()
                 data.find('.//TransactionDate').text = date
@@ -130,7 +130,7 @@ class Ewic_request_builder:
     def Ewic_Card_Removed():
         request = None
         if config.request_format().upper() == "XML":
-            data = Excel_Operations.Read_Indoor_File("/EWIC/Card_Removed.xml")
+            data = Utility.Read_Indoor_File("/EWIC/Card_Removed.xml")
             if data:
                 data.find('.//TransactionDate').text = date
                 request = etree.tostring(data, pretty_print=False, encoding=str)
@@ -152,7 +152,7 @@ class Ewic_request_builder:
     def Ewic_Void():
         request = None
         if config.request_format().upper() == "XML":
-            data = Excel_Operations.Read_Indoor_File("/EWIC/Ewic_void.xml")
+            data = Utility.Read_Indoor_File("/EWIC/Ewic_void.xml")
             if data:
                 data.find('.//TransactionDate').text = date
                 request = etree.tostring(data, pretty_print=False, encoding=str)

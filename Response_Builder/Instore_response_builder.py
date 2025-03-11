@@ -1,10 +1,11 @@
 import json
 import random
 import traceback
-from API.Excel_operations import Excel_Operations
+from API.Utility import Utility
 from API.Socket_API import Adsdk_Socket as socket
 from API.config import config
 from Request_Builder.Instore_request_builder import Transaction_Request_Builder
+from  API.Logger import *
 
 class Transaction_Processing :
 
@@ -66,6 +67,7 @@ class Transaction_Processing :
         self.ParentTransactionTypeName = None
         self.ChildTransactionTypeName = None
         self.ChildOfChildTransactionTypeName = None
+        self.log = Logger()
 
     def handleSocketRequest(self, request_data) :
         if not self.isXml: request_data = json.loads(request_data)
@@ -130,8 +132,8 @@ class Transaction_Processing :
             gui = self.Transaction_Request_Builder.GetUserInputRequest(message, option)
             guiResponse = self.handleSocketRequest(gui)
             if guiResponse:
-                self.GETUSERINPUT_Request = Excel_Operations.ConvertToJson(gui, self.isXml)
-                self.GETUSERINPUT_Response = Excel_Operations.ConvertToJson(guiResponse, self.isXml)
+                self.GETUSERINPUT_Request = Utility.ConvertToJson(gui, self.isXml)
+                self.GETUSERINPUT_Response = Utility.ConvertToJson(guiResponse, self.isXml)
                 self.GetUserInput_inputText = self.GETUSERINPUT_Response.get("GetUserInputResponse", {}).get("InputData")
         except Exception as e : self.ErrorText = f"Error in GETUSERINPUT: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
 
@@ -139,12 +141,12 @@ class Transaction_Processing :
         """Handle GCB transaction and parse the response."""
         try :
             Gcb_Transaction_Req = self.Transaction_Request_Builder.GetCardBINRequest(**kwargs)
-            GCB_Transaction_res = self.handleSocketRequest(Gcb_Transaction_Req)
+            GCB_Transaction_res = self.handleSocketRequest(Gcb_Transaction_Req, kwargs.get("getStatusEnabled"), kwargs.get("getStatusEnabled"))
             if GCB_Transaction_res:
                 try:
-                    self.Gcb_Transaction_Request = Excel_Operations.ConvertToJson(Gcb_Transaction_Req, self.isXml)
-                    self.Gcb_Transaction_Response = Excel_Operations.ConvertToJson(GCB_Transaction_res, self.isXml)
-                    GcbResponse = self.Gcb_Transaction_Response.get(Excel_Operations.findNode(self.Gcb_Transaction_Response), {})
+                    self.Gcb_Transaction_Request = Utility.ConvertToJson(Gcb_Transaction_Req, self.isXml)
+                    self.Gcb_Transaction_Response = Utility.ConvertToJson(GCB_Transaction_res, self.isXml)
+                    GcbResponse = self.Gcb_Transaction_Response.get(Utility.findNode(self.Gcb_Transaction_Response), {})
                     self.Gcb_Transaction_ResponseCode = GcbResponse.get("ResponseCode")
                     self.Gcb_Transaction_ResponseText = GcbResponse.get("ResponseText")
                     self.Gcb_Transaction_CardType = GcbResponse.get("CardType")
@@ -155,7 +157,7 @@ class Transaction_Processing :
                             self.Gcb_Transaction_CIToken = GcbResponse.get("ECOMMInfo", {}).get("CardIdentifier")
                             self.Gcb_Transaction_CRMToken = GcbResponse.get("CRMToken")
                         self.tokenForTransaction = {"01" : self.Gcb_Transaction_CardToken, "02" : self.Gcb_Transaction_CIToken, "03" : self.Gcb_Transaction_CRMToken}.get(kwargs.get("TransactionToken"), "")
-                    else:
+                    if self.Gcb_Transaction_ResponseCode and self.Gcb_Transaction_ResponseCode.startswith('3'):
                         self.CLOSETransaction()
                 except Exception:
                     self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"; self.CLOSETransaction()
@@ -170,10 +172,10 @@ class Transaction_Processing :
                 Parent_Transaction_res = self.handleSocketRequest(Parent_Transaction_req)
                 if Parent_Transaction_res:
                     try :
-                        self.Parent_Transaction_request = Excel_Operations.ConvertToJson(Parent_Transaction_req, self.isXml)
-                        self.Parent_Transaction_response = Excel_Operations.ConvertToJson(Parent_Transaction_res, self.isXml)
-                        ParentRequestNode = Excel_Operations.findNode(self.Parent_Transaction_request)
-                        ParentResponseNode = Excel_Operations.findNode(self.Parent_Transaction_response)
+                        self.Parent_Transaction_request = Utility.ConvertToJson(Parent_Transaction_req, self.isXml)
+                        self.Parent_Transaction_response = Utility.ConvertToJson(Parent_Transaction_res, self.isXml)
+                        ParentRequestNode = Utility.findNode(self.Parent_Transaction_request)
+                        ParentResponseNode = Utility.findNode(self.Parent_Transaction_response)
                         TransType = self.Parent_Transaction_request.get(ParentRequestNode).get("TransactionType", )
                         trans_detail = self.Parent_Transaction_response.get(ParentResponseNode, {}).get("TransDetailsData", {}).get("TransDetailData", {})
                         self.Parent_Transaction_AurusPayTicketNum = self.Parent_Transaction_response.get(ParentResponseNode, {}).get("AurusPayTicketNum", "")
@@ -183,7 +185,7 @@ class Transaction_Processing :
                         self.Parent_Transaction_TransactionIdentifier = trans_detail.get('TransactionIdentifier')
                         self.Parent_Transaction_TransactionAmount = trans_detail.get('TotalApprovedAmount')
                         self.ParentTransactionTypeName = "Sale" if TransType == "01" else "Pre-auth" if TransType == "04" else "Refund w/o Sale" if TransType == "02" else "Gift Transactions"
-                        if kwargs.get("childTransactionType") and  "76" not in kwargs.get("childTransactionType").upper():
+                        if kwargs.get("childTransactionType") != "76":
                             self.CLOSETransaction()
                     except Exception:
                         self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"; self.CLOSETransaction()
@@ -202,8 +204,8 @@ class Transaction_Processing :
             child_Transaction_res = self.handleSocketRequest(Child_Transaction)
             if child_Transaction_res:
                 try:
-                    self.Child_Transaction_request = Excel_Operations.ConvertToJson(Child_Transaction, self.isXml)
-                    self.Child_Transaction_response = Excel_Operations.ConvertToJson(child_Transaction_res, self.isXml)
+                    self.Child_Transaction_request = Utility.ConvertToJson(Child_Transaction, self.isXml)
+                    self.Child_Transaction_response = Utility.ConvertToJson(child_Transaction_res, self.isXml)
                     RequestTopnode = next(iter(self.Child_Transaction_request))
                     ResponseTopNode = next(iter(self.Child_Transaction_response))
                     TransType = self.Child_Transaction_request.get(RequestTopnode, {}).get("TransactionType")
@@ -215,13 +217,15 @@ class Transaction_Processing :
                     self.Child_Transaction_AurusPayTicketNumber = self.Child_Transaction_response.get("TransResponse", {}).get("AurusPayTicketNum")
                     self.ChildTransactionTypeName = "Refund" if TransType == "02" else "Void" if TransType == "06" else "Post-auth" if TransType == "05" else "CancelLast" if TransType == "76" else None
                     childOfChildTransactionType = Transactions[1] if len(Transactions) > 1 else None
+                    if childOfChildTransactionType != "76":
+                        self.CLOSETransaction()
                     if childOfChildTransactionType and self.Child_Transaction_ResponseCode.startswith("0"):
                         kwargs.update(RandomNumber=self.RandomNumberForInvoice, Parent_TransactionID=self.Child_Transaction_TransactionIdentifier,Parent_AurusPayTicketNum=self.Child_Transaction_AurusPayTicketNumber,CardType=self.Gcb_Transaction_CardType, TransactionType=childOfChildTransactionType, TransactionAmount=self.Parent_Transaction_TransactionAmount)
                         Child_of_child_Transaction = self.Transaction_Request_Builder.Child_Transaction(**kwargs)
                         Child_of_child_res = self.handleSocketRequest(Child_of_child_Transaction)
                         if Child_of_child_res:
-                            self.Child_of_child_Transaction_request = Excel_Operations.ConvertToJson(Child_of_child_Transaction, self.isXml)
-                            self.Child_of_child_Transaction_response = Excel_Operations.ConvertToJson(Child_of_child_res, self.isXml)
+                            self.Child_of_child_Transaction_request = Utility.ConvertToJson(Child_of_child_Transaction, self.isXml)
+                            self.Child_of_child_Transaction_response = Utility.ConvertToJson(Child_of_child_res, self.isXml)
                             RequestTopnode = next(iter(self.Child_of_child_Transaction_request))
                             ResponseTopNode = next(iter(self.Child_of_child_Transaction_response))
                             TransType = self.Child_of_child_Transaction_request.get(RequestTopnode, {}).get("TransactionType")
@@ -231,6 +235,7 @@ class Transaction_Processing :
                             self.Child_of_child_TransactionIdentifier = trans_detail.get("TransactionIdentifier", "")
                             self.Child_of_child_AurusPayTicketNumber = self.Child_Transaction_response.get("TransResponse", {}).get("AurusPayTicketNum")
                             self.ChildOfChildTransactionTypeName = "Refund" if TransType == "02" else "Void" if TransType == "06" else "Post-auth" if TransType == "05" else "CancelLast" if TransType == "76" else None
+                            self.CLOSETransaction()
                 except Exception:
                     self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' if self.isXml else 'JSON' }"; self.CLOSETransaction()
 
@@ -239,7 +244,7 @@ class Transaction_Processing :
         try :
             closeTransRes = self.handleSocketRequest(self.Transaction_Request_Builder.CloseTransactionRequest())
             if closeTransRes:
-                closeData = Excel_Operations.ConvertToJson(closeTransRes, self.isXml)
+                closeData = Utility.ConvertToJson(closeTransRes, self.isXml)
                 ResponseCode = closeData.get("CloseTransactionResponse").get("ResponseCode")
                 if ResponseCode and not ResponseCode.startswith('0'):
                     self.CLOSETransaction()

@@ -25,7 +25,6 @@ urlpatterns = [
     path('Outdoor_Testing', include('Outdoor_Testing.urls')),
     path('Single_Outdoor_Testing', include('Single_Outdoor_Testing.urls')),
     path('Single_Instore_Testing', include('Single_Instore_Testing.urls')),
-    path('Transaction_Requests', include('Transaction_Requests.urls')),
     path('Other_Scenarios', include('Other_Scenarios.urls')),
     path('Log_Comparor', include('Log_Comparor.urls')),
     path('Aurus_Decryptor', include('Aurus_Decryptor.urls')),

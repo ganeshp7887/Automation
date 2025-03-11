@@ -10,6 +10,85 @@ body {
     font-weight: 600;
 }
 
+.footer-04 {
+    background: #272727;
+    padding-bottom: 0; }
+.footer-04 .border-top {
+    border-color: #d2d2d2 !important;
+    background: #f7f7f7; }
+.footer-04 .footer-heading {
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px; }
+.footer-04 .footer-heading .logo {
+    letter-spacing: 0px;
+    font-size: 16px;
+    color: #fff;
+    text-transform: capitalize; }
+.footer-04 p {
+    color: rgba(0, 0, 0, 0.61);
+}
+.footer-04 a {
+    color: #f7b633; }
+.footer-04 .ftco-footer-social li a {
+    color: #fff; }
+.footer-04 .tagcloud a {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff; }
+.footer-04 .list-unstyled li a {
+    color: rgba(255, 255, 255, 0.7); }
+.footer-04 .list-unstyled a {
+    color: rgba(255, 255, 255, 0.7); }
+.footer-04 .ftco-footer-social li a {
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1); }
+.footer-04 .subscribe-form .form-group {
+    position: relative;
+    margin-bottom: 0;
+    border-radius: 0; }
+.footer-04 .subscribe-form .form-group input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: none !important;
+    outline: none !important;
+    color: rgba(255, 255, 255, 0.3) !important;
+    font-size: 16px;
+    border-radius: 0; }
+.footer-04 .subscribe-form .form-group input::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: rgba(255, 255, 255, 0.3) !important; }
+.footer-04 .subscribe-form .form-group input::-moz-placeholder {
+    /* Firefox 19+ */
+    color: rgba(255, 255, 255, 0.3) !important; }
+.footer-04 .subscribe-form .form-group input:-ms-input-placeholder {
+    /* IE 10+ */
+    color: rgba(255, 255, 255, 0.3) !important; }
+.footer-04 .subscribe-form .form-group input:-moz-placeholder {
+    /* Firefox 18- */
+    color: rgba(255, 255, 255, 0.3) !important; }
+.footer-04 .subscribe-form .form-group input:focus {
+    outline: none !important;
+    -webkit-box-shadow: none;
+    box-shadow: none; }
+.footer-04 .subscribe-form .form-group .submit {
+    color: #fff !important;
+    display: block;
+    width: 52px;
+    height: 52px;
+    font-size: 16px;
+    background: #f7b633 !important;
+    border: none;
+    border-radius: 0; }
+.footer-04 .subscribe-form .form-group .submit:hover, .footer-04 .subscribe-form .form-group .submit:focus {
+    text-decoration: none !important;
+    outline: none !important; }
+.footer-04 .copyright a {
+    color: rgba(213, 33, 33, 0.87);
+    font-weight: 600;
+}
+
 textarea {
   resize: none !important;
   margin-top: 10px;
@@ -316,7 +395,7 @@ input[type=file]::file-selector-button {
 
     .response_tr {
         height: 30px;
-        backgraound: red;
+        background: red;
     }
 
     .panel-wrap {
@@ -326,7 +405,7 @@ input[type=file]::file-selector-button {
             right: -20%;
             width: 20%;
             transition: .5s ease-out;
-            height: -webkit-fill-available;
+            height: 100%;
 
     }
     .panel-wrap_requests{
@@ -1879,13 +1958,6 @@ ul, #myUL {
 /*--------------------------------------------------------------
 # Testimonials
 --------------------------------------------------------------*/
-.testimonials {
-  padding: 80px 0;
-  background: url("../img/testimonials-bg.jpg") no-repeat;
-  background-position: center center;
-  background-size: cover;
-  position: relative;
-}
 
 .testimonials::before {
   content: "";
@@ -2445,7 +2517,7 @@ box-shadow:0 0 0 1px #428bca inset, 0 0 0 2px rgba(255,255,255,0.15) inset, 0 8p
     background-repeat: no-repeat;
     background-position: center;
 }
-}
+
 .contact .php-email-form .validate {
   display: none;
   color: red;

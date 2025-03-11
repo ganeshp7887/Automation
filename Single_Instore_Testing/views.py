@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from API.Excel_operations import Excel_Operations
+from API.Utility import Utility
 
 class Single_Instore_Testing:
 
     def __init__(self):
         self.result = {}
         context = {
-            "Transactions" : Excel_Operations.readTransactionTypes(),
+            "Transactions" : Utility.readTransactionTypes(),
         }
         self.result.update(context)
 

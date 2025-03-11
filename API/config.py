@@ -23,46 +23,43 @@ class config :
     def LanguageIndicator() : return config.configData.get('AESDKParameter', 'LanguageIndicator')
 
     @staticmethod
-    def API_Delay(): return config.configData.get("SensitiveData", "API_Delay")
+    def API_Delay(): return config.configData.get("Common", "API_DELAY")
 
     @staticmethod
-    def commProtocol() : return config.configData.get('SensitiveData', 'wrap_comm_type')
+    def commProtocol() : return config.configData.get('Common', 'WRAP_COMM_TYPE')
 
     @staticmethod
-    def Instore_file_path() : return config.configData.get('SensitiveData', 'Instore_file_path')
+    def Config_machine_ip() : return config.configData.get('Common', 'SYSTEM_IP')
 
     @staticmethod
-    def Outdoor_file_path() : return config.configData.get('SensitiveData', 'Outdoor_file_path')
+    def processor() : return config.configData.get('Common', 'PROCESSOR')
 
     @staticmethod
-    def Config_machine_ip() : return config.configData.get('SensitiveData', 'MachineIp')
+    def request_format() : return config.configData.get('Instore', 'REQUEST_FORMAT')
 
     @staticmethod
-    def Config_Indoor_port() : return config.configData.get('SensitiveData', 'Indoor_Port')
+    def Outdoor_request_format() : return config.configData.get('Outdoor', 'REQUEST_FORMAT')
 
     @staticmethod
-    def Config_Outdoor_port() : return config.configData.get('SensitiveData', 'outdoor_Port')
+    def Instore_file_path() : return config.configData.get('Instore', 'FILE_PATH')
 
     @staticmethod
-    def processor() : return config.configData.get('SensitiveData', 'Processor')
+    def Outdoor_file_path() : return config.configData.get('Outdoor', 'FILE_PATH')
 
     @staticmethod
-    def request_format() : return config.configData.get('SensitiveData', 'Indoor_Request_Format')
+    def Config_Indoor_port() : return config.configData.get('Instore', 'POS_LISTENING_PORT')
 
     @staticmethod
-    def Outdoor_request_format() : return config.configData.get('SensitiveData', 'Outdoor_request_Format')
+    def Config_Outdoor_port() : return config.configData.get('Outdoor', 'POS_LISTENING_PORT')
 
     @staticmethod
-    def xls_file_path() : return config.configData.get('SensitiveData', 'card_data_xls')
+    def xls_file_path() : return config.configData.get('Outdoor', 'XLS_FILE')
 
     @staticmethod
-    def API_SEQUENCE() : return config.configData.get("SensitiveData", "API_SEQUENCE")
+    def API_SEQUENCE() : return config.configData.get("Instore", "API_SEQUENCE")
 
     @staticmethod
-    def OUTDOOR_API_SEQUENCE() : return config.configData.get("SensitiveData", "OUTDOOR_API_SEQUENCE")
-
-    @staticmethod
-    def ISSUE_SEQUENCE() : return config.configData.get("SensitiveData", "Issue_Sequence_Testing")
+    def OUTDOOR_API_SEQUENCE() : return config.configData.get("Outdoor", "API_SEQUENCE")
 
     @staticmethod
     def Full_Outdoor_file_path() : return os.path.join(BASE_DIR, config.Outdoor_file_path())

@@ -6,7 +6,7 @@ from lxml import etree
 from API.config import config
 
 
-class Excel_Operations :
+class Utility :
 
 
     @staticmethod
@@ -48,36 +48,3 @@ class Excel_Operations :
     @staticmethod
     def findNode(request):
         return next(iter(request))
-
-    @staticmethod
-    def Read_indoor_Transrequest(format, filename) :
-        if format.upper() == "XML" :
-            try :
-                parser = etree.XMLParser(remove_blank_text=True)
-                x = etree.parse(config.Indoor_xml_request_path() + filename, parser)
-                return x
-            except :
-                return False
-        if format.upper() == "JSON" :
-            try :
-                x = open(config.Indoor_json_request_path() + filename)
-                return x
-            except :
-                return False
-
-    @staticmethod
-    def Read_outdoor_Transrequest(format, filename) :
-        if format.upper() == "XML" :
-            try :
-                parser = etree.XMLParser(remove_blank_text=True)
-                x = etree.parse(config.Outdoor_xml_request_path() + filename, parser)
-                return x
-            except :
-                return False
-        if format.upper() == "JSON" :
-            try :
-                x = open(config.Outdoor_json_request_path() + filename)
-                return x
-            except :
-                return False
-

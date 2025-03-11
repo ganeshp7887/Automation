@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>AURUS Officials</title>
+    <title>AURUS UTILITY - MADE BY GP</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     {% load static %}
@@ -67,7 +67,6 @@
             {% if request.path|urlencode == "/Single_Instore_Testing" %} Single Instore  {% endif %}
             {% if request.path|urlencode == "/Outdoor_Testing" or request.path|urlencode == "/Outdoor_Transaction_Requests" %} Outdoor   {% endif %}
             {% if request.path|urlencode == "/Single_Outdoor_Testing" %} Single Outdoor  {% endif %}
-            {% if request.path|urlencode == "/Transaction_Requests" %} Transaction {% endif %}
             {% if request.path|urlencode == "/API_SEQUENCE_TESTING" %} API Sequence{% endif %}
             {% if request.path|urlencode == "/Aurus_Decryptor" %} Aurus_Decryptor {% endif %}
             <span class="anime">Testing</span>
@@ -81,7 +80,6 @@
             <a class='dropdown-item {% if request.path|urlencode == "/Single_Instore_Testing" %} active {% endif %}'  href="/Single_Instore_Testing  ">SINGLE INSTORE TESTING</a>
             <a class='dropdown-item {% if request.path|urlencode == "/Outdoor_Testing" %} active {% endif %}' href="/Outdoor_Testing">OUTDOOR TESTING </a>
             <a class='dropdown-item {% if request.path|urlencode == "/Single_Outdoor_Testing" %} active {% endif %}' href="/Single_Outdoor_Testing">SINGLE OUTDOOR TESTING</a>
-            <a class='dropdown-item {% if request.path|urlencode == "/Transaction_Requests" %} active {% endif %}' href="/Transaction_Requests">TRANSACTION REQUESTS</a>
             <a class='dropdown-item {% if request.path|urlencode == "/API_SEQUENCE_TESTING" %} active {% endif %}' href="/API_SEQUENCE_TESTING">API SEQUENCE TESTING</a>
             <a class='dropdown-item {% if request.path|urlencode == "/Aurus_Decryptor" %} active {% endif %}' href="/Aurus_Decryptor">AURUS DECRYPTOR </a>
           </div>
