@@ -12,7 +12,7 @@
                 <select class="mytext w-100 text-center z-depth-1" id="Transaction_Type" name="Transaction_Type" required>
                     <option value="00">Select Transaction</option>
                     <option value="000">GCB</option>
-                    {% for item, key in Transactions.TransactionTypes.items %}
+                    {% for item, key in Transactions.items %}
                         <option value="{{ key }}">{{ item }}</option>
                     {% endfor %}
                 </select>
@@ -73,7 +73,9 @@
               <div class="tableFixHead">
                 <table class="table table-bordered" id="myTable" data-aos="zoom-out" data-aos-delay="100">
                   <thead id="table_header"></thead>
-                  <tbody id="divBody"></tbody>
+                  <tbody id="divBody">
+                  <p id="pid"></p>
+                  </tbody>
                 </table>
               </div>
           </div>
@@ -84,7 +86,8 @@
   <section class="d-flex align-items-center">
     <div class="panel-wrap">
       <div class="switcher-btn" onclick="switchBtn()">
-        <i id="sbtn" class="fa-plus fa-solid"></i></div>
+        <i id="sbtn" class="fa-plus fa-solid"></i>
+      </div>
       <div class="panel">
         <div class='w-100 d-none mt-1' id='export_btn'>
           <button class="btn btn-primary w-100" name='btn' onclick='exportToExcel("0", "", "")' type='button'>Export<i class='fas fa-download' style="padding-left: 10%;"></i></button>
@@ -130,7 +133,7 @@ document.addEventListener("contextmenu", function (e){
   	$(this).css("background", "#d5d5d5"); //apply the new color background:
   });
   
-     async function BindConnection() {
+    async function BindConnection() {
     $('#message').removeClass('d-none');
     const startTime = new Date().getTime();
 
@@ -151,12 +154,27 @@ document.addEventListener("contextmenu", function (e){
     }
 }
 
+function BypassAction(){
+
+    fetch("/bypass", {
+       method: "POST", // POST request
+      headers: {
+        "Content-Type": "application/json", // You can still set content type, but no body
+      },
+    })
+      .then((response) => response.json()) // Assuming you want to handle the JSON response
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+}
+
 
 async function performAjaxCall(iteration, TransType, TokenType, GcbType, ProductCount) {
     try {
-        // Update message and show loader
-        updateMessage("PLEASE WAIT TRANSACTION IN PROGESS...")
-
+        updateMessage("PLEASE WAIT TRANSACTION IN PROGESS\t\t\t<button class='btn btn-primary w-10' id='bypass' onclick='BypassAction()'>BYPASS</button>")
         const response = await $.ajax({
             type: "POST",
             dataType: "JSON",
@@ -173,7 +191,7 @@ async function performAjaxCall(iteration, TransType, TokenType, GcbType, Product
 
         // Process the response
         await new Promise(resolve => setTimeout(() => {
-            Transaction_report(iteration, response, TransType);
+            Transaction_report(iteration, response, TransType, false);
             resolve();
             updateMessage("TRANSACTION COMPLETED...")
         }, 500));
@@ -184,7 +202,6 @@ async function performAjaxCall(iteration, TransType, TokenType, GcbType, Product
         showLoaderMessage("Iterations Completed");
     }
 }
-
 
 </script>
 </body>

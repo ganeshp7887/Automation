@@ -1,4 +1,3 @@
-import random
 from decimal import Decimal
 
 
@@ -6,14 +5,13 @@ class Product_data_mapping:
 
     @staticmethod
     def ProductData_Mapping(Transaction_amount, cashbackAmount, Product_type, product_count):
-        CB = None if cashbackAmount == "0.00" else cashbackAmount
         productDict, productList = {}, []
         ProductTotalAmt = Decimal(0.00)
         unitprice = (Decimal(Transaction_amount) / Decimal(product_count)).quantize(Decimal('1.000'))
-        products = [{"ProductCode": "040", "ProductName": "Other", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
-                    {"ProductCode": "001", "ProductName": "erosene", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+        products = [{"ProductCode": "001", "ProductName": "Kerosene", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
                     {"ProductCode": "042", "ProductName": "Bread", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
                     {"ProductCode": "002", "ProductName": "Diesel", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
+                    {"ProductCode": "040", "ProductName" : "Other", "UnitOfMeasure" : "U", "UnitPrice" : "1.000"},
                     {"ProductCode": "004", "ProductName": "Super Unleaded", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
                     {"ProductCode": "034", "ProductName": "Car Wash", "UnitOfMeasure": "U", "UnitPrice": "1.000"},
                     {"ProductCode": "001", "ProductName": "Gasoline", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
@@ -37,19 +35,8 @@ class Product_data_mapping:
                     {"ProductCode": "011", "ProductName": "CNG", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
                     {"ProductCode": "006", "ProductName": "Unleaded Plus", "UnitOfMeasure": "G", "UnitPrice": "1.000"},
                     {"ProductCode": "024", "ProductName": "Battery", "UnitOfMeasure": "U", "UnitPrice": "1.000"}]
-        if CB and Product_type == "l3productdata":
-            productDict = {
-                "L3ProductSeqNo" : str("1"),
-                "L3ProductCode" : str(products[0]['ProductCode']),
-                "L3ProductName" : str(products[0]['ProductName']),
-                "L3UnitOfMeasure" : str(products[0]['UnitOfMeasure']),
-                "L3ProductQuantity" : str("1.000"),
-                "L3ProductUnitPrice" : format(Decimal(cashbackAmount+'0'), ".3f"),
-                "L3ProductTotalAmount" : str(cashbackAmount)
-            }
-            productList.append(productDict)
         for i in range(int(product_count)):
-            productID = i + 2 if CB else i + 1
+            productID = i + 1
             price = str(unitprice)
             Productunitprice = Decimal(Decimal(price).quantize(Decimal('1.000')))
             product_quantity = Decimal(Decimal(1.000).quantize(Decimal('0.000')))

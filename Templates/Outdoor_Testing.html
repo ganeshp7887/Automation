@@ -9,25 +9,18 @@
                     <div class="row mt-5">
                         <div class="col-md-3">
                             <div class="shadow-textarea">
-                                <select class="mytext w-100 text-center z-depth-1" id="Transaction_Type"
-                                        name="Transaction_Type" required>
+                                <select class="mytext w-100 text-center z-depth-1" id="Transaction_Type" name="Transaction_Type" required>
                                     <option value="">Select Transaction</option>
-                                    <option value="00">GCB</option>
-                                    <option value="01">Sale</option>
-									<option value="02">Refund of sale</option>
-                                    <option value="04">Pre-auth</option>
-                                    <option value="05">Post-auth</option>
-                                    <option value="06">Void of pre-auth</option>
-									<option value="09">Reversal of Pre-auth</option>
-                                    <option value="05_09">Reversal of Post-auth</option>
-                                    <option value="05_01">Post-auth retry</option>
+                                    <option value="000">GCB</option>
+                                     {% for item, key in Transactions.items %}
+                                        <option value="{{ key }}">{{ item }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="shadow-textarea">
-                                <select class="mytext w-100 text-center z-depth-1" id="cds"
-                                        name="cds" required>
+                                <select class="mytext w-100 text-center z-depth-1" id="cds" name="cds" required>
                                     <option value="">Select Track Data</option>
                                     <option value="1">Track1 data</option>
                                     <option value="2">Track2 data</option>
@@ -143,13 +136,13 @@ async function readExcel() {
             updateMessage("PLEASE PERFORM TRANSACTIONS");
             before_data_send(inIndex, " Iteration started");
             const row = jsonData[index];
+            console.log(row)
             try {
                 const response = await $.ajax({
                     type: "POST",
                     dataType: "JSON",
                     url: "{% url 'Outdoor_Testing' %}",
                     data: {
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
                         'Trans_type': transType,
                         'gcb_type': gcbType,
                         'cds': cds,
@@ -161,7 +154,7 @@ async function readExcel() {
                 });
 
                 await new Promise(resolve => setTimeout(() => {
-                    Transaction_report(response, transType, "", index + 1);
+                    Transaction_report(response, transType, index + 1, false);
                     resolve();
                 }, 500));
             } catch (error) {

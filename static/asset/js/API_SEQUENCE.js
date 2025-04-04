@@ -67,12 +67,12 @@ function createPerformableScenarios(data) {
 
 function startCountdown(inputValue) {
     // Clear any existing timer
+    console.log(inputValue)
     let timerInterval;
     clearInterval(timerInterval);
 
     if (isNaN(inputValue) || inputValue <= 0) {
-        alert("Please enter a valid number greater than 0.");
-        return;
+        inputValue = "0.100"
     }
 
     let countdownTime = inputValue; // Starting point in seconds

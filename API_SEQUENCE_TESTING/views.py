@@ -15,6 +15,7 @@ from Miejer_Petro.settings import BASE_DIR
 
 
 class ISSUE_SEQUENCE_TESTING :
+
     def __init__(self) :
         config = cn()
         self.APIPARSER = API_PARSER()

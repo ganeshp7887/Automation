@@ -32,7 +32,6 @@ class Transaction_Request_Builder :
         self.DefaultAmount = "10.00" #Decimal(Decimal((str(random.randint(0, 99)))).quantize(Decimal('1.00')))
         self.isXml = config.request_format().upper() == "XML"
 
-
     def InitAESDKRequest(self):
         data = self.readIndoorFile("InitAESDKRequest.txt")
         if data:
@@ -226,7 +225,7 @@ class Transaction_Request_Builder :
             TransAmountDetails.update({
                 "TransactionTotal" : TransAmount,
                 "TenderAmount" : TransAmount,
-                **({"EbtAmount" : TransAmount} if CardType.upper() == "EBF" else {}),
+                **({"EBTAmount" : TransAmount} if CardType.upper() == "EBF" else {}),
                 **({'PrescriptionAmount' : rounded_value,
                     'CoPaymentAmount' : rounded_value,
                     'DentalAmount' : rounded_value,

@@ -1,10 +1,9 @@
-import json
 import random
 import traceback
 from API.Utility import Utility
 from API.Socket_API import Adsdk_Socket as sock
-from API.configfile import configFile
-from Request_Builder.Instore_request_builder import Transaction_Request_Builder
+from Instore_Testing.Instore_request_builder import Transaction_Request_Builder
+from Outdoor_Testing.Outdoor_request_builder import Outdoor_Request_Builder
 from  API.Logger import Logger
 
 
@@ -52,108 +51,62 @@ class Transaction_Processing :
         self.requestCameFrom = "Instore"
         self.ChildTransactionType = None
         self.ChildOfChildTransactionType = None
-        self.ErrorText = None
+        self.ErrorText = ""
         self.tokenForTransaction = ""
         self.ParentTransactionTypeName = None
         self.ChildTransactionTypeName = None
         self.ChildOfChildTransactionTypeName = None
         self.log = Logger()
         self.Transaction_Request_Builder = Transaction_Request_Builder()
+        self.outdoor_request_builder = Outdoor_Request_Builder()
+        self.socket = sock()
 
-    def handleSocketRequest(self, request_data, bypassEnabled, getstatusEnabled) :
-        socket = sock()
-        config = configFile()
-        ip = config.system_ip()
-        port = config.Config_Indoor_port()
-        url = f"https://{ip}:{port}"
-        isHttps = config.commProtocol() != "5"
-        requestFormat = config.request_format()
-        isXml = requestFormat.upper() == "XML"
-
-        if not isXml: request_data = json.loads(request_data)
-        if isHttps :
-            try:
-                socket.openSocket(port=port)
-                try:
-                    socket.sendRequest(str(request_data))
-                    try:
-                        if bypassEnabled:
-                            socket.sendRequest(str(self.Transaction_Request_Builder.ByPassScreenRequest("0")))
-                            socket.receiveResponseFromSocket()
-                        if getstatusEnabled:
-                            socket.sendRequest(str(self.Transaction_Request_Builder.GetStatusRequest()))
-                            socket.receiveResponseFromSocket()
-                        response = socket.receiveResponseFromSocket()
-                        return response
-                    except Exception as e:
-                        self.ErrorText = f"Response not received from @ {ip}::{port} ==> {e}"
-                except Exception as e:
-                    self.ErrorText = f"Request send Fails @ {ip}::{port} ==> {e}"
-            except Exception as e:
-                self.ErrorText = f"Connection Fails @ {ip}::{port} ==> {e}"
-        else :
-            try:
-                socket.httpsRequest(url, request_data, requestFormat.lower())
-                try:
-                    if bypassEnabled:
-                        socket.httpsRequest(url,str(self.Transaction_Request_Builder.ByPassScreenRequest("0")),requestFormat.lower())
-                        socket.receiveResponsehttps()
-                    if getstatusEnabled:
-                        socket.httpsRequest(url,str(self.Transaction_Request_Builder.GetStatusRequest()),requestFormat.lower())
-                        socket.receiveResponsehttps()
-                    response = socket.receiveResponsehttps()
-                    return response
-                except Exception as e:
-                    self.ErrorText = f"Received response Fails @ {ip}::{port} ==> {e}"
-            except Exception as e:
-                self.ErrorText = f"Connection Fails @ {ip}::{port} ==> {e}"
-
-    def GetStatusRequest(self, bypassEnabled, getstatusEnabled) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.GetStatusRequest(),bypassEnabled, getstatusEnabled)
-        except Exception as e: self.ErrorText = f"Error in GetStatusRequest: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+    def GetStatusRequest(self,) :
+        try : self.socket.handleSocketRequest(self.Transaction_Request_Builder.GetStatusRequest(), self.requestCameFrom)
+        except Exception as e: self.ErrorText = f"Error in GetStatusRequest: {e}\tTraceback:\t{traceback.format_exc()}"; self.CLOSETransaction()
 
     def RestartCCTRequestTransaction(self):
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.RestartCCTRequest(), False, False)
-        except Exception as e: self.ErrorText = f"Error in RestartCCTRequest: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+        try : self.socket.handleSocketRequest(self.Transaction_Request_Builder.RestartCCTRequest(), self.requestCameFrom)
+        except Exception as e: self.ErrorText = f"Error in RestartCCTRequest: {e}\tTraceback:\t{traceback.format_exc()}"; self.CLOSETransaction()
 
     def Signature(self) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.SignatureRequest(),False, False)
-        except Exception as e: self.ErrorText = f"Error in Signature: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+        try : self.socket.handleSocketRequest(self.Transaction_Request_Builder.SignatureRequest(), self.requestCameFrom)
+        except Exception as e: self.ErrorText = f"Error in Signature: {e}\tTraceback:\t{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def displayTicket(self, productCount,bypassEnabled, getstatusEnabled) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.CCTTicketDisplayRequest(productCount),bypassEnabled, getstatusEnabled)
-        except Exception as e: self.ErrorText = f"Error in displayTicket: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+    def displayTicket(self, productCount) :
+        try : self.socket.handleSocketRequest(self.Transaction_Request_Builder.CCTTicketDisplayRequest(productCount), self.requestCameFrom)
+        except Exception as e: self.ErrorText = f"Error in displayTicket: {e}\tTraceback:\t{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def SHOWLIST(self, OptionsType, bypassEnabled, getstatusEnabled) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.ShowListRequest(OptionsType),bypassEnabled, getstatusEnabled)
-        except Exception as e :   self.ErrorText = f"Error in SHOWLIST: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+    def SHOWLIST(self, OptionsType) :
+        try : self.socket.handleSocketRequest(self.Transaction_Request_Builder.ShowListRequest(OptionsType), self.requestCameFrom)
+        except Exception as e :   self.ErrorText = f"Error in SHOWLIST: {e}\tTraceback:\t{traceback.format_exc()}"; self.CLOSETransaction()
 
     def BYPASSTransaction(self, bypassoption) :
-        try : self.handleSocketRequest(self.Transaction_Request_Builder.ByPassScreenRequest(bypassoption), False, False)
-        except Exception as e :  self.ErrorText = f"Error in Bypass: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+        try : self.socket.handleSocketRequest(self.Transaction_Request_Builder.ByPassScreenRequest(bypassoption), self.requestCameFrom)
+        except Exception as e :  self.ErrorText = f"Error in Bypass: {e}\tTraceback:\t{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def SHOWSCREEN(self, message, flag,bypassEnabled, getstatusEnabled) :
+    def SHOWSCREEN(self, message, flag) :
         try :
             message2 = self.GetUserInput_inputText if self.GetUserInput_inputText else ""
-            self.handleSocketRequest(self.Transaction_Request_Builder.ShowScreenRequest(str(message), str(message2), flag),bypassEnabled, getstatusEnabled)
-        except Exception as e : self.ErrorText = f"Error in SHOWSCREEN: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+            self.socket.handleSocketRequest(self.Transaction_Request_Builder.ShowScreenRequest(str(message), str(message2), flag), self.requestCameFrom)
+        except Exception as e : self.ErrorText = f"Error in SHOWSCREEN: {e}\tTraceback:\t{traceback.format_exc()}"; self.CLOSETransaction()
 
-    def GETUSERINPUT(self, message, option,bypassEnabled, getstatusEnabled) :
+    def GETUSERINPUT(self, message, option) :
         """Get user input."""
         try :
             gui = self.Transaction_Request_Builder.GetUserInputRequest(message, option)
-            guiResponse = self.handleSocketRequest(gui, bypassEnabled, getstatusEnabled)
+            guiResponse = self.socket.handleSocketRequest(gui, self.requestCameFrom)
             if guiResponse:
                 self.GETUSERINPUT_Request = Utility.ConvertToJson(gui,self.requestCameFrom)
                 self.GETUSERINPUT_Response = Utility.ConvertToJson(guiResponse,self.requestCameFrom)
                 self.GetUserInput_inputText = self.GETUSERINPUT_Response.get("GetUserInputResponse", {}).get("InputData")
-        except Exception as e : self.ErrorText = f"Error in GETUSERINPUT: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+        except Exception as e : self.ErrorText = f"Error in GETUSERINPUT: {e}\tTraceback:\t{traceback.format_exc()}"; self.CLOSETransaction()
 
     def GCBTransaction(self, **kwargs) :
         """Handle GCB transaction and parse the response."""
         try :
             Gcb_Transaction_Req = self.Transaction_Request_Builder.GetCardBINRequest(**kwargs)
-            GCB_Transaction_res = self.handleSocketRequest(Gcb_Transaction_Req, kwargs.get("bypassEnabled"),kwargs.get("getstatusEnabled"))
+            GCB_Transaction_res = self.socket.handleSocketRequest(Gcb_Transaction_Req, self.requestCameFrom)
             if GCB_Transaction_res:
                 try:
                     self.Gcb_Transaction_Request = Utility.ConvertToJson(Gcb_Transaction_Req,self.requestCameFrom)
@@ -163,7 +116,7 @@ class Transaction_Processing :
                     self.Gcb_Transaction_ResponseText = GcbResponse.get("ResponseText")
                     self.Gcb_Transaction_CardType = GcbResponse.get("CardType")
                     self.Gcb_Transaction_CashbackAmount = GcbResponse.get("CashBackAmount")
-                    if self.Gcb_Transaction_ResponseCode and self.Gcb_Transaction_ResponseCode.startswith("0") :
+                    if self.Gcb_Transaction_ResponseCode and self.Gcb_Transaction_ResponseCode.startswith("0"):
                         self.Gcb_Transaction_CardToken = GcbResponse.get("CardToken")
                         if kwargs.get("LookUpFlag") in ["16", "8", "24"]:
                             self.Gcb_Transaction_CIToken = GcbResponse.get("ECOMMInfo", {}).get("CardIdentifier")
@@ -174,21 +127,21 @@ class Transaction_Processing :
                 except Exception:
                     self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' }"; self.CLOSETransaction()
         except Exception as e :
-            self.ErrorText = f"Error in GCBTransaction: {e}\nTraceback:\n{traceback.format_exc()}"; self.CLOSETransaction()
+            self.ErrorText = f"Error in GCBTransaction: {e}\tTraceback:\t{traceback.format_exc()}"; self.CLOSETransaction()
 
     def ParentTransactionProcessing(self, **kwargs) :
         try :
             if self.Gcb_Transaction_ResponseCode is None or self.Gcb_Transaction_ResponseCode.startswith("0") :
                 kwargs.update(RandomNumber=self.RandomNumberForInvoice, CardType=self.Gcb_Transaction_CardType, cashbackAmount=self.Gcb_Transaction_CashbackAmount, Token=self.tokenForTransaction)
                 Parent_Transaction_req = self.Transaction_Request_Builder.Parent_Transaction(**kwargs)
-                Parent_Transaction_res = self.handleSocketRequest(Parent_Transaction_req,"", "")
+                Parent_Transaction_res = self.socket.handleSocketRequest(Parent_Transaction_req, self.requestCameFrom)
                 if Parent_Transaction_res:
                     try :
                         self.Parent_Transaction_request = Utility.ConvertToJson(Parent_Transaction_req,self.requestCameFrom)
                         self.Parent_Transaction_response = Utility.ConvertToJson(Parent_Transaction_res,self.requestCameFrom)
                         ParentRequestNode = Utility.findNode(self.Parent_Transaction_request)
                         ParentResponseNode = Utility.findNode(self.Parent_Transaction_response)
-                        TransType = self.Parent_Transaction_request.get(ParentRequestNode).get("TransactionType", )
+                        TransType = self.Parent_Transaction_request.get(ParentRequestNode).get("TransactionType", "")
                         trans_detail = self.Parent_Transaction_response.get(ParentResponseNode, {}).get("TransDetailsData", {}).get("TransDetailData", {})
                         self.Parent_Transaction_AurusPayTicketNum = self.Parent_Transaction_response.get(ParentResponseNode, {}).get("AurusPayTicketNum", "")
                         if isinstance(trans_detail, list) and len(trans_detail) > 0 : trans_detail = trans_detail[0]
@@ -202,7 +155,7 @@ class Transaction_Processing :
                     except Exception:
                         self.ErrorText = f"Error :: ==> Request/response format not matched. :: Expected ==> { 'XML' }"; self.CLOSETransaction()
         except Exception as e :
-            self.ErrorText = f"Error in TransRequest: {e}\nTraceback:\n{traceback.format_exc()}"; print(self.ErrorText); self.CLOSETransaction()
+            self.ErrorText = f"Error in TransRequest: {e}\tTraceback:\t{traceback.format_exc()}"; print(self.ErrorText); self.CLOSETransaction()
 
     def ChildTransactionProcessing(self, **kwargs) :
         if self.Parent_Transaction_ResponseCode and self.Parent_Transaction_ResponseCode.startswith("0") :
@@ -211,9 +164,16 @@ class Transaction_Processing :
             self.Parent_Transaction_TransactionAmount = self.Parent_Transaction_TransactionAmount if TransAmount is None else TransAmount
             Transactions = TransactionType.split("_")
             childTransactionType = Transactions[0]
-            kwargs.update(RandomNumber=self.RandomNumberForInvoice, Parent_TransactionID=self.Parent_Transaction_TransactionIdentifier,Parent_AurusPayTicketNum=self.Parent_Transaction_AurusPayTicketNum,CardType=self.Gcb_Transaction_CardType, TransactionType=childTransactionType, TransactionAmount=self.Parent_Transaction_TransactionAmount)
-            Child_Transaction = self.Transaction_Request_Builder.Child_Transaction(**kwargs)
-            child_Transaction_res = self.handleSocketRequest(Child_Transaction,"", "")
+            kwargs.update(RandomNumber=self.RandomNumberForInvoice, Parent_TransactionID=self.Parent_Transaction_TransactionIdentifier,
+                          Parent_AurusPayTicketNum=self.Parent_Transaction_AurusPayTicketNum, CardType=self.Gcb_Transaction_CardType,TransactionAmount=self.Parent_Transaction_TransactionAmount)
+            if 'O' in childTransactionType.upper():
+                childTransactionType = childTransactionType.upper().replace("O","")
+                kwargs.update(CardType=self.Gcb_Transaction_CardType, TransactionType=childTransactionType, Parent_TransactionID=self.Parent_Transaction_TransactionIdentifier, Parent_AurusPayTicketNum=self.Parent_Transaction_AurusPayTicketNum, TransAmount=self.Parent_Transaction_TransactionAmount)
+                self.requestCameFrom = "OUTDOOR"
+                Child_Transaction = self.outdoor_request_builder.Child_Transaction(**kwargs)
+            else:
+                Child_Transaction = self.Transaction_Request_Builder.Child_Transaction(**kwargs)
+            child_Transaction_res = self.socket.handleSocketRequest(Child_Transaction, self.requestCameFrom)
             if child_Transaction_res:
                 try:
                     self.Child_Transaction_request = Utility.ConvertToJson(Child_Transaction,self.requestCameFrom)
@@ -234,7 +194,7 @@ class Transaction_Processing :
                     if childOfChildTransactionType and self.Child_Transaction_ResponseCode.startswith("0"):
                         kwargs.update(RandomNumber=self.RandomNumberForInvoice, Parent_TransactionID=self.Child_Transaction_TransactionIdentifier,Parent_AurusPayTicketNum=self.Child_Transaction_AurusPayTicketNumber,CardType=self.Gcb_Transaction_CardType, TransactionType=childOfChildTransactionType, TransactionAmount=self.Parent_Transaction_TransactionAmount)
                         Child_of_child_Transaction = self.Transaction_Request_Builder.Child_Transaction(**kwargs)
-                        Child_of_child_res = self.handleSocketRequest(Child_of_child_Transaction,"", "")
+                        Child_of_child_res = self.socket.handleSocketRequest(Child_of_child_Transaction, self.requestCameFrom)
                         if Child_of_child_res:
                             self.Child_of_child_Transaction_request = Utility.ConvertToJson(Child_of_child_Transaction,self.requestCameFrom)
                             self.Child_of_child_Transaction_response = Utility.ConvertToJson(Child_of_child_res,self.requestCameFrom)
@@ -254,11 +214,6 @@ class Transaction_Processing :
     def CLOSETransaction(self) :
         """Close the transaction."""
         try :
-            closeTransRes = self.handleSocketRequest(self.Transaction_Request_Builder.CloseTransactionRequest(), "", "")
-            if closeTransRes:
-                closeData = Utility.ConvertToJson(closeTransRes,self.requestCameFrom)
-                ResponseCode = closeData.get("CloseTransactionResponse").get("ResponseCode")
-                if ResponseCode and not ResponseCode.startswith('0'):
-                    self.CLOSETransaction()
+            self.socket.handleSocketRequest(self.Transaction_Request_Builder.CloseTransactionRequest(), self.requestCameFrom)
         except Exception as e :
-            self.ErrorText = f"Error in CLOSETransaction: {e}\nTraceback:\n{traceback.format_exc()}"
+            self.ErrorText = f"Error in CLOSETransaction: {e}\tTraceback:\t{traceback.format_exc()}"

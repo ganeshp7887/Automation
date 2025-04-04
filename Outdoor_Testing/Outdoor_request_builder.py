@@ -33,20 +33,9 @@ class Outdoor_Request_Builder :
         self.currentTime = time.strftime("%H:%M:%S:%MS", time.localtime()).replace(":", "")[:-3]
         self.RandomNumber = 123456
         self.isXml = config.Outdoor_request_format().upper() == "XML"
-        self.ParentTransactionTypeMapping = {
-            "01" : "01", "02" : "01", "03" : "01", "15" : "01", "16" : "01", "20" : "01",                       # for sale
-            "04" : "04", "05" : "04", "06" : "04", "07" : "04", "09" : "04", "05_01" : "04", "05_09" : "04",     # for pre-auth
-            "10" : "09",                                                                                        # for Reversal
-            "22" : "02"
-        }
-        self.ChildTransactionTypeMapping = {
-            "02" : "02", "07" : "02",                                                           #for refund
-            "03" : "06", "06" : "06",                                                           #for void
-            "05" : "05", "05_01" : "05","05_09" : "05",                                                         #for post-auth
-            "099" : "09"                                                                        #for reversal of post-auth
-        }
 
-    def gcb(self, lookUpFlag, TrackData, EncryptionMode, CardDataSource, EMVDetailsData, PINBlock, KSNBlock, PinBlockMode) :
+
+    def gcb(self, **kwargs) :
         data = self.readOutdoorFile("GetCardBINRequest.txt")
         if data :
             data["GetCardBINRequest"].update({
@@ -54,26 +43,30 @@ class Outdoor_Request_Builder :
                 "APPID" : self.APPID,
                 "SessionId" : self.SessionId,
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
-                "LookUpFlag" : lookUpFlag,
+                "LookUpFlag" : kwargs.get("LookUpFlag"),
                 "CardDataInfo" : {
-                    "CardDataSource" : CardDataSource,
-                    "EncryptionMode" : EncryptionMode,
-                    "TrackData" : TrackData,
-                    "EMVDetailsData" : EMVDetailsData,
-                    "PINBlock" : PINBlock,
-                    "KSNBlock" : KSNBlock,
-                    "PinBlockMode" : PinBlockMode,
+                    "CardDataSource" :kwargs.get("CardDataSource"),
+                    "EncryptionMode" : kwargs.get("EncryptionMode"),
+                    "TrackData" : kwargs.get("TrackData"),
+                    "EMVDetailsData" : kwargs.get("EMVDetailsData"),
+                    "PINBlock" : kwargs.get("PINBlock"),
+                    "KSNBlock" : kwargs.get("KSNBlock"),
+                    "PinBlockMode" : kwargs.get("PinBlockMode"),
                 }
             })
             self.Request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.Request
 
-    def Parent_Transaction(self, TransactionSeqNum, TransactionTypeID, TrackData, EncryptionMode, CardDataSource, EMVDetailsData, PINBlock, KSNBlock, PinBlockMode, CardType, TransAmount, productCount) :
+    def Parent_Transaction(self, **kwargs) :
         data = self.readOutdoorFile("parentTransRequest.txt")
         if data :
-            TransactionTypeToRequest = self.ParentTransactionTypeMapping.get(TransactionTypeID)
-            self.defaultAmount = self.defaultAmount if TransAmount == "" else TransAmount
-            CardType = "VIC" if CardType is None else CardType
+            TransactionTypeToRequest = kwargs.get("TransactionType")
+            productCount = kwargs.get("product_count")
+            TrackData = kwargs.get("TrackData")
+            CardDataSource = kwargs.get("CardDataSource")
+            defaultAmount = self.defaultAmount if kwargs.get("Transaction_total") is ["", None] else kwargs.get("Transaction_total")
+            print(f"Amount in request default:: {defaultAmount}")
+            CardType = "VIC" if kwargs.get("CardType") is None else kwargs.get("CardType")
             Parent = data["TransRequest"]
             TransAmountDetails = Parent["TransAmountDetails"]
             Parent.update({
@@ -82,13 +75,13 @@ class Outdoor_Request_Builder :
                 "SessionId" : self.SessionId,
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
                 "TransactionType" : TransactionTypeToRequest,
-                "TransactionSequenceNumber" : str(TransactionSeqNum).zfill(6),
-                "CRMToken" : TrackData if TransactionTypeID == "22" else "",
+                "TransactionSequenceNumber" : str(kwargs.get("TransactionSeqNum")).zfill(6),
+                "CRMToken" : TrackData if TransactionTypeToRequest == "22" else "",
                 **(
                     {
                         "SubTransType" : "04" if TransactionTypeToRequest in ("16", "11") else "",
-                         "BlackHawkUpc" : Gift_processor.BlackHawkUpc_finder(fleet_processor.cardnumber_finder(TrackData, CardDataSource)),
-                         "ProgramId" : "11" if CardType.upper().endswith("P") else "",
+                        "BlackHawkUpc" : Gift_processor.BlackHawkUpc_finder(fleet_processor.cardnumber_finder(TrackData, CardDataSource)),
+                        "ProgramId" : "11" if CardType.upper().endswith("P") else "",
                     } if CardType.upper().startswith("GC") else {}
                 ),
                 "CardType" : CardType,
@@ -96,14 +89,14 @@ class Outdoor_Request_Builder :
                     {"CardDataInfo" :
                         {
                             "CardDataSource" : CardDataSource,
-                            "EncryptionMode" : EncryptionMode,
+                            "EncryptionMode" : kwargs.get("EncryptionMode"),
                             "TrackData" : TrackData,
-                            "EMVDetailsData" : EMVDetailsData,
-                            "PINBlock" : PINBlock,
-                            "KSNBlock" : KSNBlock,
-                            "PinBlockMode" : PinBlockMode,
+                            "EMVDetailsData" : kwargs.get("EMVDetailsData"),
+                            "PINBlock" : kwargs.get("PINBlock"),
+                            "KSNBlock" : kwargs.get("KSNBlock"),
+                            "PinBlockMode" : kwargs.get("PinBlockMode"),
                         }
-                    } if TransactionTypeID != "22" else {}
+                    } if TransactionTypeToRequest != "02" else {}
                 ),
                 "ReferenceNumber" : f"{self.TodaysDate}{self.currentTime}{self.RandomNumber}" if CardType.upper() != "EPP" else f"{self.TodaysDate}1234",
                 "InvoiceNumber" : f"{self.TodaysDate}{self.currentTime}{self.RandomNumber + 1}",
@@ -111,13 +104,12 @@ class Outdoor_Request_Builder :
                 "TransactionTime" : self.currentTime,
             })
             TransAmountDetails.update({
-                "TransactionTotal" : self.defaultAmount,
-                "TenderAmount" : self.defaultAmount,
+                "TransactionTotal" : defaultAmount,
+                "TenderAmount" : defaultAmount,
             })
             if int(productCount) != 0 and TransactionTypeToRequest not in "09" and not CardType.upper().endswith("S") :
-                productCount = 1 if TransactionTypeToRequest == "04" else int(productCount)
                 if self.Processor.upper() == "CHASE" and CardType.endswith("D") or CardType.endswith("C") :
-                    products = Product_data_mapping.ProductData_Mapping(self.defaultAmount, "", "l3productdata", productCount)
+                    products = Product_data_mapping.ProductData_Mapping(defaultAmount, "", "l3productdata", productCount)
                     Parent.update({
                         "Level3ProductsData" :
                             {"Level3ProductCount" : products['Product_count'],
@@ -126,7 +118,7 @@ class Outdoor_Request_Builder :
                              }
                     })
                 if self.Processor.upper() == "FD" or (CardType.endswith("F") and CardType.upper() != "EBF") :
-                    products = Product_data_mapping.ProductData_Mapping(self.defaultAmount, "", "fleetproductdata", productCount)
+                    products = Product_data_mapping.ProductData_Mapping(defaultAmount, "", "fleetproductdata", productCount)
                     Parent.update({
                         "FleetData" :
                             {"FleetProductCount" : products['Product_count'],
@@ -142,10 +134,14 @@ class Outdoor_Request_Builder :
             self.Request = Utility.ConvertToXml(data) if self.isXml else json.dumps(data)
         return self.Request
 
-    def Child_Transaction(self, productCount, TransactionSeqNum, Transaction_Type, CardType, Parent_TransactionID, Parent_AurusPayTicketNum, TransAmount, DuplicateTransCheck) :
+    def Child_Transaction(self, **kwargs) :
         data = self.readOutdoorFile("childTransRequest.txt")
         if data:
-            TransactionTypeToRequest = self.ChildTransactionTypeMapping.get(Transaction_Type)
+            TransactionTypeToRequest = kwargs.get("TransactionType")
+            CardType =  kwargs.get("CardType")
+            TransAmount = kwargs.get("TransAmount")
+            DuplicateTransCheck = kwargs.get("DuplicateTransCheck")
+            productCount = kwargs.get("product_count")
             Parent = data["TransRequest"]
             TransAmountDetails = Parent["TransAmountDetails"]
             Parent.update({
@@ -154,13 +150,13 @@ class Outdoor_Request_Builder :
                 "SessionId" : self.SessionId,
                 "ADSDKSpecVer" : self.ADSDKSpecVer,
                 "TransactionType" : TransactionTypeToRequest,
-                "TransactionSequenceNumber" : str(TransactionSeqNum).zfill(6),
+                "TransactionSequenceNumber" : str(kwargs.get("TransactionSeqNum")).zfill(6),
                 "ReferenceNumber" : f"{self.TodaysDate}{self.RandomNumber}{self.currentTime}" if CardType.upper() != "EPP" else f"{self.TodaysDate}1234",
                 "InvoiceNumber" : f"{self.TodaysDate}{self.RandomNumber}{self.currentTime}",
                 "TransactionDate" : self.TodaysDate,
                 "TransactionTime" : self.currentTime,
-                "OrigTransactionIdentifier" : Parent_TransactionID,
-                "OrigAurusPayTicketNum" : Parent_AurusPayTicketNum,
+                "OrigTransactionIdentifier" : kwargs.get("Parent_TransactionID"),
+                "OrigAurusPayTicketNum" : kwargs.get("Parent_AurusPayTicketNum"),
                 "DuplicateTransCheck" : DuplicateTransCheck,
                 "OfflineTicketNumber" : f"O{self.YYMMDD}12345678001" if DuplicateTransCheck == "1" else ""
             })
@@ -168,7 +164,7 @@ class Outdoor_Request_Builder :
                 "TransactionTotal" :TransAmount if TransactionTypeToRequest.upper() == "06" else self.defaultAmount,
                 "TenderAmount" : TransAmount if TransactionTypeToRequest.upper() == "06" else self.defaultAmount
             })
-            if int(productCount) != 0 and TransactionTypeToRequest in ("05", "02") and not CardType.upper().endswith("S") :
+            if productCount and int(productCount) != 0 and TransactionTypeToRequest in ("05", "02") and not CardType.upper().endswith("S") :
                 if self.Processor.upper() == "CHASE" and (CardType.endswith("D") or CardType.endswith("C")) :
                     products = Product_data_mapping.ProductData_Mapping(self.defaultAmount, "", "l3productdata", productCount)
                     Parent.update({
